@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Form from "../components/singin/form";
 import MobileSide from "../components/singin/mobile.side";
 
@@ -8,8 +9,16 @@ const SignIn = () => {
         <div>
           <MobileSide />
         </div>
-        <div className="border-px1 border-gray-300 p-5">
+        <div className="flex flex-col gap-2">
           <Form />
+          <div className="border-px1 border-gray-300 p-4">
+            <p>
+              Don't have an account?{" "}
+              <Link to="/signup" className="text-blue-500">
+                Sign up
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-5 justify-center items-center">
