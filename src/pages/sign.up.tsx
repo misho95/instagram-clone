@@ -1,21 +1,18 @@
 import { Link } from "react-router-dom";
-import Form from "../components/singin/form";
 import MobileSide from "../components/singin/mobile.side";
+import Form from "../components/singin/form";
 
-const SignIn = () => {
+const SignUp = () => {
   return (
     <div className="bg-gray-100 w-full min-h-screen flex flex-col gap-20 sm:justify-center items-center sm:p-10">
       <div className="flex gap-8 w-full sm:w-fit p-10 sm:p-0">
-        <div className="hidden sm:flex">
-          <MobileSide />
-        </div>
         <div className="flex flex-col gap-2 w-full">
           <Form />
           <div className="sm:border-px1 border-gray-300 p-4">
             <p className="text-center">
-              Don't have an account?{" "}
-              <Link to="/signup" className="text-blue-500">
-                Sign up
+              Already have an account?{" "}
+              <Link to="/signin" className="text-blue-500">
+                Sign In
               </Link>
             </p>
           </div>
@@ -49,4 +46,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
