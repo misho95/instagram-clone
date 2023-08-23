@@ -5,6 +5,7 @@ export default {
     extend: {
       height: {
         px1: "1px",
+        mobile: "450px",
       },
       borderWidth: {
         px1: "1px",
