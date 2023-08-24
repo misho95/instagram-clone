@@ -4,7 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAK6pESjFKKPK6aT5Ir5L_PA6TzsRhDS40",
@@ -17,8 +17,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth();
+export const db = getFirestore(app);
+export const auth = getAuth();
 
 export const createUserWithEmailandPass = async (
   email: string,
@@ -37,4 +37,16 @@ export const addNewDataInServerStorage = async (
   obj: any
 ) => {
   await setDoc(doc(db, server, id), obj);
+};
+
+export const getDataFromServer = async (server: string, id: string) => {
+  const docRef = doc(db, server, id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
 };

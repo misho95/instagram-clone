@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Form from "../components/singin/form";
-import MobileSide from "../components/singin/mobile.side";
+import Form from "../components/form.components/form";
+import MobileSide from "../components/form.components/mobile.side";
 import { authWithEmailandPass } from "../utils/firebase";
 import { useState } from "react";
 

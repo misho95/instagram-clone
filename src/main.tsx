@@ -5,19 +5,33 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/home.page";
 import SignIn from "./pages/sign.in";
 import SignUp from "./pages/sign.up";
+import ProtectedRouter from "./protected.router";
+import ProtectForms from "./protect.forms";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: (
+      <ProtectedRouter>
+        <HomePage />
+      </ProtectedRouter>
+    ),
   },
   {
     path: "/signin",
-    element: <SignIn />,
+    element: (
+      <ProtectForms>
+        <SignIn />
+      </ProtectForms>
+    ),
   },
   {
     path: "/signup",
-    element: <SignUp />,
+    element: (
+      <ProtectForms>
+        <SignUp />
+      </ProtectForms>
+    ),
   },
 ]);
 

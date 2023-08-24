@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import SignUpForm from "../components/singin/sign.up.form";
+import SignUpForm from "../components/form.components/sign.up.form";
 import {
   createUserWithEmailandPass,
   addNewDataInServerStorage,
@@ -27,6 +27,8 @@ const SignUp = () => {
           fullName,
           email,
           pass,
+          avatar:
+            "https://firebasestorage.googleapis.com/v0/b/instagram-clone-9c3ea.appspot.com/o/profile-42914_1280.webp?alt=media&token=fe9ddf1d-80d4-4d72-a28e-f8c4e04f477b",
         });
       }
       navigate("/signin");
