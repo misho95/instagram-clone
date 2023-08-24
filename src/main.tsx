@@ -7,6 +7,7 @@ import SignIn from "./pages/sign.in";
 import SignUp from "./pages/sign.up";
 import ProtectedRouter from "./protected.router";
 import ProtectForms from "./protect.forms";
+import UserProfile from "./pages/user.profile";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRouter>
         <HomePage />
+      </ProtectedRouter>
+    ),
+  },
+  {
+    path: "/:userId",
+    element: (
+      <ProtectedRouter>
+        <UserProfile />
       </ProtectedRouter>
     ),
   },
