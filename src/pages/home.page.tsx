@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import LeftNavBar from "../components/home.components/leftNavBar";
 
 import { userSignIn } from "../utils/zustand";
@@ -17,7 +16,7 @@ const HomePage = () => {
   return (
     <div className="flex">
       <LeftNavBar />
-      Home Page
+      <div className="lg:pl-96">Home Page</div>
     </div>
   );
 };

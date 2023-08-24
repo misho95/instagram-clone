@@ -9,7 +9,7 @@ const UserProfile = () => {
   return (
     <div className="flex min-h-screen">
       <LeftNavBar />
-      <div className="pl-96">User Profile</div>
+      <div className=" lg:pl-96">User Profile</div>
     </div>
   );
 };
