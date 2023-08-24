@@ -1,13 +1,52 @@
 import { Link } from "react-router-dom";
-import MobileSide from "../components/singin/mobile.side";
-import Form from "../components/singin/form";
+import SignUpForm from "../components/singin/sign.up.form";
+import {
+  createUserWithEmailandPass,
+  addNewDataInServerStorage,
+} from "../utils/firebase";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const [signUpError, setSignUpError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const signUpNewUser = async (
+    userName: string,
+    fullName: string,
+    email: string,
+    pass: string
+  ) => {
+    try {
+      const { user } = await createUserWithEmailandPass(email, pass);
+      setSignUpError(null);
+      if (user) {
+        await addNewDataInServerStorage("users", user.uid, {
+          id: user.uid,
+          userName,
+          fullName,
+          email,
+          pass,
+        });
+      }
+      navigate("/signin");
+    } catch (error) {
+      if (error instanceof Error) {
+        setSignUpError((error as Error).message);
+      } else {
+        setSignUpError("An unknown error occurred.");
+      }
+    }
+  };
+
   return (
     <div className="bg-gray-100 w-full min-h-screen flex flex-col gap-20 sm:justify-center items-center sm:p-10">
       <div className="flex gap-8 w-full sm:w-fit p-10 sm:p-0">
         <div className="flex flex-col gap-2 w-full">
-          <Form />
+          <SignUpForm
+            submitHandler={signUpNewUser}
+            signUpFormError={signUpError}
+          />
           <div className="sm:border-px1 border-gray-300 p-4">
             <p className="text-center">
               Already have an account?{" "}
