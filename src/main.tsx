@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/:userId",
+    path: "/:userId/",
     element: (
       <ProtectedRouter>
         <UserProfile />

@@ -88,7 +88,7 @@ const LeftNavBar = () => {
           onClickHandler={() => setOpenMore(!openMore)}
           icons={"menu"}
           name={"More"}
-          link={`/`}
+          link={``}
         />
       </div>
     </div>
