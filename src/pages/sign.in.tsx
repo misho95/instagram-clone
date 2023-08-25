@@ -10,6 +10,7 @@ const SignIn = () => {
     if (login === "" || pass === "") {
       return;
     }
+    console.log(save);
     try {
       await authWithEmailandPass(login, pass);
       setSignInError(null);
