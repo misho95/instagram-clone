@@ -9,11 +9,13 @@ const ProtectForms = ({ children }) => {
   const setUser = userSignIn((state) => state.setUser);
 
   useEffect(() => {
-    checkUserState(setUser);
+    if (!user) {
+      checkUserState(setUser);
+    }
   }, []);
 
   useEffect(() => {
-    if (user) {
+    if (user !== null) {
       navigate("/");
     }
   }, [user]);

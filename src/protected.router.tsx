@@ -12,12 +12,14 @@ const ProtectedRouter = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    checkUserState(setUser);
-    setLoading(false);
+    checkUserState(setUser).then(() => {
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => {
     if (!user && !loading) {
+      console.log(user);
       navigate("/signin");
     }
   }, [user]);

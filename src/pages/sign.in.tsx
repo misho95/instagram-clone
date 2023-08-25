@@ -7,10 +7,11 @@ import { useState } from "react";
 const SignIn = () => {
   const [singInError, setSignInError] = useState<null | string>(null);
   const submitForm = async (login: string, pass: string, save: boolean) => {
+    if (login === "" || pass === "") {
+      return;
+    }
     try {
-      const { user } = await authWithEmailandPass(login, pass);
-      console.log(user);
-      console.log(save);
+      await authWithEmailandPass(login, pass);
       setSignInError(null);
     } catch (error) {
       if (error instanceof Error) {

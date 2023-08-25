@@ -3,6 +3,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -19,6 +20,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth();
+auth.languageCode = "it";
 
 export const createUserWithEmailandPass = async (
   email: string,
@@ -49,4 +51,16 @@ export const getDataFromServer = async (server: string, id: string) => {
     // docSnap.data() will be undefined in this case
     console.log("No such document!");
   }
+};
+
+export const singOutCurrentUser = () => {
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
 };
