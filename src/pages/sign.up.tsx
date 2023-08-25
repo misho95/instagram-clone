@@ -5,11 +5,9 @@ import {
   addNewDataInServerStorage,
 } from "../utils/firebase";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [signUpError, setSignUpError] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   const signUpNewUser = async (
     userName: string,
@@ -31,7 +29,6 @@ const SignUp = () => {
             "https://firebasestorage.googleapis.com/v0/b/instagram-clone-9c3ea.appspot.com/o/profile-42914_1280.webp?alt=media&token=fe9ddf1d-80d4-4d72-a28e-f8c4e04f477b",
         });
       }
-      navigate("/signin");
     } catch (error) {
       if (error instanceof Error) {
         setSignUpError((error as Error).message);

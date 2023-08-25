@@ -1,29 +1,18 @@
 import { userSignIn } from "../../utils/zustand";
 import NavBarLinks from "./nav.bar.links";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { singOutCurrentUser } from "../../utils/firebase";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const LeftNavBar = () => {
   const user = userSignIn((state) => state.user);
   const setUser = userSignIn((state) => state.setUser);
-  const navigate = useNavigate();
   const [openMore, setOpenMore] = useState(false);
 
   const logOutUser = () => {
     singOutCurrentUser();
     setUser(null);
   };
-
-  useEffect(() => {
-    if (!user) {
-      navigate("/signin");
-    }
-  }, [user]);
-
-  if (!user) {
-    return;
-  }
 
   return (
     <div className="fixed border-t-px1 sm:border-r-px1 border-gray-200 z-50 p-6 w-full h-20 bottom-0 sm:w-fit sm:h-screen flex flex-col justify-between gap-3">
@@ -71,9 +60,9 @@ const LeftNavBar = () => {
           link={"/"}
         />
 
-        <Link to={`/${user.userName}`} className="flex gap-5 items-center">
+        <Link to={`/${user?.userName}`} className="flex gap-5 items-center">
           <span className="material-symbols-outlined">
-            <img src={user.avatar} className="w-6 h-6 rounded-full" />
+            <img src={user?.avatar} className="w-6 h-6 rounded-full" />
           </span>
           <span className="hidden lg:block">Profile</span>
         </Link>

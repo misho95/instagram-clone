@@ -11,8 +11,10 @@ interface userType {
   avatar: string;
 }
 
-export const checkUserState = async (
-  setUser: (arg: userType | null) => void
+export const checkUserOrRedirect = async (
+  setUser: (arg: userType | null) => void,
+  setLoading: (arg: boolean) => void,
+  navigate: (arg: string) => void
 ) => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -20,10 +22,27 @@ export const checkUserState = async (
       onSnapshot(doc(db, "users", uid), (doc) => {
         const userData = doc.data() as userType | undefined;
         setUser(userData || null);
+        setLoading(false);
       });
     } else {
-      // User is signed out
-      // ...
+      navigate("/signin");
+    }
+  });
+};
+
+export const checkUserOrRedirectForUserForm = async (
+  setUser: (arg: userType | null) => void,
+  navigate: (arg: string) => void
+) => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid;
+      onSnapshot(doc(db, "users", uid), (doc) => {
+        const userData = doc.data() as userType | undefined;
+        setUser(userData || null);
+        navigate("/");
+      });
+    } else {
     }
   });
 };
