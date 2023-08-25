@@ -3,15 +3,7 @@ import LeftNavBar from "../components/home.components/leftNavBar";
 import { userSignIn } from "../utils/zustand";
 
 const HomePage = () => {
-  const user = userSignIn((state) => state.user);
-
-  if (!user) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        Loading...
-      </div>
-    );
-  }
+  //const user = userSignIn((state) => state.user);
 
   return (
     <div className="flex">
