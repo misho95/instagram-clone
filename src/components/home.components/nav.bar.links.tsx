@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 
-const NavBarLinks = ({ icons, name, link, onClickHandler }) => {
+interface PropsType {
+  icons: string;
+  name: string;
+  link: string;
+  onClickHandler: () => void;
+}
+
+const NavBarLinks = ({ icons, name, link, onClickHandler }: PropsType) => {
   return (
     <Link
       onClick={onClickHandler}

@@ -29,43 +29,43 @@ const LeftNavBar = () => {
     <div className="fixed border-t-px1 sm:border-r-px1 border-gray-200 z-50 p-6 w-full h-20 bottom-0 sm:w-fit sm:h-screen flex flex-col justify-between gap-3">
       <div className="flex flex-row sm:flex-col justify-around sm:justify-start gap-3">
         <NavBarLinks
-          onClickHandler={null}
+          onClickHandler={() => {}}
           icons={"home"}
           name={"Home"}
           link={"/"}
         />
         <NavBarLinks
-          onClickHandler={null}
+          onClickHandler={() => {}}
           icons={"search"}
           name={"Search"}
           link={"/"}
         />
         <NavBarLinks
-          onClickHandler={null}
+          onClickHandler={() => {}}
           icons={"explore"}
           name={"Explore"}
           link={"/"}
         />
         <NavBarLinks
-          onClickHandler={null}
+          onClickHandler={() => {}}
           icons={"movie"}
           name={"Reels"}
           link={"/"}
         />
         <NavBarLinks
-          onClickHandler={null}
+          onClickHandler={() => {}}
           icons={"chat"}
           name={"Messages"}
           link={"/"}
         />
         <NavBarLinks
-          onClickHandler={null}
+          onClickHandler={() => {}}
           icons={"favorite"}
           name={"Notifications"}
           link={"/"}
         />
         <NavBarLinks
-          onClickHandler={null}
+          onClickHandler={() => {}}
           icons={"add_box"}
           name={"Create"}
           link={"/"}
