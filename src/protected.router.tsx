@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import { checkUserState } from "./utils/helper.script";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 
-const ProtectedRouter = ({ children }) => {
+interface MyComponentProps {
+  children: ReactNode;
+}
+
+const ProtectedRouter = ({ children }: MyComponentProps) => {
   const user = userSignIn((state) => state.user);
   const setUser = userSignIn((state) => state.setUser);
   const [loading, setLoading] = useState(true);
