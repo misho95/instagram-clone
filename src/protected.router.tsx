@@ -16,17 +16,20 @@ const ProtectedRouter = ({ children }: MyComponentProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    checkUserState(setUser).then(() => {
-      setLoading(false);
-    });
+    checkUserState(setUser).then(() => {});
   }, []);
 
   useEffect(() => {
-    if (!user && !loading) {
-      console.log(user);
-      navigate("/signin");
+    if (user) {
+      setLoading(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (!user && !loading) {
+      navigate("/signin");
+    }
+  }, [user, loading]);
 
   if (loading) {
     return <div>Loading...</div>;
