@@ -12,6 +12,7 @@ export default {
       },
       padding: {
         pxcontent: "450px",
+        pxcontentmd: "420px",
       },
       borderWidth: {
         px1: "1px",

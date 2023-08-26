@@ -9,7 +9,7 @@ interface propsType {
 
 const Profile = ({ type, data }: propsType) => {
   return (
-    <div className="md:px-20 lg:px-pxcontent w-full">
+    <div className="w-full p-0 sm:pl-pxcontentmd lg:px-pxcontent flex flex-col gap-10">
       <ProfileHeader type={type} data={data} />
       <ProfilePosts />
     </div>

@@ -1,18 +1,14 @@
 import LeftNavBar from "../components/home.components/leftNavBar";
 
-// import { userSignIn } from "../utils/zustand";
-
-const HomePage = () => {
-  //const user = userSignIn((state) => state.user);
-
+const ArchiveStories = () => {
   return (
-    <div className="flex">
+    <div>
       <LeftNavBar />
       <div className="w-full p-0 sm:pl-pxcontentmd lg:px-pxcontent">
-        Home Page
+        Archive Stories
       </div>
     </div>
   );
 };
 
-export default HomePage;
+export default ArchiveStories;

@@ -8,6 +8,8 @@ import SignUp from "./pages/sign.up";
 import ProtectedRouter from "./protected.router";
 import ProtectForms from "./protect.forms";
 import UserProfile from "./pages/user.profile";
+import EditProfile from "./pages/edit.profile";
+import ArchiveStories from "./pages/archive.stories";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,22 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRouter>
         <UserProfile />
+      </ProtectedRouter>
+    ),
+  },
+  {
+    path: "/account/edit",
+    element: (
+      <ProtectedRouter>
+        <EditProfile />
+      </ProtectedRouter>
+    ),
+  },
+  {
+    path: "/archive/stories",
+    element: (
+      <ProtectedRouter>
+        <ArchiveStories />
       </ProtectedRouter>
     ),
   },
