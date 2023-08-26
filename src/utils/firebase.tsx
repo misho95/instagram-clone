@@ -5,7 +5,16 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAK6pESjFKKPK6aT5Ir5L_PA6TzsRhDS40",
@@ -51,6 +60,21 @@ export const getDataFromServer = async (server: string, id: string) => {
     // docSnap.data() will be undefined in this case
     console.log("No such document!");
   }
+};
+
+export const getDataFromServerByUserName = async (
+  server: string,
+  userName: string | undefined
+) => {
+  const q = query(collection(db, server), where("userName", "==", userName));
+
+  const data = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    data.push(doc.data());
+  });
+  return data;
 };
 
 export const singOutCurrentUser = () => {

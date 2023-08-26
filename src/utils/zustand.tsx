@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface userType {
+export interface userType {
   id: string;
   userName: string;
   fullName: string;
