@@ -5,7 +5,7 @@ interface PropsType {
 }
 
 const PostModal = ({ setOpenPostModal }: PropsType) => {
-  const fileButton = useRef(null);
+  const fileButton = useRef<HTMLInputElement | null>(null);
 
   const activeUploadButton = () => {
     if (fileButton.current) {
