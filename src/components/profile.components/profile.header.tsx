@@ -181,9 +181,12 @@ const ProfileHeader = ({ type, data }: propsType) => {
                     {following ? "unfollow" : "follow"}
                   </button>
                 ) : (
-                  <button className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2">
+                  <Link
+                    to="/account/edit"
+                    className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2"
+                  >
                     Edit Profile
-                  </button>
+                  </Link>
                 )}
               </span>
               <span>
@@ -192,9 +195,12 @@ const ProfileHeader = ({ type, data }: propsType) => {
                     Message
                   </button>
                 ) : (
-                  <button className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2">
+                  <Link
+                    to={"/archive/stories"}
+                    className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2"
+                  >
                     View Archive
-                  </button>
+                  </Link>
                 )}
               </span>
             </div>
