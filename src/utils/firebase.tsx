@@ -17,6 +17,8 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
+import { userType } from "./zustand";
+
 const firebaseConfig = {
   apiKey: "AIzaSyAK6pESjFKKPK6aT5Ir5L_PA6TzsRhDS40",
   authDomain: "instagram-clone-9c3ea.firebaseapp.com",
@@ -69,11 +71,12 @@ export const getDataFromServerByUserName = async (
 ) => {
   const q = query(collection(db, server), where("userName", "==", userName));
 
-  const data: DocumentData[] = [];
+  const data: userType[] = [];
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    data.push(doc.data());
+    const getData = doc.data() as userType;
+    data.push(getData);
   });
   return data;
 };
