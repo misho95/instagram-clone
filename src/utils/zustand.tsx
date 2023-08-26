@@ -14,6 +14,7 @@ export interface userType {
   avatar: string;
   following: followersType[];
   followers: followersType[];
+  posts: [];
 }
 
 interface userSignInType {

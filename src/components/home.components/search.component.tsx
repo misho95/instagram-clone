@@ -35,6 +35,7 @@ const SearchComponent = () => {
         {searchResult?.map((user: userType) => {
           return (
             <Link
+              key={user.id}
               to={`/${user.userName}`}
               onClick={() => setActiveNav(null)}
               className="p-2 flex items-center gap-3 hover:bg-gray-200/70 rounded-md"

@@ -38,7 +38,7 @@ export const db = getFirestore(app);
 export const auth = getAuth();
 auth.languageCode = "it";
 const faceBookProvider = new FacebookAuthProvider();
-faceBookProvider.addScope("user_birthday");
+//faceBookProvider.addScope("user_birthday");
 faceBookProvider.setCustomParameters({
   display: "popup",
 });
