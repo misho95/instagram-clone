@@ -7,6 +7,12 @@ export default {
         px1: "1px",
         mobile: "450px",
       },
+      spacing: {
+        custom: "73px",
+      },
+      padding: {
+        pxcontent: "450px",
+      },
       borderWidth: {
         px1: "1px",
       },

@@ -8,7 +8,7 @@ const HomePage = () => {
   return (
     <div className="flex">
       <LeftNavBar />
-      <div className="lg:pl-96">Home Page</div>
+      <div className="lg:px-pxcontent">Home Page</div>
     </div>
   );
 };

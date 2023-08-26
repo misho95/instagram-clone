@@ -14,6 +14,7 @@ import {
   query,
   where,
   getDocs,
+  DocumentData,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -68,7 +69,7 @@ export const getDataFromServerByUserName = async (
 ) => {
   const q = query(collection(db, server), where("userName", "==", userName));
 
-  const data = [];
+  const data: DocumentData[] = [];
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
