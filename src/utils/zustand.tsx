@@ -5,6 +5,12 @@ interface followersType {
   userName: string;
 }
 
+interface PostsType {
+  id: string;
+  userId: string;
+  img: string;
+}
+
 export interface userType {
   id: string;
   userName: string;
@@ -14,7 +20,7 @@ export interface userType {
   avatar: string;
   following: followersType[];
   followers: followersType[];
-  posts: [];
+  posts: PostsType[];
 }
 
 interface userSignInType {

@@ -20,6 +20,7 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 import { userType } from "./zustand";
 
@@ -36,6 +37,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth();
+export const storage = getStorage();
 auth.languageCode = "it";
 const faceBookProvider = new FacebookAuthProvider();
 //faceBookProvider.addScope("user_birthday");
@@ -106,7 +108,7 @@ export const updateDataInServerArray = async (
   server: string,
   id: string,
   array: string,
-  obj: { id: string; userName: string }
+  obj: any
 ) => {
   const docRef = doc(db, server, id);
   await updateDoc(docRef, {

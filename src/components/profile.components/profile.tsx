@@ -15,7 +15,7 @@ const Profile = ({ type, data }: propsType) => {
       className="w-full p-0 sm:pl-pxcontentmd lg:px-pxcontent flex flex-col gap-10"
     >
       <ProfileHeader type={type} data={data} />
-      <ProfilePosts />
+      <ProfilePosts type={type} data={data} />
     </div>
   );
 };

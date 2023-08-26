@@ -19,12 +19,14 @@ const SignUp = () => {
       const { user } = await createUserWithEmailandPass(email, pass);
       setSignUpError(null);
       if (user) {
+        const data = new Date();
         await addNewDataInServerStorage("users", user.uid, {
           id: user.uid,
           userName,
           fullName,
           email,
           pass,
+          singUpDate: data,
           avatar:
             "https://firebasestorage.googleapis.com/v0/b/instagram-clone-9c3ea.appspot.com/o/profile-42914_1280.webp?alt=media&token=fe9ddf1d-80d4-4d72-a28e-f8c4e04f477b",
           following: [],
