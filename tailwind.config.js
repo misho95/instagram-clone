@@ -11,8 +11,8 @@ export default {
         custom: "73px",
       },
       padding: {
-        pxcontent: "450px",
-        pxcontentmd: "420px",
+        pxcontent: "250px",
+        pxcontentmd: "220px",
       },
       borderWidth: {
         px1: "1px",

@@ -1,13 +1,17 @@
 import LeftNavBar from "../components/home.components/leftNavBar";
-import { userSignIn } from "../utils/zustand";
+import { userSignIn, activeNav } from "../utils/zustand";
 
 const EditProfile = () => {
   const user = userSignIn((state) => state.user);
+  const setNavActive = activeNav((state) => state.setActive);
 
   return (
     <div>
       <LeftNavBar />
-      <div className="w-full p-0 sm:pl-pxcontentmd lg:px-pxcontent">
+      <div
+        onClick={() => setNavActive(null)}
+        className="w-full p-0 sm:pl-pxcontentmd lg:px-pxcontent min-h-screen"
+      >
         <h1 className="text-xl font-bold p-5">Settings</h1>
         <div className="p-5 border-px1 border-gray-200">
           <h1 className="text-xl font-bold">Edit profile</h1>

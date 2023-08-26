@@ -39,7 +39,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen ">
       <LeftNavBar />
       <Profile type={type} data={dataToSend} />
     </div>

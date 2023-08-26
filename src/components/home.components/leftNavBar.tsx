@@ -21,7 +21,7 @@ const LeftNavBar = () => {
   };
 
   return (
-    <div className="fixed border-t-px1 sm:border-r-px1 border-gray-200 z-50 p-6 w-full h-20 bottom-0 sm:w-fit sm:h-screen flex flex-col justify-between gap-3 bg-white">
+    <div className="fixed border-t-px1 sm:border-r-px1 border-gray-200 p-6 w-full h-20 bottom-0 sm:w-fit sm:h-screen flex flex-col justify-between gap-3 bg-white z-50">
       {navActive === "search" && <SearchComponent />}
       {navActive === "notif" && <NotifComponent />}
       <div className="flex flex-row sm:flex-col justify-around sm:justify-start gap-3">
@@ -40,7 +40,7 @@ const LeftNavBar = () => {
           }}
           icons={"search"}
           name={"Search"}
-          link={"/"}
+          link={""}
           mobile={"hidden"}
         />
         <NavBarLinks
@@ -76,7 +76,7 @@ const LeftNavBar = () => {
           }}
           icons={"favorite"}
           name={"Notifications"}
-          link={"/"}
+          link={""}
           mobile={"hidden"}
         />
         <NavBarLinks
