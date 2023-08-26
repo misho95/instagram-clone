@@ -13,7 +13,7 @@ const UserProfile = () => {
   console.log(userId);
 
   useEffect(() => {
-    if (userId === user.userName) {
+    if (userId === user?.userName) {
       setType("owner");
       setLoading(false);
     }
