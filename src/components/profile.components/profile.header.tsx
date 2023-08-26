@@ -100,7 +100,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
                   }}
                   className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2"
                 >
-                  {following ? "following" : "follow"}
+                  {following ? "unfollow" : "follow"}
                 </button>
               ) : (
                 <button className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2">
@@ -160,7 +160,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
                     }}
                     className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2"
                   >
-                    {following ? "following" : "follow"}
+                    {following ? "unfollow" : "follow"}
                   </button>
                 ) : (
                   <button className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2">
