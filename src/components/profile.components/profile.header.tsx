@@ -24,6 +24,18 @@ const ProfileHeader = ({ type, data }: propsType) => {
       };
       if (user) {
         await updateDataInServerArray("users", user?.id, "following", obj);
+
+        const currentUserObj = {
+          id: user?.id,
+          userName: user?.userName,
+        };
+
+        await updateDataInServerArray(
+          "users",
+          data.id,
+          "followers",
+          currentUserObj
+        );
       }
     }
   };
@@ -36,7 +48,17 @@ const ProfileHeader = ({ type, data }: propsType) => {
         userName: data.userName,
       };
       if (user) {
+        const currentUserObj = {
+          id: user?.id,
+          userName: user?.userName,
+        };
         await deleteDataInServerArray("users", user?.id, "following", obj);
+        await deleteDataInServerArray(
+          "users",
+          data.id,
+          "followers",
+          currentUserObj
+        );
       }
     }
     setFollowing(false);
@@ -159,12 +181,17 @@ const ProfileHeader = ({ type, data }: propsType) => {
               </span>
             </div>
           </div>
+          <div className="hidden sm:flex justify-around">
+            <span>{data?.posts.length} posts</span>
+            <span>{data?.followers.length} followers</span>
+            <span>{data?.following.length} following</span>
+          </div>
         </div>
       </div>
-      <div className="flex justify-around">
-        <span>35 posts</span>
-        <span>75 followers</span>
-        <span>89 following</span>
+      <div className="flex sm:hidden justify-around">
+        <span>{data?.posts.length} posts</span>
+        <span>{data?.followers.length} followers</span>
+        <span>{data?.following.length} following</span>
       </div>
     </>
   );

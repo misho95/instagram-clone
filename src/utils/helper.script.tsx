@@ -39,3 +39,14 @@ export const checkUserOrRedirectForUserForm = async (
     }
   });
 };
+
+export const getRealTimeUpdateAndSetIt = async (
+  server: string,
+  id: string,
+  setDataToSend: (arg: userType | undefined) => void
+) => {
+  onSnapshot(doc(db, server, id), (doc) => {
+    const userData = doc.data() as userType | undefined;
+    setDataToSend(userData);
+  });
+};

@@ -5,6 +5,7 @@ import { userSignIn } from "../utils/zustand";
 import { getDataFromServerByUserName } from "../utils/firebase";
 import Profile from "../components/profile.components/profile";
 import { userType } from "../utils/zustand";
+import { getRealTimeUpdateAndSetIt } from "../utils/helper.script";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -16,7 +17,9 @@ const UserProfile = () => {
 
   const getDataFromServerANdSetIt = async () => {
     const data = await getDataFromServerByUserName("users", userId);
-    setDataToSend(data[0]);
+    if (data) {
+      await getRealTimeUpdateAndSetIt("users", data[0].id, setDataToSend);
+    }
   };
 
   useEffect(() => {
