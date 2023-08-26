@@ -2,6 +2,7 @@ import Input from "./input";
 import fbIcon from "../../assets/images/cropped-FB-Icon-1.png";
 import { useState } from "react";
 import { FormEvent } from "react";
+import { authWithFacebookPopUp } from "../../utils/firebase";
 
 interface PropsType {
   submitHandler: (login: string, pass: string, save: boolean) => void;
@@ -81,6 +82,7 @@ const Form = ({ submitHandler, singInFormError }: PropsType) => {
         </span>
       </div>
       <button
+        onClickCapture={authWithFacebookPopUp}
         type="button"
         className="flex gap-2 justify-center items-center text-sm text-blue-800 w-fit"
       >

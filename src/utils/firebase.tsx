@@ -4,6 +4,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  FacebookAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -24,7 +26,7 @@ const firebaseConfig = {
   projectId: "instagram-clone-9c3ea",
   storageBucket: "instagram-clone-9c3ea.appspot.com",
   messagingSenderId: "938485543929",
-  appId: "1:938485543929:web:9602632662fa1427e88328",
+  appId: "1:938485543929:web:a7e9d8d7dc3c3d48e88328",
 };
 
 // Initialize Firebase
@@ -32,6 +34,11 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth();
 auth.languageCode = "it";
+const faceBookProvider = new FacebookAuthProvider();
+faceBookProvider.addScope("user_birthday");
+faceBookProvider.setCustomParameters({
+  display: "popup",
+});
 
 export const createUserWithEmailandPass = async (
   email: string,
@@ -89,5 +96,31 @@ export const singOutCurrentUser = () => {
     .catch((error) => {
       // An error happened.
       console.log(error);
+    });
+};
+
+export const authWithFacebookPopUp = async () => {
+  signInWithPopup(auth, faceBookProvider)
+    .then((result) => {
+      // The signed-in user info.
+      const user = result.user;
+
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      // const accessToken = credential.accessToken;
+
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = FacebookAuthProvider.credentialFromError(error);
+
+      // ...
     });
 };
