@@ -6,6 +6,7 @@ import {
 } from "../../utils/firebase";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import SettingsModal from "./settings.modal";
 
 interface propsType {
   type: string;
@@ -14,7 +15,8 @@ interface propsType {
 
 const ProfileHeader = ({ type, data }: propsType) => {
   const user = userSignIn((state) => state.user);
-  const [following, setFollowing] = useState(false);
+  const [following, setFollowing] = useState<boolean>(false);
+  const [openSettingModal, setOpenSettingsModal] = useState<boolean>(false);
 
   const followUser = async (id: string) => {
     const data = await getDataFromServer("users", id);
@@ -81,6 +83,9 @@ const ProfileHeader = ({ type, data }: propsType) => {
 
   return (
     <>
+      {openSettingModal && (
+        <SettingsModal setOpenSettingsModal={setOpenSettingsModal} />
+      )}
       <div className="flex w-full items-center justify-center gap-10 pt-10">
         <div>
           <img
@@ -132,7 +137,10 @@ const ProfileHeader = ({ type, data }: propsType) => {
                   <span className="material-symbols-outlined">more_horiz</span>
                 </button>
               ) : (
-                <button className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2 flex">
+                <button
+                  onClick={() => setOpenSettingsModal(!openSettingModal)}
+                  className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2 flex"
+                >
                   <span className="material-symbols-outlined">settings</span>
                 </button>
               )}
@@ -150,7 +158,10 @@ const ProfileHeader = ({ type, data }: propsType) => {
                     </span>
                   </button>
                 ) : (
-                  <button className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2 flex">
+                  <button
+                    onClick={() => setOpenSettingsModal(!openSettingModal)}
+                    className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2 flex"
+                  >
                     <span className="material-symbols-outlined">settings</span>
                   </button>
                 )}

@@ -5,6 +5,7 @@ import { singOutCurrentUser } from "../../utils/firebase";
 import { Link } from "react-router-dom";
 import SearchComponent from "./search.component";
 import NotifComponent from "./notif.component";
+import PostModal from "./post.modal";
 
 const LeftNavBar = () => {
   const user = userSignIn((state) => state.user);
@@ -12,6 +13,7 @@ const LeftNavBar = () => {
   const [openMore, setOpenMore] = useState(false);
   const navActive = activeNav((state) => state.active);
   const setNavActive = activeNav((state) => state.setActive);
+  const [openPostModal, setOpenPostModal] = useState(false);
 
   const logOutUser = () => {
     singOutCurrentUser();
@@ -79,14 +81,14 @@ const LeftNavBar = () => {
         />
         <NavBarLinks
           onClickHandler={() => {
-            setNavActive(null);
+            setOpenPostModal(!openPostModal);
           }}
           icons={"add_box"}
           name={"Create"}
-          link={"/"}
+          link={""}
           mobile={"show"}
         />
-
+        {openPostModal && <PostModal setOpenPostModal={setOpenPostModal} />}
         <Link
           onClick={() => setNavActive(null)}
           to={`/${user?.userName}`}
