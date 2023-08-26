@@ -2,14 +2,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./firebase";
 
-interface userType {
-  id: string;
-  userName: string;
-  fullName: string;
-  email: string;
-  pass: string;
-  avatar: string;
-}
+import { userType } from "./zustand";
 
 export const checkUserOrRedirect = async (
   setUser: (arg: userType | null) => void,

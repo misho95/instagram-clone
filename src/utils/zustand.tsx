@@ -13,11 +13,12 @@ export interface userType {
   pass: string;
   avatar: string;
   following: followersType[];
+  followers: followersType[];
 }
 
 interface userSignInType {
   user: null | userType;
-  setUser: (arg: userType | null) => void;
+  setUser: (userData: userType | null) => void;
 }
 
 export const userSignIn = create<userSignInType>((set) => ({
@@ -27,7 +28,7 @@ export const userSignIn = create<userSignInType>((set) => ({
 
 interface activeNavType {
   active: null | string;
-  setActive: (arg: string | null) => void;
+  setActive: (value: string | null) => void;
 }
 
 export const activeNav = create<activeNavType>((set) => ({
