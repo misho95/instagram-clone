@@ -19,7 +19,6 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
-  onSnapshot,
 } from "firebase/firestore";
 
 import { userType } from "./zustand";
