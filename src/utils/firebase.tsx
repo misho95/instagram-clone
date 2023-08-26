@@ -14,7 +14,6 @@ import {
   query,
   where,
   getDocs,
-  DocumentData,
 } from "firebase/firestore";
 
 import { userType } from "./zustand";
