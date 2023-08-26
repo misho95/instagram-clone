@@ -1,5 +1,10 @@
 import { create } from "zustand";
 
+interface followersType {
+  id: string;
+  userName: string;
+}
+
 export interface userType {
   id: string;
   userName: string;
@@ -7,6 +12,7 @@ export interface userType {
   email: string;
   pass: string;
   avatar: string;
+  following: followersType[];
 }
 
 interface userSignInType {

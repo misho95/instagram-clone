@@ -16,6 +16,10 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  onSnapshot,
 } from "firebase/firestore";
 
 import { userType } from "./zustand";
@@ -99,6 +103,30 @@ export const singOutCurrentUser = () => {
     });
 };
 
+export const updateDataInServerArray = async (
+  server: string,
+  id: string,
+  array: string,
+  obj: { id: string; userName: string }
+) => {
+  const docRef = doc(db, server, id);
+  await updateDoc(docRef, {
+    [array]: arrayUnion(obj),
+  });
+};
+
+export const deleteDataInServerArray = async (
+  server: string,
+  id: string,
+  array: string,
+  obj: { id: string; userName: string }
+) => {
+  const docRef = doc(db, server, id);
+  await updateDoc(docRef, {
+    [array]: arrayRemove(obj),
+  });
+};
+
 export const authWithFacebookPopUp = async () => {
   signInWithPopup(auth, faceBookProvider)
     .then((result) => {
@@ -127,3 +155,9 @@ export const authWithFacebookPopUp = async () => {
       // ...
     });
 };
+
+// export const getDataFromServerWithRealTimeUpdates = async (server, id) => {
+//   onSnapshot(doc(db, server, id), (doc) => {
+//     console.log(doc.data());
+//   });
+// };

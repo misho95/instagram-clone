@@ -16,7 +16,6 @@ const UserProfile = () => {
 
   const getDataFromServerANdSetIt = async () => {
     const data = await getDataFromServerByUserName("users", userId);
-    console.log(data);
     setDataToSend(data[0]);
   };
 
