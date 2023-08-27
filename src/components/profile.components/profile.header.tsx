@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SettingsModal from "./settings.modal";
 import { v4 } from "uuid";
+import FollowModalComponent from "./follow.modal.component";
 
 interface propsType {
   type: string;
@@ -18,6 +19,8 @@ const ProfileHeader = ({ type, data }: propsType) => {
   const user = userSignIn((state) => state.user);
   const [following, setFollowing] = useState<boolean>(false);
   const [openSettingModal, setOpenSettingsModal] = useState<boolean>(false);
+  const [showFollowers, setShowFollowers] = useState<boolean>(false);
+  const [showFollowings, setShowFollowins] = useState<boolean>(false);
 
   const followUser = async (id: string) => {
     const data = await getDataFromServer("users", id);
@@ -215,19 +218,38 @@ const ProfileHeader = ({ type, data }: propsType) => {
           </div>
           <div className="hidden sm:flex justify-around">
             <span>{data?.posts ? data?.posts?.length : 0} posts</span>
-            <span>
+            <span onClick={() => setShowFollowers(true)}>
               {data?.followers ? data?.followers?.length : 0} followers
             </span>
-            <span>
+            <span onClick={() => setShowFollowins(true)}>
               {data?.following ? data?.following?.length : 0} following
             </span>
           </div>
         </div>
       </div>
+      {/* followrs modal */}
+      {showFollowers && (
+        <FollowModalComponent
+          data={data}
+          type={"followers"}
+          set={setShowFollowers}
+        />
+      )}
+      {showFollowings && (
+        <FollowModalComponent
+          data={data}
+          type={"followings"}
+          set={setShowFollowins}
+        />
+      )}
       <div className="flex sm:hidden justify-around">
         <span>{data?.posts ? data?.posts?.length : 0} posts</span>
-        <span>{data?.followers ? data?.followers?.length : 0} followers</span>
-        <span>{data?.following ? data?.following?.length : 0} following</span>
+        <span onClick={() => setShowFollowers(true)}>
+          {data?.followers ? data?.followers?.length : 0} followers
+        </span>
+        <span onClick={() => setShowFollowins(true)}>
+          {data?.following ? data?.following?.length : 0} following
+        </span>
       </div>
     </>
   );

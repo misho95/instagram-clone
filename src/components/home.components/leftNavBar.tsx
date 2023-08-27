@@ -120,7 +120,10 @@ const LeftNavBar = () => {
           className="flex gap-5 items-center"
         >
           <span className="material-symbols-outlined">
-            <img src={user?.avatar} className="w-6 h-6 rounded-full" />
+            <img
+              src={user?.avatar}
+              className="w-6 h-6 rounded-full object-cover"
+            />
           </span>
           <span
             className={`${navActive !== null ? "hidden" : "hidden lg:block"}`}
