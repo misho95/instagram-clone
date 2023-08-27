@@ -164,7 +164,9 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
               {type === "image" && (
                 <img src={imgUrl} className="w-60 h-60 object-cover" />
               )}
-              {type === "video" && <VideoPlayer src={imgUrl} />}
+              {type === "video" && (
+                <VideoPlayer w={"w-40"} h={"h-40"} src={imgUrl} />
+              )}
             </div>
             <div className="flex justify-between">
               <button
