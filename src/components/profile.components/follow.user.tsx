@@ -1,9 +1,9 @@
 import { getDataFromServer } from "../../utils/firebase";
 import { useState, useEffect } from "react";
-import { userType } from "../../utils/zustand";
+import { userType, followersType } from "../../utils/zustand";
 
 interface PropsType {
-  data: userType;
+  data: followersType;
 }
 
 const FollowUser = ({ data }: PropsType) => {
