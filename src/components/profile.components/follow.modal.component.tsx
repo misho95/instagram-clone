@@ -8,7 +8,6 @@ interface PropsType {
 }
 
 const FollowModalComponent = ({ data, type, set }: PropsType) => {
-  console.log(data);
   return (
     <div
       onClick={() => set(false)}

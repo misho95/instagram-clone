@@ -218,10 +218,16 @@ const ProfileHeader = ({ type, data }: propsType) => {
           </div>
           <div className="hidden sm:flex justify-around">
             <span>{data?.posts ? data?.posts?.length : 0} posts</span>
-            <span onClick={() => setShowFollowers(true)}>
+            <span
+              className="cursor-pointer"
+              onClick={() => setShowFollowers(true)}
+            >
               {data?.followers ? data?.followers?.length : 0} followers
             </span>
-            <span onClick={() => setShowFollowins(true)}>
+            <span
+              className="cursor-pointer"
+              onClick={() => setShowFollowins(true)}
+            >
               {data?.following ? data?.following?.length : 0} following
             </span>
           </div>
@@ -244,10 +250,10 @@ const ProfileHeader = ({ type, data }: propsType) => {
       )}
       <div className="flex sm:hidden justify-around">
         <span>{data?.posts ? data?.posts?.length : 0} posts</span>
-        <span onClick={() => setShowFollowers(true)}>
+        <span className="cursor-pointer" onClick={() => setShowFollowers(true)}>
           {data?.followers ? data?.followers?.length : 0} followers
         </span>
-        <span onClick={() => setShowFollowins(true)}>
+        <span className="cursor-pointer" onClick={() => setShowFollowins(true)}>
           {data?.following ? data?.following?.length : 0} following
         </span>
       </div>
