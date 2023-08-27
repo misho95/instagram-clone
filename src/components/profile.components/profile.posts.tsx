@@ -12,7 +12,7 @@ const ProfilePosts = ({ type, data }: propsType) => {
     <div className="flex flex-wrap gap-3 justify-center sm:justify-normal">
       {data?.posts &&
         data.posts.map((post) => {
-          return <Posts post={post} />;
+          return <Posts key={post.id} post={post} />;
         })}
     </div>
   );
