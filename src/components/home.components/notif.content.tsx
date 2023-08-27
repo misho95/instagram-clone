@@ -1,4 +1,10 @@
-const NotifContent = ({ data }) => {
+import { notifType } from "../../utils/zustand";
+
+interface PropsType {
+  data: notifType;
+}
+
+const NotifContent = ({ data }: PropsType) => {
   return (
     <div className="flex gap-3">
       <span>{data.title}</span>

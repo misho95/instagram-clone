@@ -1,6 +1,10 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
-const VideoPlayer = ({ src }) => {
+interface PropsType {
+  src: string;
+}
+
+const VideoPlayer = ({ src }: PropsType) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const togglePlay = () => {

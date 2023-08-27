@@ -12,7 +12,7 @@ interface PostsType {
   type: string;
 }
 
-interface notifType {
+export interface notifType {
   id: string;
   title: string;
   userId: string;
