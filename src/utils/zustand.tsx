@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface followersType {
+export interface followersType {
   id: string;
   userName: string;
 }
