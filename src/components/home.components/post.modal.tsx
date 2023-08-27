@@ -8,6 +8,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { v4 } from "uuid";
+import VideoPlayer from "./video.player";
 
 interface PropsType {
   setOpenPostModal: (arg: boolean) => void;
@@ -19,6 +20,8 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
   const fileButton = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<null | File | undefined>(null);
   const [imgUrl, setImgUrl] = useState("");
+  const [error, setError] = useState("");
+  const [type, setType] = useState<string | null>(null);
 
   const activeUploadButton = () => {
     if (fileButton.current) {
@@ -28,28 +31,36 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
 
   const uploadFile = async () => {
     if (file && user) {
-      const date = new Date().getTime();
-      const storageRef = ref(
-        storage,
-        `/images/${user.id}/${file.name}.${date}`
-      );
+      const sliceType = file.type.split("/");
+      const getType = sliceType[0];
+      setType(getType);
+      if (getType === "image" || getType === "video") {
+        const date = new Date().getTime();
+        const storageRef = ref(
+          storage,
+          `/images/${user.id}/${file.name}.${date}`
+        );
 
-      // 'file' comes from the Blob or File API
-      uploadBytes(storageRef, file).then((snapshot) => {
-        const imgUrl = snapshot.metadata.fullPath;
+        // 'file' comes from the Blob or File API
+        uploadBytes(storageRef, file).then((snapshot) => {
+          const imgUrl = snapshot.metadata.fullPath;
 
-        getDownloadURL(ref(storage, imgUrl))
-          .then((url) => {
-            // `url` is the download URL for 'images/stars.jpg'
+          getDownloadURL(ref(storage, imgUrl))
+            .then((url) => {
+              // `url` is the download URL for 'images/stars.jpg'
 
-            setImgUrl(url);
-            setPage(1);
-          })
-          .catch((error) => {
-            // Handle any errors
-            console.log(error);
-          });
-      });
+              setImgUrl(url);
+              setPage(1);
+            })
+            .catch((error) => {
+              // Handle any errors
+              console.log(error);
+            });
+        });
+      }
+    } else {
+      setError("Wrong Fail");
+      return;
     }
   };
 
@@ -59,7 +70,8 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
       await updateDataInServerArray("users", user.id, "posts", {
         id: v4(),
         userId: user.id,
-        img: imgUrl,
+        link: imgUrl,
+        type,
         date,
       });
       setFile(null);
@@ -95,41 +107,6 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
     <>
       {page === 0 && (
         <div
-          onClick={() => cancelUpload()}
-          className="bg-black/50 fixed top-0 left-0 w-full h-screen flex items-center justify-center"
-        >
-          <button
-            onClick={() => cancelUpload()}
-            className="text-white fixed top-5 right-5 text-2xl"
-          >
-            X
-          </button>
-          <div
-            onClick={(event) => {
-              event.stopPropagation();
-            }}
-            className="bg-white p-5 rounded-lg w-2/3 sm:1/2 h-1/2 flex flex-col gap-5 justify-between"
-          >
-            <h1 className="text-center font-bold text-xl">Create new post</h1>
-            <button
-              onClick={activeUploadButton}
-              className="bg-blue-500 text-white p-1 rounded-lg"
-            >
-              Select from Computer
-            </button>
-            <input
-              ref={fileButton}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setFile(e.target.files?.[0]);
-              }}
-              type="file"
-              className="hidden"
-            />
-          </div>
-        </div>
-      )}
-      {page === 1 && (
-        <div
           onClick={() => setOpenPostModal(false)}
           className="bg-black/50 fixed top-0 left-0 w-full h-screen flex items-center justify-center"
         >
@@ -145,8 +122,49 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
             }}
             className="bg-white p-5 rounded-lg w-2/3 sm:1/2 h-1/2 flex flex-col gap-5 justify-between"
           >
+            <h1 className="text-center font-bold text-xl">Create new post</h1>
+            <div className="flex flex-col gap-2">
+              {error && <div className="text-sm text-red-500">{error}</div>}
+              <button
+                onClick={activeUploadButton}
+                className="bg-blue-500 text-white p-1 rounded-lg"
+              >
+                Select from Computer
+              </button>
+            </div>
+            <input
+              ref={fileButton}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setFile(e.target.files?.[0]);
+              }}
+              type="file"
+              className="hidden"
+            />
+          </div>
+        </div>
+      )}
+      {page === 1 && (
+        <div
+          onClick={() => cancelUpload()}
+          className="bg-black/50 fixed top-0 left-0 w-full h-screen flex items-center justify-center"
+        >
+          <button
+            onClick={() => cancelUpload()}
+            className="text-white fixed top-5 right-5 text-2xl"
+          >
+            X
+          </button>
+          <div
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+            className="bg-white p-5 rounded-lg w-2/3 sm:1/2 h-1/2 flex flex-col gap-5 justify-between"
+          >
             <div className="w-full flex justify-center items-center">
-              <img src={imgUrl} className="w-60 h-60 object-cover" />
+              {type === "image" && (
+                <img src={imgUrl} className="w-60 h-60 object-cover" />
+              )}
+              {type === "video" && <VideoPlayer src={imgUrl} />}
             </div>
             <div className="flex justify-between">
               <button

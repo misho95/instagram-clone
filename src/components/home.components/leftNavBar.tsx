@@ -1,6 +1,6 @@
 import { userSignIn, activeNav } from "../../utils/zustand";
 import NavBarLinks from "./nav.bar.links";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { singOutCurrentUser } from "../../utils/firebase";
 import { Link } from "react-router-dom";
 import SearchComponent from "./search.component";
@@ -14,6 +14,24 @@ const LeftNavBar = () => {
   const navActive = activeNav((state) => state.active);
   const setNavActive = activeNav((state) => state.setActive);
   const [openPostModal, setOpenPostModal] = useState(false);
+  const [notifCount, setNotifCount] = useState(0);
+
+  useEffect(() => {
+    if (user?.notif) {
+      const filterUnseenNotif = user?.notif.filter((n) => {
+        if (n.seen === false) {
+          return n;
+        }
+      });
+
+      if (filterUnseenNotif) {
+        const countNotif = filterUnseenNotif.reduce((val) => {
+          return (val += 1);
+        }, 0);
+        setNotifCount(countNotif);
+      }
+    }
+  }, [user]);
 
   const logOutUser = () => {
     singOutCurrentUser();
@@ -24,7 +42,7 @@ const LeftNavBar = () => {
     <div className="fixed border-t-px1 sm:border-r-px1 border-gray-200 p-6 w-full h-20 bottom-0 sm:w-fit sm:h-screen flex flex-col justify-between gap-3 bg-white z-50">
       {navActive === "search" && <SearchComponent />}
       {navActive === "notif" && <NotifComponent />}
-      <div className="flex flex-row sm:flex-col justify-around sm:justify-start gap-3">
+      <div className="flex flex-row sm:flex-col justify-evenly sm:justify-start sm:gap-3">
         <NavBarLinks
           onClickHandler={() => {
             setNavActive(null);
@@ -33,6 +51,7 @@ const LeftNavBar = () => {
           name={"Home"}
           link={"/"}
           mobile={"show"}
+          notif={0}
         />
         <NavBarLinks
           onClickHandler={() => {
@@ -42,6 +61,7 @@ const LeftNavBar = () => {
           name={"Search"}
           link={""}
           mobile={"hidden"}
+          notif={0}
         />
         <NavBarLinks
           onClickHandler={() => {
@@ -51,6 +71,7 @@ const LeftNavBar = () => {
           name={"Explore"}
           link={"/"}
           mobile={"show"}
+          notif={0}
         />
         <NavBarLinks
           onClickHandler={() => {
@@ -60,6 +81,7 @@ const LeftNavBar = () => {
           name={"Reels"}
           link={"/"}
           mobile={"show"}
+          notif={0}
         />
         <NavBarLinks
           onClickHandler={() => {
@@ -69,6 +91,7 @@ const LeftNavBar = () => {
           name={"Messages"}
           link={"/"}
           mobile={"show"}
+          notif={0}
         />
         <NavBarLinks
           onClickHandler={() => {
@@ -78,6 +101,7 @@ const LeftNavBar = () => {
           name={"Notifications"}
           link={""}
           mobile={"hidden"}
+          notif={notifCount}
         />
         <NavBarLinks
           onClickHandler={() => {
@@ -87,6 +111,7 @@ const LeftNavBar = () => {
           name={"Create"}
           link={""}
           mobile={"show"}
+          notif={0}
         />
         {openPostModal && <PostModal setOpenPostModal={setOpenPostModal} />}
         <Link
@@ -127,6 +152,7 @@ const LeftNavBar = () => {
           name={"More"}
           link={``}
           mobile={"hidden"}
+          notif={0}
         />
       </div>
     </div>

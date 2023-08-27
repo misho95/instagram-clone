@@ -120,7 +120,7 @@ export const deleteDataInServerArray = async (
   server: string,
   id: string,
   array: string,
-  obj: { id: string; userName: string }
+  obj: any
 ) => {
   const docRef = doc(db, server, id);
   await updateDoc(docRef, {

@@ -8,7 +8,15 @@ interface followersType {
 interface PostsType {
   id: string;
   userId: string;
-  img: string;
+  link: string;
+  type: string;
+}
+
+interface notifType {
+  id: string;
+  title: string;
+  userId: string;
+  seen: boolean;
 }
 
 export interface userType {
@@ -21,6 +29,7 @@ export interface userType {
   following: followersType[];
   followers: followersType[];
   posts: PostsType[];
+  notif: notifType[];
 }
 
 interface userSignInType {

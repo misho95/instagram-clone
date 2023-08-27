@@ -7,6 +7,7 @@ import {
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SettingsModal from "./settings.modal";
+import { v4 } from "uuid";
 
 interface propsType {
   type: string;
@@ -39,6 +40,13 @@ const ProfileHeader = ({ type, data }: propsType) => {
           "followers",
           currentUserObj
         );
+
+        await updateDataInServerArray("users", data.id, "notif", {
+          id: v4(),
+          title: `${user?.userName} Started following you`,
+          userId: user?.id,
+          seen: false,
+        });
       }
     }
   };
@@ -206,16 +214,16 @@ const ProfileHeader = ({ type, data }: propsType) => {
             </div>
           </div>
           <div className="hidden sm:flex justify-around">
-            <span>{data?.posts.length} posts</span>
-            <span>{data?.followers.length} followers</span>
-            <span>{data?.following.length} following</span>
+            <span>{data?.posts?.length} posts</span>
+            <span>{data?.followers?.length} followers</span>
+            <span>{data?.following?.length} following</span>
           </div>
         </div>
       </div>
       <div className="flex sm:hidden justify-around">
-        <span>{data?.posts.length} posts</span>
-        <span>{data?.followers.length} followers</span>
-        <span>{data?.following.length} following</span>
+        <span>{data?.posts?.length} posts</span>
+        <span>{data?.followers?.length} followers</span>
+        <span>{data?.following?.length} following</span>
       </div>
     </>
   );
