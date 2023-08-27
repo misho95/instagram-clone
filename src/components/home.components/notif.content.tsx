@@ -4,6 +4,7 @@ import {
   getDataFromServer,
   updateDataInServerArray,
   deleteDataInServerArray,
+  updateNotifSeenStatus,
 } from "../../utils/firebase";
 import { userType } from "../../utils/zustand";
 
@@ -17,11 +18,19 @@ const NotifContent = ({ data }: PropsType) => {
 
   const waitUserInfo = async () => {
     const user = await getDataFromServer("users", data.userId);
-    setUserInfo(user);
+    const castedUser: userType = user as userType;
+    setUserInfo(castedUser);
+  };
+
+  const updateSeenStatus = async () => {
+    if (user) {
+      updateNotifSeenStatus(user.id, data.id);
+    }
   };
 
   useEffect(() => {
     waitUserInfo();
+    updateSeenStatus();
   }, []);
 
   const followBack = async () => {

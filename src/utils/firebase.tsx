@@ -23,6 +23,7 @@ import {
 import { getStorage } from "firebase/storage";
 
 import { userType } from "./zustand";
+import { notifType } from "./zustand";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAK6pESjFKKPK6aT5Ir5L_PA6TzsRhDS40",
@@ -162,3 +163,62 @@ export const authWithFacebookPopUp = async () => {
 //     console.log(doc.data());
 //   });
 // };
+
+export const changeDataInServerWidthId = async (
+  server: string,
+  id: string,
+  arrayName: string,
+  newValue: any
+) => {
+  const itemRef = doc(db, server, id);
+  updateDoc(itemRef, { [arrayName]: newValue })
+    .then(() => {
+      console.log("Quantity updated successfully!");
+    })
+    .catch((error) => {
+      console.error("Error updating quantity:", error);
+    });
+};
+
+export const updateNotifSeenStatus = async (
+  userId: string,
+  notificationId: string
+) => {
+  var userDocRef = doc(db, "users", userId);
+
+  // Get the user's document
+  getDoc(userDocRef)
+    .then(function (userDoc) {
+      if (userDoc.exists()) {
+        // Get the "notif" array from the user's data
+        var notifArray = userDoc.data().notif;
+
+        // Find the index of the notification with the specified ID
+        var notificationIndex = notifArray.findIndex(function (
+          notification: notifType
+        ) {
+          return notification.id === notificationId;
+        });
+
+        if (notificationIndex !== -1) {
+          // Update the "seen" property of the found notification
+          notifArray[notificationIndex].seen = true;
+
+          // Update the user's document with the modified "notif" array
+          return updateDoc(userDocRef, {
+            notif: notifArray,
+          });
+        } else {
+          console.log("Notification not found.");
+        }
+      } else {
+        console.log("User not found.");
+      }
+    })
+    .then(function () {
+      console.log("Notification successfully updated!");
+    })
+    .catch(function (error) {
+      console.error("Error updating notification: ", error);
+    });
+};

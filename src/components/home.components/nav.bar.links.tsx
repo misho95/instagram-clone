@@ -20,7 +20,11 @@ const NavBarLinks = ({
 }: PropsType) => {
   const navActive = activeNav((state) => state.active);
   return (
-    <div className="w-fit h-fit relative">
+    <div
+      className={`${
+        mobile === "hidden" ? "hidden" : "flex"
+      } w-fit h-fit relative sm:flex`}
+    >
       {notif !== 0 && (
         <div className="bg-red-500 absolute -left-1 -top-1 rounded-full hidden sm:flex items-center justify-center w-4 h-4 text-xs text-white ">
           {notif}
@@ -29,9 +33,7 @@ const NavBarLinks = ({
       <Link
         onClick={onClickHandler}
         to={link}
-        className={`${
-          mobile === "hidden" ? "hidden" : "flex"
-        } gap-5 items-center sm:flex`}
+        className={`gap-5 items-center flex`}
       >
         <span className="material-symbols-outlined">{icons}</span>
         <span
