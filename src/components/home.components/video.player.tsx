@@ -2,9 +2,11 @@ import { useRef } from "react";
 
 interface PropsType {
   src: string;
+  w: string;
+  h: string;
 }
 
-const VideoPlayer = ({ src }: PropsType) => {
+const VideoPlayer = ({ src, w, h }: PropsType) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const togglePlay = () => {
@@ -21,7 +23,7 @@ const VideoPlayer = ({ src }: PropsType) => {
     <div
       onMouseEnter={togglePlay}
       onMouseLeave={togglePlay}
-      className="w-40 h-40 relative"
+      className={`${w} ${h} relative`}
     >
       <video ref={videoRef} controls={false}>
         <source src={src} type="video/mp4" />

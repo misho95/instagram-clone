@@ -5,7 +5,7 @@ interface followersType {
   userName: string;
 }
 
-interface PostsType {
+export interface PostsType {
   id: string;
   userId: string;
   link: string;
