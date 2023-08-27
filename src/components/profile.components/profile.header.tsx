@@ -76,7 +76,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user?.following) {
       const find = user.following.find((usr) => {
         if (usr.id === data?.id) {
           return usr;
@@ -214,16 +214,20 @@ const ProfileHeader = ({ type, data }: propsType) => {
             </div>
           </div>
           <div className="hidden sm:flex justify-around">
-            <span>{data?.posts?.length} posts</span>
-            <span>{data?.followers?.length} followers</span>
-            <span>{data?.following?.length} following</span>
+            <span>{data?.posts ? data?.posts?.length : 0} posts</span>
+            <span>
+              {data?.followers ? data?.followers?.length : 0} followers
+            </span>
+            <span>
+              {data?.following ? data?.following?.length : 0} following
+            </span>
           </div>
         </div>
       </div>
       <div className="flex sm:hidden justify-around">
-        <span>{data?.posts?.length} posts</span>
-        <span>{data?.followers?.length} followers</span>
-        <span>{data?.following?.length} following</span>
+        <span>{data?.posts ? data?.posts?.length : 0} posts</span>
+        <span>{data?.followers ? data?.followers?.length : 0} followers</span>
+        <span>{data?.following ? data?.following?.length : 0} following</span>
       </div>
     </>
   );
