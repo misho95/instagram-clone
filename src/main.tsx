@@ -10,12 +10,14 @@ import ProtectForms from "./protect.forms";
 import UserProfile from "./pages/user.profile";
 import EditProfile from "./pages/edit.profile";
 import ArchiveStories from "./pages/archive.stories";
+import MobileHeader from "./components/mobile.header";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <ProtectedRouter>
+        <MobileHeader />
         <HomePage />
       </ProtectedRouter>
     ),
@@ -24,6 +26,7 @@ const router = createBrowserRouter([
     path: "/:userId/",
     element: (
       <ProtectedRouter>
+        <MobileHeader />
         <UserProfile />
       </ProtectedRouter>
     ),
@@ -32,6 +35,7 @@ const router = createBrowserRouter([
     path: "/account/edit",
     element: (
       <ProtectedRouter>
+        <MobileHeader />
         <EditProfile />
       </ProtectedRouter>
     ),
@@ -40,6 +44,7 @@ const router = createBrowserRouter([
     path: "/archive/stories",
     element: (
       <ProtectedRouter>
+        <MobileHeader />
         <ArchiveStories />
       </ProtectedRouter>
     ),

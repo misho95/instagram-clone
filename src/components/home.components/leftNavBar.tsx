@@ -39,7 +39,7 @@ const LeftNavBar = () => {
   };
 
   return (
-    <div className="fixed border-t-px1 sm:border-r-px1 border-gray-200 p-6 w-full h-20 bottom-0 sm:w-fit sm:h-screen flex flex-col justify-between gap-3 bg-white z-50">
+    <div className="fixed border-t-px1 sm:border-r-px1 border-gray-200 p-6 w-full h-20 bottom-0 sm:w-fit sm:h-screen flex flex-col justify-between gap-3 bg-white z-40">
       {navActive === "search" && <SearchComponent />}
       {navActive === "notif" && <NotifComponent />}
       <div className="flex flex-row sm:flex-col justify-evenly sm:justify-start sm:gap-3">

@@ -30,16 +30,16 @@ const PostModal = ({ post, setOpenPostsModal }: PropsType) => {
         onClick={(event) => {
           event.stopPropagation();
         }}
-        className="w-1/2 bg-white flex rounded-r-md "
+        className="w-4/5 md:w-3/5 lg:w-1/2 bg-white flex flex-col md:flex-row rounded-b-md lg:rounded-r-md "
       >
-        <div className="w-2/3">
+        <div className="w-full lg:w-2/3">
           {post.type === "image" && <img src={post.link} />}
           {post.type === "video" && (
             <VideoPlayer w={"w-full"} h={"h-full"} src={post.link} />
           )}
         </div>
-        <div className="w-1/2">
-          <div className="flex items-center justify-between border-b-px1 border-gray-200 p-5">
+        <div className="w-full lg:w-1/2">
+          <div className="flex items-center justify-between border-t-px1 lg:border-t-0 lg:border-b-px1 border-gray-200 p-5">
             <div className="flex items-center gap-3">
               <img
                 src={user?.avatar}

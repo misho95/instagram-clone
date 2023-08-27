@@ -9,7 +9,7 @@ const HomePage = () => {
       <LeftNavBar />
       <div
         onClick={() => setNavActive(null)}
-        className="w-full p-0 sm:pl-pxcontentmd lg:px-pxcontent min-h-screen"
+        className="w-full pt-20 sm:pt-0 p-0 sm:pl-pxcontentmd lg:px-pxcontent min-h-screen"
       >
         Home Page
       </div>

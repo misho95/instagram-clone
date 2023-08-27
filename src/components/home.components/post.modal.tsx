@@ -9,6 +9,7 @@ import {
 } from "firebase/storage";
 import { v4 } from "uuid";
 import VideoPlayer from "./video.player";
+import LoadingComponent from "../loading.component";
 
 interface PropsType {
   setOpenPostModal: (arg: boolean) => void;
@@ -22,6 +23,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
   const [imgUrl, setImgUrl] = useState("");
   const [error, setError] = useState("");
   const [type, setType] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const activeUploadButton = () => {
     if (fileButton.current) {
@@ -51,6 +53,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
 
               setImgUrl(url);
               setPage(1);
+              setLoading(false);
             })
             .catch((error) => {
               // Handle any errors
@@ -99,12 +102,14 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
 
   useEffect(() => {
     if (file) {
+      setLoading(true);
       uploadFile();
     }
   }, [file]);
 
   return (
     <>
+      {loading && <LoadingComponent />}
       {page === 0 && (
         <div
           onClick={() => setOpenPostModal(false)}

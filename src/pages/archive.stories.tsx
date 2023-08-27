@@ -8,7 +8,7 @@ const ArchiveStories = () => {
       <LeftNavBar />
       <div
         onClick={() => setNavActive(null)}
-        className="w-full min-h-screen p-0 sm:pl-pxcontentmd lg:px-pxcontent"
+        className="w-full pt-20 sm:pt-0 min-h-screen p-0 sm:pl-pxcontentmd lg:px-pxcontent"
       >
         Archive Stories
       </div>
