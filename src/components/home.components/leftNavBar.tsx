@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import SearchComponent from "./search.component";
 import NotifComponent from "./notif.component";
 import PostModal from "./post.modal";
+import Skeleton from "@mui/material/Skeleton";
 
 const LeftNavBar = () => {
   const user = userSignIn((state) => state.user);
@@ -15,6 +16,7 @@ const LeftNavBar = () => {
   const setNavActive = activeNav((state) => state.setActive);
   const [openPostModal, setOpenPostModal] = useState(false);
   const [notifCount, setNotifCount] = useState(0);
+  const [avatarLoading, setAvatarLoading] = useState(true);
 
   useEffect(() => {
     if (user?.notif) {
@@ -30,6 +32,14 @@ const LeftNavBar = () => {
         }, 0);
         setNotifCount(countNotif);
       }
+    }
+
+    if (user) {
+      const img = new Image();
+      img.src = user.avatar;
+      img.onload = () => {
+        setAvatarLoading(false);
+      };
     }
   }, [user]);
 
@@ -120,10 +130,15 @@ const LeftNavBar = () => {
           className="flex gap-5 items-center"
         >
           <span className="material-symbols-outlined">
-            <img
-              src={user?.avatar}
-              className="w-6 h-6 rounded-full object-cover"
-            />
+            {avatarLoading && (
+              <Skeleton variant="circular" width={24} height={24} />
+            )}
+            {!avatarLoading && (
+              <img
+                src={user?.avatar}
+                className="w-6 h-6 rounded-full object-cover"
+              />
+            )}
           </span>
           <span
             className={`${navActive !== null ? "hidden" : "hidden lg:block"}`}

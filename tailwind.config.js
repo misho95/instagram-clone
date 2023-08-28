@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      width: {
+        postContainer: "332px",
+      },
       height: {
         px1: "1px",
         mobile: "450px",

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getCollectionFromServer } from "../utils/firebase";
 import { Link } from "react-router-dom";
 import { userSignIn, userType } from "../utils/zustand";
+import SearchUser from "./home.components/search.user";
 
 const MobileHeader = () => {
   const user = userSignIn((state) => state.user);
@@ -67,20 +68,13 @@ const MobileHeader = () => {
             <div className="absolute inset-y-10 bg-white shadow-sm p-5 rounded-md border-px1 border-gray-200 h-fit">
               {searchResult?.map((user: userType) => {
                 return (
-                  <Link
+                  <SearchUser
                     key={user.id}
-                    to={`/${user.userName}`}
-                    onClick={() => {
+                    user={user}
+                    set={() => {
                       setSearchResult(null), setSearch("");
                     }}
-                    className="p-2 flex items-center gap-3 hover:bg-gray-200/70 rounded-md"
-                  >
-                    <img
-                      src={user.avatar}
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                    {user.userName}
-                  </Link>
+                  />
                 );
               })}
             </div>

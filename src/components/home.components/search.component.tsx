@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getCollectionFromServer } from "../../utils/firebase";
-import { Link } from "react-router-dom";
 import { activeNav, userType } from "../../utils/zustand";
+import SearchUser from "./search.user";
 
 const SearchComponent = () => {
   const [search, setSearch] = useState("");
@@ -43,17 +43,7 @@ const SearchComponent = () => {
       </div>
       <div className="p-5 flex flex-col gap-5">
         {searchResult?.map((user: userType) => {
-          return (
-            <Link
-              key={user.id}
-              to={`/${user.userName}`}
-              onClick={() => setActiveNav(null)}
-              className="p-2 flex items-center gap-3 hover:bg-gray-200/70 rounded-md"
-            >
-              <img src={user.avatar} className="w-6 h-6 rounded-full" />
-              {user.userName}
-            </Link>
-          );
+          return <SearchUser key={user.id} user={user} set={setActiveNav} />;
         })}
       </div>
     </div>
