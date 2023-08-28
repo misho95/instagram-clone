@@ -7,9 +7,10 @@ import Skeleton from "@mui/material/Skeleton";
 
 interface PropsType {
   post: PostsType;
+  type: string;
 }
 
-const Posts = ({ post }: PropsType) => {
+const Posts = ({ post, type }: PropsType) => {
   const [openPostsModal, setOpenPostsModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -26,7 +27,11 @@ const Posts = ({ post }: PropsType) => {
   return (
     <>
       {openPostsModal && (
-        <PostModal post={post} setOpenPostsModal={setOpenPostsModal} />
+        <PostModal
+          post={post}
+          setOpenPostsModal={setOpenPostsModal}
+          type={type}
+        />
       )}
       {loading && (
         <div>

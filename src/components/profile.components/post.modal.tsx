@@ -8,10 +8,11 @@ import { useState, useEffect } from "react";
 
 interface PropsType {
   post: PostsType;
+  type: string;
   setOpenPostsModal: (arg: boolean) => void;
 }
 
-const PostModal = ({ post, setOpenPostsModal }: PropsType) => {
+const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   const [user, setUser] = useState<userType | undefined>();
   const [showPostSettings, setShowPostSettings] = useState<boolean>(false);
 
@@ -72,9 +73,11 @@ const PostModal = ({ post, setOpenPostsModal }: PropsType) => {
                   }}
                   className="bg-white p-5 flex flex-col gap-3 rounded-md"
                 >
-                  <button onClick={deletePost} className="text-red-500">
-                    Delete Post
-                  </button>
+                  {type === "owner" && (
+                    <button onClick={deletePost} className="text-red-500">
+                      Delete Post
+                    </button>
+                  )}
                   <button onClick={() => setShowPostSettings(false)}>
                     Cancel
                   </button>
