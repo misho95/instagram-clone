@@ -125,7 +125,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
             onClick={(event) => {
               event.stopPropagation();
             }}
-            className="bg-white p-5 rounded-lg w-2/3 sm:1/2 h-1/2 flex flex-col gap-5 justify-between"
+            className="bg-white p-5 rounded-lg w-2/3 sm:w-1/2 h-1/2 flex flex-col gap-5 justify-between"
           >
             <h1 className="text-center font-bold text-xl">Create new post</h1>
             <div className="flex flex-col gap-2">
