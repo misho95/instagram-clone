@@ -113,7 +113,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
       {page === 0 && (
         <div
           onClick={() => setOpenPostModal(false)}
-          className="bg-black/50 fixed top-0 left-0 w-full h-screen flex items-center justify-center"
+          className="bg-black/50 fixed top-0 left-0 w-full h-screen flex items-center justify-center z-50"
         >
           <button
             onClick={() => setOpenPostModal(false)}
