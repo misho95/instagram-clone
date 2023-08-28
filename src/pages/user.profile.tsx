@@ -32,7 +32,7 @@ const UserProfile = () => {
       setLoading(false);
       getDataFromServerANdSetIt();
     }
-  }, [userId]);
+  }, [userId, dataToSend]);
 
   if (loading) {
     return;

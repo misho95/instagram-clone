@@ -25,14 +25,14 @@ const FollowModalComponent = ({ data, type, set }: PropsType) => {
         {type === "followers" && (
           <>
             {data?.followers.map((data) => {
-              return <FollowUser key={data.id} data={data} />;
+              return <FollowUser key={data.id} data={data} set={set} />;
             })}
           </>
         )}
         {type === "followings" && (
           <>
             {data?.following.map((data) => {
-              return <FollowUser key={data.id} data={data} />;
+              return <FollowUser key={data.id} data={data} set={set} />;
             })}
           </>
         )}

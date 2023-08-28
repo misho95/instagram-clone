@@ -44,7 +44,10 @@ const MobileHeader = () => {
                     }}
                     className="p-2 flex items-center gap-3 hover:bg-gray-200/70 rounded-md"
                   >
-                    <img src={user.avatar} className="w-6 h-6 rounded-full" />
+                    <img
+                      src={user.avatar}
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
                     {user.userName}
                   </Link>
                 );
