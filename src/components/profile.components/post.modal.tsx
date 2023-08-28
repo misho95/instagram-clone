@@ -72,10 +72,7 @@ const PostModal = ({ post, setOpenPostsModal }: PropsType) => {
                   }}
                   className="bg-white p-5 flex flex-col gap-3 rounded-md"
                 >
-                  <button
-                    onClick={() => deletePost(post.id)}
-                    className="text-red-500"
-                  >
+                  <button onClick={() => deletePost} className="text-red-500">
                     Delete Post
                   </button>
                   <button onClick={() => setShowPostSettings(false)}>
