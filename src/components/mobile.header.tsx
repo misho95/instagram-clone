@@ -1,16 +1,35 @@
 import { useState, useEffect } from "react";
 import { getDataFromServerByUserName } from "../utils/firebase";
 import { Link } from "react-router-dom";
-import { userType } from "../utils/zustand";
+import { userSignIn, userType } from "../utils/zustand";
 
 const MobileHeader = () => {
+  const user = userSignIn((state) => state.user);
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState<userType[] | null>(null);
+  const [notifCount, setNotifCount] = useState(0);
 
   const waitDataFromServer = async () => {
     const data = await getDataFromServerByUserName("users", search);
     setSearchResult(data);
   };
+
+  useEffect(() => {
+    if (user?.notif) {
+      const filterUnseenNotif = user?.notif.filter((n) => {
+        if (n.seen === false) {
+          return n;
+        }
+      });
+
+      if (filterUnseenNotif) {
+        const countNotif = filterUnseenNotif.reduce((val) => {
+          return (val += 1);
+        }, 0);
+        setNotifCount(countNotif);
+      }
+    }
+  }, [user]);
 
   useEffect(() => {
     if (search !== "") {
@@ -55,9 +74,16 @@ const MobileHeader = () => {
             </div>
           )}
         </div>
-        <button>
-          <span className="material-symbols-outlined">favorite</span>
-        </button>
+        <div className="w-fit h-fit relative">
+          <button>
+            <span className="material-symbols-outlined">favorite</span>
+          </button>
+          {notifCount !== 0 && (
+            <div className="bg-red-500 absolute -left-1 -top-1 rounded-full flex items-center justify-center w-4 h-4 text-xs text-white">
+              {notifCount}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
