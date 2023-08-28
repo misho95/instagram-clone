@@ -10,9 +10,10 @@ interface PropsType {
   data: followersType;
   set: (arg: boolean) => void;
   type: string;
+  userType: string;
 }
 
-const FollowUser = ({ data, set, type }: PropsType) => {
+const FollowUser = ({ data, set, type, userType }: PropsType) => {
   const [user, setUser] = useState<userType | undefined>();
   const currentUser = userSignIn((state) => state.user);
 
@@ -66,7 +67,7 @@ const FollowUser = ({ data, set, type }: PropsType) => {
         <img src={user?.avatar} className="w-8 h-8 rounded-full object-cover" />
         {user?.userName}
       </Link>
-      {type === "followings" && (
+      {userType === "owner" && type === "followings" && (
         <button
           onClick={() => unFollowUser(user?.id)}
           className="bg-sky-500 text-white p-1 rounded-lg"

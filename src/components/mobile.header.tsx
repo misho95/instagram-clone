@@ -42,7 +42,9 @@ const MobileHeader = () => {
   return (
     <>
       <div className="fixed top-0 left-0 w-full flex justify-between items-center sm:hidden border-b-px1 border-gray-200 p-3 bg-white">
-        <h1 className="font-bold text-lg">Instagram</h1>
+        <Link to="/" className="font-bold text-lg">
+          Instagram
+        </Link>
         <div className="w-fit relative">
           <input
             type="search"

@@ -239,6 +239,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
           data={data}
           type={"followers"}
           set={setShowFollowers}
+          userType={type}
         />
       )}
       {showFollowings && (
@@ -246,6 +247,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
           data={data}
           type={"followings"}
           set={setShowFollowins}
+          userType={type}
         />
       )}
       <div className="flex sm:hidden justify-around">

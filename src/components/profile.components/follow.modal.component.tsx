@@ -5,9 +5,10 @@ interface PropsType {
   data: userType | null | undefined;
   type: string;
   set: (arg: boolean) => void;
+  userType: string;
 }
 
-const FollowModalComponent = ({ data, type, set }: PropsType) => {
+const FollowModalComponent = ({ data, type, set, userType }: PropsType) => {
   return (
     <div
       onClick={() => set(false)}
@@ -26,7 +27,13 @@ const FollowModalComponent = ({ data, type, set }: PropsType) => {
           <>
             {data?.followers.map((data) => {
               return (
-                <FollowUser key={data.id} data={data} set={set} type={type} />
+                <FollowUser
+                  key={data.id}
+                  data={data}
+                  set={set}
+                  type={type}
+                  userType={userType}
+                />
               );
             })}
           </>
@@ -35,7 +42,13 @@ const FollowModalComponent = ({ data, type, set }: PropsType) => {
           <>
             {data?.following.map((data) => {
               return (
-                <FollowUser key={data.id} data={data} set={set} type={type} />
+                <FollowUser
+                  key={data.id}
+                  data={data}
+                  set={set}
+                  type={type}
+                  userType={userType}
+                />
               );
             })}
           </>
