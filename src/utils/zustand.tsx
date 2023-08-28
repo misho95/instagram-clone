@@ -5,11 +5,24 @@ export interface followersType {
   userName: string;
 }
 
+interface postCommentsType {
+  id: string;
+  userId: string;
+  comment: string;
+}
+
+interface postLikeType {
+  id: string;
+  userId: string;
+}
+
 export interface PostsType {
   id: string;
   userId: string;
   link: string;
   type: string;
+  likes: postLikeType[];
+  comments: postCommentsType[];
 }
 
 export interface notifType {
