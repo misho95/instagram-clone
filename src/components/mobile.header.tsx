@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDataFromServerByUserName } from "../utils/firebase";
+import { getCollectionFromServer } from "../utils/firebase";
 import { Link } from "react-router-dom";
 import { userSignIn, userType } from "../utils/zustand";
 
@@ -10,8 +10,18 @@ const MobileHeader = () => {
   const [notifCount, setNotifCount] = useState(0);
 
   const waitDataFromServer = async () => {
-    const data = await getDataFromServerByUserName("users", search);
-    setSearchResult(data);
+    const data = await getCollectionFromServer("users");
+    const filterData = data.filter((d: userType) => {
+      if (
+        search !== "" &&
+        d.userName.toLowerCase().includes(search.toLowerCase())
+      ) {
+        return d;
+      } else {
+        return;
+      }
+    });
+    setSearchResult(filterData);
   };
 
   useEffect(() => {

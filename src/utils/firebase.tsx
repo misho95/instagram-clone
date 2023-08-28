@@ -77,6 +77,16 @@ export const getDataFromServer = async (server: string, id: string) => {
   }
 };
 
+export const getCollectionFromServer = async (server: string) => {
+  const querySnapshot = await getDocs(collection(db, server));
+  const dataToReturn: any = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    dataToReturn.push(doc.data());
+  });
+  return dataToReturn;
+};
+
 export const getDataFromServerByUserName = async (
   server: string,
   userName: string | undefined
