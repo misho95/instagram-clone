@@ -11,7 +11,8 @@ const FeedsPost = ({ data }: PropsType) => {
 
   const waitUserData = async () => {
     const userData = await getDataFromServer("users", data.userId);
-    setUser(userData);
+    const castedUser: userType = userData as userType;
+    setUser(castedUser);
   };
 
   useEffect(() => {

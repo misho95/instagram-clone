@@ -299,7 +299,7 @@ export const postRemoveUserLike = async (
   }
 };
 
-export const getFeedData = async (userId) => {
+export const getFeedData = async (userId: string) => {
   const docRef = doc(db, "users", userId);
   const docSnap = await getDoc(docRef);
 
