@@ -9,7 +9,7 @@ export default {
       height: {
         px1: "1px",
         mobile: "450px",
-        postComment: "550px",
+        postComment: "280px",
       },
       spacing: {
         custom: "73px",

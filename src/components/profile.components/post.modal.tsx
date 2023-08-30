@@ -16,6 +16,8 @@ import VideoPlayer from "../home.components/video.player";
 import { useState, useEffect, useRef } from "react";
 import { v4 } from "uuid";
 import PostComment from "./post.comment";
+import { AvatarGroup } from "@mui/material";
+import PostLikeUserConatiner from "./post.like.user.container";
 
 interface PropsType {
   post: PostsType;
@@ -192,6 +194,25 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
               )}
             </div>
             <div className="flex flex-col gap-1 ">
+              <div className="w-full p-2">
+                <AvatarGroup
+                  sx={{
+                    width: 200,
+                    justifyContent: "start",
+                    "& .MuiAvatar-root": {
+                      width: 30,
+                      height: 30,
+                      fontSize: 12,
+                    },
+                  }}
+                  max={3}
+                  total={post.likes.length}
+                >
+                  {post.likes.map((user) => {
+                    return <PostLikeUserConatiner id={user.userId} />;
+                  })}
+                </AvatarGroup>
+              </div>
               <div className="flex gap-3 items-center p-2 h-fit w-full">
                 <button
                   onClick={ifUserLikes ? unLikePost : likePost}
@@ -217,6 +238,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                   <span className="material-symbols-outlined">send</span>
                 </button>
               </div>
+
               <div className="relative w-full h-fit border-t-px1 border-gray-200 p-2">
                 <textarea
                   value={commentText}
