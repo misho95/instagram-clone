@@ -2,7 +2,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./firebase";
 
-import { userType } from "./zustand";
+import { userType, postCommentsType } from "./zustand";
 
 export const checkUserOrRedirect = async (
   setUser: (arg: userType | null) => void,
@@ -43,7 +43,7 @@ export const checkUserOrRedirectForUserForm = async (
 export const getRealTimeUpdateAndSetIt = async (
   server: string,
   id: string,
-  setDataToSend: (arg: userType | undefined) => void
+  setDataToSend: (arg: any) => void
 ) => {
   onSnapshot(doc(db, server, id), (doc) => {
     const userData = doc.data() as userType | undefined;

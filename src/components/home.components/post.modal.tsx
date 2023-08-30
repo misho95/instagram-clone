@@ -1,6 +1,10 @@
 import { useRef, useState, useEffect } from "react";
 import { userSignIn } from "../../utils/zustand";
-import { storage, updateDataInServerArray } from "../../utils/firebase";
+import {
+  storage,
+  updateDataInServerArray,
+  addNewDataInServerStorage,
+} from "../../utils/firebase";
 import {
   ref,
   uploadBytes,
@@ -70,16 +74,25 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
   const publishPost = async () => {
     if (user) {
       const date = new Date();
+      const ID = v4();
+      const postCommentsId = v4();
       await updateDataInServerArray("users", user.id, "posts", {
-        id: v4(),
+        id: ID,
         userId: user.id,
         link: imgUrl,
         type,
         date,
+        commentsRoomId: postCommentsId,
       });
       setFile(null);
       setPage(0);
       setOpenPostModal(false);
+
+      await addNewDataInServerStorage("postComments", postCommentsId, {
+        id: postCommentsId,
+        postId: ID,
+        comments: [],
+      });
     }
   };
 

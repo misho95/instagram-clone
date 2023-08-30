@@ -9,6 +9,7 @@ export default {
       height: {
         px1: "1px",
         mobile: "450px",
+        postComment: "550px",
       },
       spacing: {
         custom: "73px",
@@ -19,6 +20,12 @@ export default {
       },
       borderWidth: {
         px1: "1px",
+      },
+      minHeight: {
+        h60: "60rem",
+        h40: "40rem",
+        h30: "30rem",
+        h20: "20rem",
       },
     },
   },

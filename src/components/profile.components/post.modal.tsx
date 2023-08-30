@@ -1,10 +1,19 @@
-import { PostsType, userType } from "../../utils/zustand";
+import {
+  PostsType,
+  userType,
+  postCommentsType,
+  userSignIn,
+} from "../../utils/zustand";
 import {
   getDataFromServer,
   deleteDataInServerArray,
+  updateDataInServerArray,
 } from "../../utils/firebase";
+import { getRealTimeUpdateAndSetIt } from "../../utils/helper.script";
 import VideoPlayer from "../home.components/video.player";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { v4 } from "uuid";
+import PostComment from "./post.comment";
 
 interface PropsType {
   post: PostsType;
@@ -16,6 +25,9 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   const [user, setUser] = useState<userType | undefined>();
   const [showPostSettings, setShowPostSettings] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>("");
+  const [comments, setComments] = useState<postCommentsType | null>(null);
+  const currentUser = userSignIn((state) => state.user);
+  const chatContainer = useRef<HTMLDivElement | null>(null);
 
   const waitFetch = async () => {
     const userData = await getDataFromServer("users", post.userId);
@@ -30,30 +42,61 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
     }
   };
 
+  const getCommentsByPostId = async () => {
+    await getRealTimeUpdateAndSetIt(
+      "postComments",
+      post.commentsRoomId,
+      setComments
+    );
+  };
+
+  const submitNewComment = async () => {
+    if (currentUser) {
+      await updateDataInServerArray(
+        "postComments",
+        post.commentsRoomId,
+        "comments",
+        { id: v4(), user: currentUser.id, comment: commentText }
+      );
+      setCommentText("");
+    }
+  };
+
+  const scrollToBottom = () => {
+    if (chatContainer.current) {
+      chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
+    }
+  };
+
   useEffect(() => {
     waitFetch();
+    getCommentsByPostId();
   }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [comments]);
 
   return (
     <div
       onClick={() => setOpenPostsModal(false)}
-      className="w-full h-screen fixed top-0 left-0 bg-black/50 z-50 flex justify-center items-center"
+      className="w-full h-screen fixed top-0 left-0 bg-black/50 z-50 flex justify-center items-center p-3"
     >
       <div
         onClick={(event) => {
           event.stopPropagation();
         }}
-        className="w-4/5 md:w-3/5 lg:w-1/2 bg-white flex flex-col md:flex-row rounded-b-md lg:rounded-r-md h-4/5"
+        className="w-4/5 md:w-3/5 lg:w-1/2 bg-white flex flex-col md:flex-row rounded-b-md lg:rounded-r-md h-11/12 sm:h-4/5"
       >
-        <div className="w-full lg:w-2/3 flex justify-center items-center p-3 h-full">
+        <div className="w-full lg:w-2/3 flex justify-center items-center p-3 sm:h-full">
           {post.type === "image" && (
-            <img src={post.link} className="max-h-full" />
+            <img src={post.link} className="w-full sm:w-fit sm:max-h-full" />
           )}
           {post.type === "video" && (
             <VideoPlayer w={"w-full"} h={"h-full"} src={post.link} />
           )}
         </div>
-        <div className="w-full lg:w-1/2 h-full flex flex-col justify-between border-l-px1 border-gray-200">
+        <div className="w-full lg:w-1/2 sm:h-full flex flex-col justify-between border-l-px1 border-gray-200">
           <div className="flex items-center justify-between border-t-px1 lg:border-t-0 lg:border-b-px1 border-gray-200 p-5 relative">
             <div className="flex items-center gap-3">
               <img
@@ -88,9 +131,12 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
               </div>
             )}
           </div>
-          <div className="h-full  flex flex-col justify-between">
-            <div className="h-full">
-              {!post?.comments && (
+          <div className="w-full h-80 sm:h-full flex flex-col justify-between">
+            <div
+              className="h-full sm:h-postComment overflow-y-auto"
+              ref={chatContainer}
+            >
+              {comments && !comments.comments && (
                 <div className="flex justify-center items-center h-full">
                   <span>
                     <h1 className="text-xl font-bold">No comments yet.</h1>
@@ -98,15 +144,16 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                   </span>
                 </div>
               )}
-              {post?.comments && (
+              {comments && comments.comments && (
                 <div className="flex flex-col gap-3 w-full p-2">
-                  {post?.comments.map((com) => {
-                    return <div className="w-full">{com.comment}</div>;
-                  })}
+                  {comments &&
+                    comments.comments.map((com) => {
+                      return <PostComment key={com.id} data={com} />;
+                    })}
                 </div>
               )}
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 ">
               <div className="flex gap-3 items-center p-2 h-fit w-full">
                 <button className="bg-red-500 flex w-fit h-fit p-1 rounded-full justify-center items-center text-white">
                   <span className="material-symbols-outlined">favorite</span>
@@ -126,10 +173,11 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                   className="w-full h-10 focus:outline-none resize-none pr-16"
                 />
                 <button
+                  onClick={submitNewComment}
                   disabled={commentText === "" ? true : false}
                   className={`${
                     commentText === "" ? "text-sky-100" : "text-sky-500"
-                  } absolute right-10`}
+                  } absolute right-10 top-1/2 -translate-y-1/2 sm:top-3 sm:-translate-y-0`}
                 >
                   Post
                 </button>
