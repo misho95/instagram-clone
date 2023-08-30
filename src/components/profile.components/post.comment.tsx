@@ -23,7 +23,7 @@ const PostComment = ({ data }: PropsType) => {
     <div className="w-full">
       <div className="flex gap-3 items-center">
         <img src={user?.avatar} className="w-6 h-6 rounded-full object-cover" />
-        <span>{user?.userName}</span>
+        <span className="text-sm">{user?.userName}</span>
       </div>
       <div className="p-3">{data.comment}</div>
     </div>
