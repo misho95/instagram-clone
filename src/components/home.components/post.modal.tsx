@@ -81,7 +81,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
         userId: user.id,
         link: imgUrl,
         type,
-        date,
+        date: date.toString(),
         commentsRoomId: postCommentsId,
         likes: [],
       });

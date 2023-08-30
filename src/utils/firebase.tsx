@@ -298,3 +298,37 @@ export const postRemoveUserLike = async (
     updateDoc(likeRef, { posts: updatedData });
   }
 };
+
+export const getFeedData = async (userId) => {
+  const docRef = doc(db, "users", userId);
+  const docSnap = await getDoc(docRef);
+
+  let feed: PostsType[] = [];
+
+  if (docSnap.exists()) {
+    feed.push(...docSnap.data().posts);
+
+    // docSnap.data().following.forEach(async (user) => {
+    //   const docRef = doc(db, "users", user.id);
+    //   const docSnap = await getDoc(docRef);
+    //   if (docSnap.exists()) {
+    //     feed.push(...docSnap.data().posts);
+    //   }
+    // });
+    for (const user of docSnap.data().following) {
+      const userDocRef = doc(db, "users", user.id);
+      const userDocSnap = await getDoc(userDocRef);
+      if (userDocSnap.exists()) {
+        feed.push(...userDocSnap.data().posts);
+      }
+    }
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
+
+  const sortByDate = feed.sort((a, b) => {
+    return Date.parse(b.date) - Date.parse(a.date);
+  });
+  return sortByDate;
+};

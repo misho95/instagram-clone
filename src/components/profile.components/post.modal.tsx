@@ -209,7 +209,9 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                   total={post.likes.length}
                 >
                   {post.likes.map((user) => {
-                    return <PostLikeUserConatiner id={user.userId} />;
+                    return (
+                      <PostLikeUserConatiner key={user.id} id={user.userId} />
+                    );
                   })}
                 </AvatarGroup>
               </div>

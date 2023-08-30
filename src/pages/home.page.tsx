@@ -1,3 +1,4 @@
+import FeedsPage from "../components/feeds.components/feeds.page";
 import LeftNavBar from "../components/home.components/leftNavBar";
 import { activeNav } from "../utils/zustand";
 
@@ -11,7 +12,7 @@ const HomePage = () => {
         onClick={() => setNavActive(null)}
         className="w-full pt-20 sm:pt-0 p-0 sm:pl-pxcontentmd lg:px-pxcontent min-h-screen"
       >
-        Home Page
+        <FeedsPage />
       </div>
     </div>
   );

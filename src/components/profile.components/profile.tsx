@@ -12,7 +12,7 @@ const Profile = ({ type, data }: propsType) => {
   return (
     <div
       onClick={() => setNavActive(null)}
-      className="w-full pt-10 sm:pt-0 p-0 sm:pl-pxcontentmd lg:px-pxcontent flex flex-col gap-10"
+      className="w-full py-10 sm:pt-0 p-0 sm:pl-pxcontentmd lg:px-pxcontent flex flex-col gap-10"
     >
       <ProfileHeader type={type} data={data} />
       <ProfilePosts data={data} type={type} />

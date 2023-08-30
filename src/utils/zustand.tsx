@@ -27,6 +27,7 @@ export interface PostsType {
   userId: string;
   link: string;
   type: string;
+  date: string;
   likes: postLikeType[];
   commentsRoomId: string;
 }
