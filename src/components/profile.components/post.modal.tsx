@@ -16,7 +16,6 @@ import VideoPlayer from "../home.components/video.player";
 import { useState, useEffect, useRef } from "react";
 import { v4 } from "uuid";
 import PostComment from "./post.comment";
-import Posts from "./posts";
 
 interface PropsType {
   post: PostsType;
