@@ -241,7 +241,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                 </button>
               </div>
 
-              <div className="relative w-full h-fit border-t-px1 border-gray-200 p-2">
+              <div className="relative w-full h-fit border-t-px1 border-gray-200 p-2 z-30">
                 <textarea
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
@@ -253,7 +253,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                   disabled={commentText === "" ? true : false}
                   className={`${
                     commentText === "" ? "text-sky-100" : "text-sky-500"
-                  } absolute right-10 top-1/2 -translate-y-1/2 sm:top-3 sm:-translate-y-0`}
+                  } absolute right-10 top-1/2 -translate-y-1/2 sm:top-3 sm:-translate-y-0 z-40`}
                 >
                   Post
                 </button>

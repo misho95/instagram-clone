@@ -27,9 +27,11 @@ const FeedsPage = () => {
 
   return (
     <div className="flex flex-col items-center mt-5 mb-20 sm:my-20 gap-10">
-      {feed?.map((feed) => {
-        return <FeedsPost key={feed.id} data={feed} />;
-      })}
+      {feed &&
+        feed?.map((feed) => {
+          return <FeedsPost key={feed.id} data={feed} />;
+        })}
+      {!feed && <div>No Feed Data</div>}
     </div>
   );
 };
