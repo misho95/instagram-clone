@@ -16,6 +16,7 @@ import VideoPlayer from "../home.components/video.player";
 import { useState, useEffect, useRef } from "react";
 import { v4 } from "uuid";
 import PostComment from "./post.comment";
+import Posts from "./posts";
 
 interface PropsType {
   post: PostsType;
@@ -197,9 +198,18 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                   onClick={ifUserLikes ? unLikePost : likePost}
                   className={`${
                     ifUserLikes ? "bg-red-500 text-white" : "text-black"
-                  } flex w-fit h-fit p-1 rounded-full justify-center items-center `}
+                  } flex w-fit h-fit p-1 rounded-full justify-center items-center relative`}
                 >
                   <span className="material-symbols-outlined">favorite</span>
+                  <span
+                    className={`${
+                      ifUserLikes
+                        ? "bg-black text-white"
+                        : "bg-red-500 text-white"
+                    } absolute  rounded-full flex text-xs  w-4 h-4 justify-center items-center top-0 right-0`}
+                  >
+                    {post && post.likes.length}
+                  </span>
                 </button>
                 <button className="flex w-fit h-fit p-1 rounded-full justify-center items-center">
                   <span className="material-symbols-outlined">chat</span>
