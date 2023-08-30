@@ -83,6 +83,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
         type,
         date,
         commentsRoomId: postCommentsId,
+        likes: [],
       });
       setFile(null);
       setPage(0);

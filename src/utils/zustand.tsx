@@ -17,7 +17,7 @@ export interface postCommentsType {
   comments: postCommentsTypeComment[];
 }
 
-interface postLikeType {
+export interface postLikeType {
   id: string;
   userId: string;
 }

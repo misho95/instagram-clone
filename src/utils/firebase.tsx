@@ -22,7 +22,7 @@ import {
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-import { userType } from "./zustand";
+import { PostsType, postLikeType, userType } from "./zustand";
 import { notifType } from "./zustand";
 
 const firebaseConfig = {
@@ -231,4 +231,70 @@ export const updateNotifSeenStatus = async (
     .catch(function (error) {
       console.error("Error updating notification: ", error);
     });
+};
+
+export const postAddUserLike = async (
+  userId: string,
+  postId: string,
+  obj: any
+) => {
+  const likeRef = doc(db, "users", userId);
+
+  const docSnap = await getDoc(likeRef);
+
+  const userData = docSnap.data();
+
+  if (userData) {
+    const findPost = userData.posts.find((post: PostsType) => {
+      if (post.id === postId) return post;
+    });
+
+    findPost.likes.push(obj);
+
+    const update = userData.posts.map((data: PostsType) => {
+      if (data.id === postId) {
+        return findPost;
+      } else {
+        return data;
+      }
+    });
+
+    updateDoc(likeRef, { posts: update });
+  }
+};
+
+export const postRemoveUserLike = async (
+  userId: string,
+  postId: string,
+  currentUserId: string
+) => {
+  const likeRef = doc(db, "users", userId);
+
+  const docSnap = await getDoc(likeRef);
+
+  const userData = docSnap.data();
+
+  if (userData) {
+    const findPost = userData.posts.find((post: PostsType) => {
+      if (post.id === postId) return post;
+    });
+
+    const updated = findPost.likes.filter((p: postLikeType) => {
+      if (p.userId !== currentUserId) {
+        return p;
+      }
+    });
+
+    findPost.likes = updated;
+
+    const updatedData = userData.posts.map((post: PostsType) => {
+      if (post.id === postId) {
+        return findPost;
+      } else {
+        return post;
+      }
+    });
+
+    updateDoc(likeRef, { posts: updatedData });
+  }
 };

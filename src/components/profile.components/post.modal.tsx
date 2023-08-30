@@ -8,6 +8,8 @@ import {
   getDataFromServer,
   deleteDataInServerArray,
   updateDataInServerArray,
+  postAddUserLike,
+  postRemoveUserLike,
 } from "../../utils/firebase";
 import { getRealTimeUpdateAndSetIt } from "../../utils/helper.script";
 import VideoPlayer from "../home.components/video.player";
@@ -28,6 +30,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   const [comments, setComments] = useState<postCommentsType | null>(null);
   const currentUser = userSignIn((state) => state.user);
   const chatContainer = useRef<HTMLDivElement | null>(null);
+  const [ifUserLikes, setIfUserLikes] = useState(false);
 
   const waitFetch = async () => {
     const userData = await getDataFromServer("users", post.userId);
@@ -62,6 +65,37 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
     }
   };
 
+  const checkIfUserLikes = () => {
+    if (post.likes && currentUser) {
+      const findUserInLikes = post.likes.find((l) => {
+        if (l.userId === currentUser.id) {
+          return l;
+        }
+      });
+
+      if (findUserInLikes) {
+        setIfUserLikes(true);
+      } else {
+        setIfUserLikes(false);
+      }
+    }
+  };
+
+  const likePost = async () => {
+    if (currentUser) {
+      await postAddUserLike(post.userId, post.id, {
+        id: v4(),
+        userId: currentUser.id,
+      });
+    }
+  };
+
+  const unLikePost = async () => {
+    if (currentUser) {
+      await postRemoveUserLike(post.userId, post.id, currentUser.id);
+    }
+  };
+
   const scrollToBottom = () => {
     if (chatContainer.current) {
       chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
@@ -76,6 +110,10 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   useEffect(() => {
     scrollToBottom();
   }, [comments]);
+
+  useEffect(() => {
+    checkIfUserLikes();
+  }, [post, currentUser, ifUserLikes]);
 
   return (
     <div
@@ -155,7 +193,12 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
             </div>
             <div className="flex flex-col gap-1 ">
               <div className="flex gap-3 items-center p-2 h-fit w-full">
-                <button className="bg-red-500 flex w-fit h-fit p-1 rounded-full justify-center items-center text-white">
+                <button
+                  onClick={ifUserLikes ? unLikePost : likePost}
+                  className={`${
+                    ifUserLikes ? "bg-red-500 text-white" : "text-black"
+                  } flex w-fit h-fit p-1 rounded-full justify-center items-center `}
+                >
                   <span className="material-symbols-outlined">favorite</span>
                 </button>
                 <button className="flex w-fit h-fit p-1 rounded-full justify-center items-center">
