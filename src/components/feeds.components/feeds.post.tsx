@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getDataFromServer } from "../../utils/firebase";
 import { PostsType, userSignIn, userType } from "../../utils/zustand";
 import PostModal from "../profile.components/post.modal";
+import { Skeleton } from "@mui/material";
 
 interface PropsType {
   data: PostsType;
@@ -12,11 +13,13 @@ const FeedsPost = ({ data }: PropsType) => {
   const [user, setUser] = useState<userType | null>(null);
   const [openPostsModal, setOpenPostsModal] = useState(false);
   const [type, setType] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
 
   const waitUserData = async () => {
     const userData = await getDataFromServer("users", data.userId);
     const castedUser: userType = userData as userType;
     setUser(castedUser);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -27,6 +30,18 @@ const FeedsPost = ({ data }: PropsType) => {
       setType("user");
     }
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-3">
+        <div className="flex gap-3">
+          <Skeleton variant="circular" width={40} height={40} />
+          <Skeleton variant="text" sx={{ fontSize: "1rem", width: 300 }} />
+        </div>
+        <Skeleton variant="rounded" width={353} height={140} />
+      </div>
+    );
+  }
 
   return (
     <>
