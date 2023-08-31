@@ -144,7 +144,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   return (
     <div
       onClick={() => setOpenPostsModal(false)}
-      className="w-full h-screen fixed top-0 left-0 bg-black/50 z-50 flex justify-center items-center p-3"
+      className="w-full min-h-screen fixed top-0 left-0 bg-black/50 z-50 flex justify-center items-center p-3"
     >
       <div
         onClick={(event) => {
