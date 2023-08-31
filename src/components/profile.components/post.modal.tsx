@@ -144,13 +144,13 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   return (
     <div
       onClick={() => setOpenPostsModal(false)}
-      className="w-full min-h-screen fixed top-0 left-0 bg-black/50 z-50 flex justify-center items-center p-3"
+      className="w-full min-h-screen absolute top-0 left-0 bg-black/50 z-50 flex justify-center items-center py-10 overflow-y-auto"
     >
       <div
         onClick={(event) => {
           event.stopPropagation();
         }}
-        className="w-4/5 md:w-3/5 lg:w-1/2 bg-white flex flex-col md:flex-row rounded-b-md lg:rounded-r-md h-11/12 sm:h-4/5"
+        className="w-4/5 md:w-3/5 lg:w-1/2 bg-white flex flex-col md:flex-row rounded-b-md lg:rounded-r-md h-11/12 sm:h-4/5 "
       >
         <div className="w-full lg:w-2/3 flex justify-center items-center p-3 sm:h-full">
           {post.type === "image" && (
@@ -160,7 +160,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
             <VideoPlayer w={"w-full"} h={"h-full"} src={post.link} />
           )}
         </div>
-        <div className="w-full lg:w-1/2 sm:h-full flex flex-col justify-between border-l-px1 border-gray-200">
+        <div className="w-full lg:w-1/2 h-full flex flex-col justify-between border-l-px1 border-gray-200 ">
           <div className="flex items-center justify-between border-t-px1 lg:border-t-0 lg:border-b-px1 border-gray-200 p-5 relative">
             <div className="flex items-center gap-3">
               <img
@@ -197,7 +197,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
           </div>
           <div className="w-full h-80 sm:h-full flex flex-col justify-between">
             <div
-              className="h-full sm:h-postComment overflow-y-auto"
+              className="h-full md:h-postComment lg:h-mobile overflow-y-auto"
               ref={chatContainer}
             >
               {comments && !comments.comments && (
