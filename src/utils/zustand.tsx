@@ -30,6 +30,7 @@ export interface PostsType {
   date: string;
   likes: postLikeType[];
   commentsRoomId: string;
+  likesId: string;
 }
 
 export interface notifType {

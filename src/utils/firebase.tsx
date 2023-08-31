@@ -19,6 +19,7 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  deleteDoc,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -63,6 +64,10 @@ export const addNewDataInServerStorage = async (
   obj: any
 ) => {
   await setDoc(doc(db, server, id), obj);
+};
+
+export const deleteDataInServer = async (server: string, id: string) => {
+  await deleteDoc(doc(db, server, id));
 };
 
 export const getDataFromServer = async (server: string, id: string) => {
@@ -299,7 +304,7 @@ export const postRemoveUserLike = async (
   }
 };
 
-export const getFeedData = async (userId: string) => {
+export const getFeedData = async (userId: string, set: (arg: any) => void) => {
   const docRef = doc(db, "users", userId);
   const docSnap = await getDoc(docRef);
 
@@ -308,13 +313,6 @@ export const getFeedData = async (userId: string) => {
   if (docSnap.exists()) {
     feed.push(...docSnap.data().posts);
 
-    // docSnap.data().following.forEach(async (user) => {
-    //   const docRef = doc(db, "users", user.id);
-    //   const docSnap = await getDoc(docRef);
-    //   if (docSnap.exists()) {
-    //     feed.push(...docSnap.data().posts);
-    //   }
-    // });
     for (const user of docSnap.data().following) {
       const userDocRef = doc(db, "users", user.id);
       const userDocSnap = await getDoc(userDocRef);
@@ -330,5 +328,5 @@ export const getFeedData = async (userId: string) => {
   const sortByDate = feed.sort((a, b) => {
     return Date.parse(b.date) - Date.parse(a.date);
   });
-  return sortByDate;
+  set(sortByDate);
 };

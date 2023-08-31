@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { storage, changeDataInServerWidthId } from "../utils/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import LoadingComponent from "../components/loading.component";
+import { deleteImgInStorage } from "../utils/helper.script";
 
 const EditProfile = () => {
   const user = userSignIn((state) => state.user);
@@ -21,6 +22,7 @@ const EditProfile = () => {
 
   const uploadFile = async () => {
     if (file && user) {
+      await deleteImgInStorage(user.avatar);
       const sliceType = file.type.split("/");
       const getType = sliceType[0];
       if (getType === "image") {

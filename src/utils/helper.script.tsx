@@ -1,8 +1,9 @@
 import { doc, onSnapshot } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./firebase";
-
+import { ref, deleteObject } from "firebase/storage";
 import { userType } from "./zustand";
+import { storage } from "./firebase";
 
 export const checkUserOrRedirect = async (
   setUser: (arg: userType | null) => void,
@@ -48,5 +49,14 @@ export const getRealTimeUpdateAndSetIt = async (
   onSnapshot(doc(db, server, id), (doc) => {
     const userData = doc.data() as userType | undefined;
     setDataToSend(userData);
+  });
+};
+
+export const deleteImgInStorage = async (imgUrl: string) => {
+  const desertRef = ref(storage, imgUrl);
+  // Delete the file
+  deleteObject(desertRef).catch((error) => {
+    // Uh-oh, an error occurred!
+    console.log(error);
   });
 };

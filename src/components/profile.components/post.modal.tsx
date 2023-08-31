@@ -8,10 +8,12 @@ import {
   getDataFromServer,
   deleteDataInServerArray,
   updateDataInServerArray,
-  postAddUserLike,
-  postRemoveUserLike,
+  deleteDataInServer,
 } from "../../utils/firebase";
-import { getRealTimeUpdateAndSetIt } from "../../utils/helper.script";
+import {
+  getRealTimeUpdateAndSetIt,
+  deleteImgInStorage,
+} from "../../utils/helper.script";
 import VideoPlayer from "../home.components/video.player";
 import { useState, useEffect, useRef } from "react";
 import { v4 } from "uuid";
@@ -25,6 +27,17 @@ interface PropsType {
   setOpenPostsModal: (arg: boolean) => void;
 }
 
+interface userLikesType {
+  postId: string;
+  userId: string;
+}
+
+interface likesDataType {
+  id: string;
+  postId: string;
+  userLikes: userLikesType[];
+}
+
 const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   const [user, setUser] = useState<userType | undefined>();
   const [showPostSettings, setShowPostSettings] = useState<boolean>(false);
@@ -33,6 +46,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   const currentUser = userSignIn((state) => state.user);
   const chatContainer = useRef<HTMLDivElement | null>(null);
   const [ifUserLikes, setIfUserLikes] = useState(false);
+  const [likesData, setLikesData] = useState<likesDataType | null>(null);
 
   const waitFetch = async () => {
     const userData = await getDataFromServer("users", post.userId);
@@ -43,6 +57,9 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   const deletePost = async () => {
     if (user) {
       await deleteDataInServerArray("users", user?.id, "posts", post);
+      await deleteDataInServer("likes", post.likesId);
+      await deleteDataInServer("postComments", post.commentsRoomId);
+      await deleteImgInStorage(post.link);
       setOpenPostsModal(false);
     }
   };
@@ -67,14 +84,13 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
     }
   };
 
-  const checkIfUserLikes = () => {
-    if (post.likes && currentUser) {
-      const findUserInLikes = post.likes.find((l) => {
+  const checkIfUserLikes = async () => {
+    if (likesData && currentUser) {
+      const findUserInLikes = likesData.userLikes.find((l) => {
         if (l.userId === currentUser.id) {
           return l;
         }
       });
-
       if (findUserInLikes) {
         setIfUserLikes(true);
       } else {
@@ -83,10 +99,14 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
     }
   };
 
+  const waitLikesDataAndSetIt = async () => {
+    await getRealTimeUpdateAndSetIt("likes", post.likesId, setLikesData);
+  };
+
   const likePost = async () => {
     if (currentUser) {
-      await postAddUserLike(post.userId, post.id, {
-        id: v4(),
+      await updateDataInServerArray("likes", post.likesId, "userLikes", {
+        postId: post.id,
         userId: currentUser.id,
       });
     }
@@ -94,7 +114,10 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
 
   const unLikePost = async () => {
     if (currentUser) {
-      await postRemoveUserLike(post.userId, post.id, currentUser.id);
+      await deleteDataInServerArray("likes", post.likesId, "userLikes", {
+        postId: post.id,
+        userId: currentUser.id,
+      });
     }
   };
 
@@ -107,6 +130,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   useEffect(() => {
     waitFetch();
     getCommentsByPostId();
+    waitLikesDataAndSetIt();
   }, []);
 
   useEffect(() => {
@@ -115,7 +139,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
 
   useEffect(() => {
     checkIfUserLikes();
-  }, [post, currentUser, ifUserLikes]);
+  }, [likesData, ifUserLikes]);
 
   return (
     <div
@@ -206,13 +230,17 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                     },
                   }}
                   max={3}
-                  total={post.likes.length}
+                  total={likesData ? likesData.userLikes.length : 0}
                 >
-                  {post.likes.map((user) => {
-                    return (
-                      <PostLikeUserConatiner key={user.id} id={user.userId} />
-                    );
-                  })}
+                  {likesData &&
+                    likesData.userLikes.map((user) => {
+                      return (
+                        <PostLikeUserConatiner
+                          key={user.userId}
+                          id={user.userId}
+                        />
+                      );
+                    })}
                 </AvatarGroup>
               </div>
               <div className="flex gap-3 items-center p-2 h-fit w-full">
@@ -230,7 +258,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                         : "bg-red-500 text-white"
                     } absolute  rounded-full flex text-xs  w-4 h-4 justify-center items-center top-0 right-0`}
                   >
-                    {post && post.likes.length}
+                    {post && likesData?.userLikes.length}
                   </span>
                 </button>
                 <button className="flex w-fit h-fit p-1 rounded-full justify-center items-center">

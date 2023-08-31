@@ -9,8 +9,7 @@ const FeedsPage = () => {
 
   const waitFeed = async () => {
     if (currentUser) {
-      const getFeed = await getFeedData(currentUser.id);
-      setFeed(getFeed);
+      await getFeedData(currentUser.id, setFeed);
     }
   };
 
@@ -28,7 +27,7 @@ const FeedsPage = () => {
   return (
     <div className="flex flex-col items-center mt-5 mb-20 sm:my-20 gap-10">
       {feed &&
-        feed?.map((feed) => {
+        feed?.map((feed: PostsType) => {
           return <FeedsPost key={feed.id} data={feed} />;
         })}
       {!feed && <div>No Feed Data</div>}

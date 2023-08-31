@@ -75,24 +75,31 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
     if (user) {
       const date = new Date();
       const ID = v4();
-      const postCommentsId = v4();
+      const sharedId = v4();
       await updateDataInServerArray("users", user.id, "posts", {
         id: ID,
         userId: user.id,
         link: imgUrl,
         type,
         date: date.toString(),
-        commentsRoomId: postCommentsId,
+        commentsRoomId: sharedId,
+        likesId: sharedId,
         likes: [],
       });
       setFile(null);
       setPage(0);
       setOpenPostModal(false);
 
-      await addNewDataInServerStorage("postComments", postCommentsId, {
-        id: postCommentsId,
+      await addNewDataInServerStorage("postComments", sharedId, {
+        id: sharedId,
         postId: ID,
         comments: [],
+      });
+
+      await addNewDataInServerStorage("likes", sharedId, {
+        id: sharedId,
+        postId: ID,
+        userLikes: [],
       });
     }
   };
