@@ -18,7 +18,7 @@ import VideoPlayer from "../home.components/video.player";
 import { useState, useEffect, useRef } from "react";
 import { v4 } from "uuid";
 import PostComment from "./post.comment";
-import { AvatarGroup } from "@mui/material";
+import { Avatar, AvatarGroup } from "@mui/material";
 import PostLikeUserConatiner from "./post.like.user.container";
 
 interface PropsType {
@@ -152,23 +152,24 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
         }}
         className="w-4/5 md:w-3/5 lg:w-1/2 bg-white flex flex-col md:flex-row rounded-b-md lg:rounded-r-md h-fit sm:h-4/5 "
       >
-        <div className="w-full lg:w-2/3 flex justify-center items-center p-3 sm:h-full">
+        <div className="w-full lg:w-2/3 flex justify-center items-center p-3 h-full">
           {post.type === "image" && (
             <img
               src={post.link}
-              className="w-full sm:w-fit h-60 sm:max-h-full object-cover"
+              className="w-full sm:w-11/12 h-60 sm:h-full sm:max-h-full object-cover"
             />
           )}
           {post.type === "video" && (
             <VideoPlayer w={"w-full"} h={"h-full"} src={post.link} />
           )}
         </div>
-        <div className="w-full lg:w-1/2 h-96 flex flex-col sm:justify-between sm:border-l-px1 border-gray-200">
+        <div className="w-full lg:w-1/2 h-96 sm:h-full flex flex-col sm:justify-between sm:border-l-px1 border-gray-200 ">
           <div className="flex items-center justify-between border-t-px1 lg:border-t-0 lg:border-b-px1 border-gray-200 p-5 relative">
             <div className="flex items-center gap-3">
-              <img
+              <Avatar
+                alt={user?.userName}
                 src={user?.avatar}
-                className="w-8 h-8 rounded-full object-cover"
+                sx={{ width: 28, height: 28 }}
               />
               <span> {user?.userName}</span>
             </div>

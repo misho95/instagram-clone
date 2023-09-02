@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import SettingsModal from "./settings.modal";
 import { v4 } from "uuid";
 import FollowModalComponent from "./follow.modal.component";
+import { Avatar } from "@mui/material";
 
 interface propsType {
   type: string;
@@ -98,10 +99,18 @@ const ProfileHeader = ({ type, data }: propsType) => {
         <SettingsModal setOpenSettingsModal={setOpenSettingsModal} />
       )}
       <div className="flex w-full items-center justify-center gap-10 pt-10">
-        <div>
-          <img
+        <div className="hidden sm:block">
+          <Avatar
+            alt={data?.userName}
             src={data?.avatar}
-            className="w-20 sm:w-40 h-20 sm:h-40 rounded-full object-cover"
+            sx={{ width: 160, height: 160, fontSize: 40 }}
+          />
+        </div>
+        <div className="block sm:hidden">
+          <Avatar
+            alt={data?.userName}
+            src={data?.avatar}
+            sx={{ width: 80, height: 80, fontSize: 30 }}
           />
         </div>
         <div className="w-fit">

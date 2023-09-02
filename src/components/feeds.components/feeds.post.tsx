@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getDataFromServer } from "../../utils/firebase";
 import { PostsType, userSignIn, userType } from "../../utils/zustand";
 import PostModal from "../profile.components/post.modal";
-import { Skeleton } from "@mui/material";
+import { Avatar, Skeleton } from "@mui/material";
 
 interface PropsType {
   data: PostsType;
@@ -55,9 +55,10 @@ const FeedsPost = ({ data }: PropsType) => {
       <div className="flex flex-col w-80 sm:w-96 gap-5">
         <div className="w-full flex justify-between">
           <div className="flex gap-3 items-center">
-            <img
+            <Avatar
+              alt={user?.userName}
               src={user?.avatar}
-              className="w-8 h-8 rounded-full object-cover"
+              sx={{ width: 24, height: 24, fontSize: 15 }}
             />
             <span>{user?.userName}</span>
           </div>

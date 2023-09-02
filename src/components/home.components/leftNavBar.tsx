@@ -7,6 +7,7 @@ import SearchComponent from "./search.component";
 import NotifComponent from "./notif.component";
 import PostModal from "./post.modal";
 import Skeleton from "@mui/material/Skeleton";
+import { Avatar } from "@mui/material";
 
 const LeftNavBar = () => {
   const user = userSignIn((state) => state.user);
@@ -134,9 +135,10 @@ const LeftNavBar = () => {
               <Skeleton variant="circular" width={24} height={24} />
             )}
             {!avatarLoading && (
-              <img
+              <Avatar
+                alt={user?.userName}
                 src={user?.avatar}
-                className="w-6 h-6 rounded-full object-cover"
+                sx={{ width: 24, height: 24 }}
               />
             )}
           </span>

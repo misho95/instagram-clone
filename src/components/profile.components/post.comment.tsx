@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getDataFromServer } from "../../utils/firebase";
 import { postCommentsTypeComment, userType } from "../../utils/zustand";
+import { Avatar } from "@mui/material";
 
 interface PropsType {
   data: postCommentsTypeComment;
@@ -22,7 +23,11 @@ const PostComment = ({ data }: PropsType) => {
   return (
     <div className="w-full">
       <div className="flex gap-3 items-center">
-        <img src={user?.avatar} className="w-6 h-6 rounded-full object-cover" />
+        <Avatar
+          alt={user?.userName}
+          src={user?.avatar}
+          sx={{ width: 24, height: 24 }}
+        />
         <span className="text-sm">{user?.userName}</span>
       </div>
       <div className="p-3">{data.comment}</div>
