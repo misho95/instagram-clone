@@ -25,7 +25,7 @@ const FeedsPage = () => {
   // }
 
   return (
-    <div className="flex flex-col items-center mt-5 mb-20 sm:my-20 gap-10">
+    <div className="flex flex-col items-center mt-5 mb-20 pb-10 sm:my-20 gap-10">
       {feed &&
         feed?.map((feed: PostsType) => {
           return <FeedsPost key={feed.id} data={feed} />;

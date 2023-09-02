@@ -1,4 +1,4 @@
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, collection } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./firebase";
 import { ref, deleteObject } from "firebase/storage";
@@ -50,6 +50,13 @@ export const getRealTimeUpdateAndSetIt = async (
     const userData = doc.data() as userType | undefined;
     setDataToSend(userData);
   });
+};
+
+export const getRealTimeServerCollectionAndSetIt = async (
+  server: string,
+  setDataToSend: (arg: any) => void
+) => {
+  //realTimeServersCollection
 };
 
 export const deleteImgInStorage = async (imgUrl: string) => {

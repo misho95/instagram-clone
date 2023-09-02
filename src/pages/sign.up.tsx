@@ -5,9 +5,11 @@ import {
   addNewDataInServerStorage,
 } from "../utils/firebase";
 import { useState } from "react";
+import LoadingComponent from "../components/loading.component";
 
 const SignUp = () => {
   const [signUpError, setSignUpError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const signUpNewUser = async (
     userName: string,
@@ -16,6 +18,7 @@ const SignUp = () => {
     pass: string
   ) => {
     try {
+      setLoading(true);
       const { user } = await createUserWithEmailandPass(email, pass);
       setSignUpError(null);
       if (user) {
@@ -27,11 +30,9 @@ const SignUp = () => {
           email,
           pass,
           singUpDate: data,
-          avatar:
-            "https://firebasestorage.googleapis.com/v0/b/instagram-clone-9c3ea.appspot.com/o/profile-42914_1280.webp?alt=media&token=fe9ddf1d-80d4-4d72-a28e-f8c4e04f477b",
+          avatar: "",
           following: [],
           followers: [],
-          posts: [],
         });
       }
     } catch (error) {
@@ -42,6 +43,10 @@ const SignUp = () => {
       }
     }
   };
+
+  if (loading) {
+    return <LoadingComponent />;
+  }
 
   return (
     <div className="bg-gray-100 w-full min-h-screen flex flex-col gap-20 sm:justify-center items-center sm:p-10">

@@ -52,7 +52,7 @@ const FeedsPost = ({ data }: PropsType) => {
           type={type}
         />
       )}
-      <div className="flex flex-col w-96 gap-5">
+      <div className="flex flex-col w-80 sm:w-96 gap-5">
         <div className="w-full flex justify-between">
           <div className="flex gap-3 items-center">
             <img

@@ -1,7 +1,9 @@
 import Input from "./input";
 import fbIcon from "../../assets/images/cropped-FB-Icon-1.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormEvent } from "react";
+import { userType } from "../../utils/zustand";
+import { getRealTimeServerCollectionAndSetIt } from "../../utils/helper.script";
 
 interface PropsType {
   submitHandler: (
@@ -14,6 +16,7 @@ interface PropsType {
 }
 
 const SignUpForm = ({ submitHandler, signUpFormError }: PropsType) => {
+  const [usersData, setUsersData] = useState<userType[] | null>(null);
   const [userName, setUserName] = useState("");
   const [userNameError, setUserNameError] = useState<string | null>(null);
   const [fullName, setFullName] = useState<string>("");
@@ -25,6 +28,16 @@ const SignUpForm = ({ submitHandler, signUpFormError }: PropsType) => {
   const [rePass, setRePass] = useState<string>("");
   const [rePassError, setRePassError] = useState<null | string>(null);
   const [save, setSave] = useState<boolean>(false);
+
+  const waitServerToGetUserData = async () => {
+    await getRealTimeServerCollectionAndSetIt("users", setUsersData);
+  };
+
+  useEffect(() => {
+    waitServerToGetUserData();
+  }, []);
+
+  console.log(usersData);
 
   const submitData = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
