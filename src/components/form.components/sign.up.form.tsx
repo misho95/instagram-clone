@@ -15,7 +15,7 @@ interface PropsType {
 }
 
 const SignUpForm = ({ submitHandler, signUpFormError }: PropsType) => {
-  const [usersData, setUsersData] = useState<userType[] | null>(null);
+  // const [usersData, setUsersData] = useState<userType[] | null>(null);
   const [userName, setUserName] = useState("");
   const [userNameError, setUserNameError] = useState<string | null>(null);
   const [fullName, setFullName] = useState<string>("");
@@ -35,8 +35,6 @@ const SignUpForm = ({ submitHandler, signUpFormError }: PropsType) => {
   useEffect(() => {
     waitServerToGetUserData();
   }, []);
-
-  console.log(usersData);
 
   const submitData = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

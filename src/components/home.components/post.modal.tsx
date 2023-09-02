@@ -1,10 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { userSignIn } from "../../utils/zustand";
-import {
-  storage,
-  updateDataInServerArray,
-  addNewDataInServerStorage,
-} from "../../utils/firebase";
+import { storage, addNewDataInServerStorage } from "../../utils/firebase";
 import {
   ref,
   uploadBytes,
