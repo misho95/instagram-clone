@@ -2,7 +2,6 @@ import Input from "./input";
 import fbIcon from "../../assets/images/cropped-FB-Icon-1.png";
 import { useState, useEffect } from "react";
 import { FormEvent } from "react";
-import { userType } from "../../utils/zustand";
 
 interface PropsType {
   submitHandler: (
