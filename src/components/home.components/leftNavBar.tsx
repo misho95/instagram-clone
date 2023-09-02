@@ -36,11 +36,7 @@ const LeftNavBar = () => {
     }
 
     if (user) {
-      const img = new Image();
-      img.src = user.avatar;
-      img.onload = () => {
-        setAvatarLoading(false);
-      };
+      setAvatarLoading(false);
     }
   }, [user]);
 

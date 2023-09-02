@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { userType, followersType, userSignIn } from "../../utils/zustand";
 import { Link } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
+import { Avatar } from "@mui/material";
 
 interface PropsType {
   data: followersType;
@@ -61,11 +62,7 @@ const FollowUser = ({ data, set, type, userType }: PropsType) => {
 
   useEffect(() => {
     if (user) {
-      const img = new Image();
-      img.src = user.avatar;
-      img.onload = () => {
-        setLoading(true);
-      };
+      setLoading(true);
     }
   }, [user]);
 
@@ -83,10 +80,10 @@ const FollowUser = ({ data, set, type, userType }: PropsType) => {
           to={`/${user?.userName}`}
           className="flex gap-3"
         >
-          <img
-            src={user?.avatar}
+          <Avatar
             alt={user?.userName}
-            className="w-8 h-8 rounded-full object-cover"
+            src={user?.avatar}
+            sx={{ width: 32, height: 32 }}
           />
           {user?.userName}
         </Link>

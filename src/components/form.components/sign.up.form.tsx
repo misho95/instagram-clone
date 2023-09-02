@@ -3,7 +3,6 @@ import fbIcon from "../../assets/images/cropped-FB-Icon-1.png";
 import { useState, useEffect } from "react";
 import { FormEvent } from "react";
 import { userType } from "../../utils/zustand";
-import { getRealTimeServerCollectionAndSetIt } from "../../utils/helper.script";
 
 interface PropsType {
   submitHandler: (
@@ -30,7 +29,7 @@ const SignUpForm = ({ submitHandler, signUpFormError }: PropsType) => {
   const [save, setSave] = useState<boolean>(false);
 
   const waitServerToGetUserData = async () => {
-    await getRealTimeServerCollectionAndSetIt("users", setUsersData);
+    // await getRealTimeServerCollectionAndSetIt("users", setUsersData);
   };
 
   useEffect(() => {

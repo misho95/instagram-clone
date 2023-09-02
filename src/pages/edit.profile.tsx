@@ -5,6 +5,7 @@ import { storage, changeDataInServerWidthId } from "../utils/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import LoadingComponent from "../components/loading.component";
 import { deleteImgInStorage } from "../utils/helper.script";
+import { Avatar } from "@mui/material";
 
 const EditProfile = () => {
   const user = userSignIn((state) => state.user);
@@ -22,7 +23,10 @@ const EditProfile = () => {
 
   const uploadFile = async () => {
     if (file && user) {
-      await deleteImgInStorage(user.avatar);
+      if (user.avatar !== "") {
+        await deleteImgInStorage(user.avatar);
+      }
+
       const sliceType = file.type.split("/");
       const getType = sliceType[0];
       if (getType === "image") {
@@ -76,9 +80,10 @@ const EditProfile = () => {
           <div className="p-5 border-px1 border-gray-200">
             <h1 className="text-xl font-bold">Edit profile</h1>
             <div className="p-5 flex gap-5 items-center">
-              <img
+              <Avatar
+                alt={user?.userName}
                 src={user?.avatar}
-                className="w-10 h-10 object-cover rounded-full"
+                sx={{ width: 40, height: 40 }}
               />
               <div className="flex flex-col">
                 <span>{user?.userName}</span>

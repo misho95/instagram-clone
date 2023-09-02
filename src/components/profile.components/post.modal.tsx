@@ -56,7 +56,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
 
   const deletePost = async () => {
     if (user) {
-      await deleteDataInServerArray("users", user?.id, "posts", post);
+      await deleteDataInServer("posts", post.id);
       await deleteDataInServer("likes", post.likesId);
       await deleteDataInServer("postComments", post.commentsRoomId);
       await deleteImgInStorage(post.link);

@@ -76,7 +76,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
       const date = new Date();
       const ID = v4();
       const sharedId = v4();
-      await updateDataInServerArray("users", user.id, "posts", {
+      await addNewDataInServerStorage("posts", ID, {
         id: ID,
         userId: user.id,
         link: imgUrl,
@@ -134,7 +134,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
       {page === 0 && (
         <div
           onClick={() => setOpenPostModal(false)}
-          className="bg-black/50 fixed top-0 left-0 w-full h-screen flex items-center justify-center z-50"
+          className="bg-black/50 fixed top-0 left-0 w-full h-screen flex items-center justify-center z-40"
         >
           <button
             onClick={() => setOpenPostModal(false)}
