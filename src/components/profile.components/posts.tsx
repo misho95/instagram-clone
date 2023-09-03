@@ -16,13 +16,9 @@ const Posts = ({ post, type }: PropsType) => {
 
   useEffect(() => {
     if (post) {
-      const img = new Image();
-      img.src = post.link;
-      img.onload = () => {
-        setLoading(false);
-      };
+      setLoading(false);
     }
-  }, [post]);
+  }, []);
 
   return (
     <>

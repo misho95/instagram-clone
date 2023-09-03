@@ -13,6 +13,7 @@ import {
   updateDataInServerArray,
   deleteDataInServerArray,
 } from "../../utils/firebase";
+import VideoPlayer from "../home.components/video.player";
 
 interface PropsType {
   data: PostsType;
@@ -144,11 +145,18 @@ const FeedsPost = ({ data }: PropsType) => {
           </div>
         </div>
         <div>
-          <img
-            onClick={() => setOpenPostsModal(!openPostsModal)}
-            src={data.link}
-            className="w-full h-60 object-cover object-center"
-          />
+          {data.type === "image" && (
+            <img
+              onClick={() => setOpenPostsModal(!openPostsModal)}
+              src={data.link}
+              className="w-full h-60 object-cover object-center"
+            />
+          )}
+          {data.type === "video" && (
+            <div onClick={() => setOpenPostsModal(!openPostsModal)}>
+              <VideoPlayer w={"w-full"} h={"h-60"} src={data.link} />
+            </div>
+          )}
         </div>
         <div className="flex justify-between items-center">
           <div className="flex gap-3 items-center">
