@@ -2,7 +2,6 @@ import Input from "./input";
 import fbIcon from "../../assets/images/cropped-FB-Icon-1.png";
 import { useState, useEffect } from "react";
 import { FormEvent } from "react";
-import { userType } from "../../utils/zustand";
 import { getRealTimeCollectionAndSetIt } from "../../utils/helper.script";
 
 interface PropsType {
@@ -40,7 +39,7 @@ const SignUpForm = ({ submitHandler, signUpFormError }: PropsType) => {
 
   useEffect(() => {
     if (userName !== "") {
-      const checkUserName = usersData.find((usr) => {
+      const checkUserName = usersData?.find((usr) => {
         if (usr === userName) return usr;
       });
       if (checkUserName) {
