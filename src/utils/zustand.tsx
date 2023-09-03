@@ -40,6 +40,12 @@ export interface notifType {
   seen: boolean;
 }
 
+export interface chatsType {
+  id: string;
+  chatId: string;
+  userId: string;
+}
+
 export interface userType {
   id: string;
   userName: string;
@@ -51,6 +57,18 @@ export interface userType {
   followers: followersType[];
   posts: PostsType[];
   notif: notifType[];
+  chats: chatsType[];
+}
+
+export interface directChatMessageType {
+  id: string;
+  message: string;
+  userId: string;
+}
+
+export interface directChatType {
+  id: string;
+  messages: directChatMessageType[];
 }
 
 interface userSignInType {
@@ -71,4 +89,14 @@ interface activeNavType {
 export const activeNav = create<activeNavType>((set) => ({
   active: null,
   setActive: (value: string | null) => set(() => ({ active: value })),
+}));
+
+interface activeChatType {
+  active: null | chatsType;
+  setActive: (value: null | chatsType) => void;
+}
+
+export const activeChat = create<activeChatType>((set) => ({
+  active: null,
+  setActive: (value: chatsType | null) => set(() => ({ active: value })),
 }));

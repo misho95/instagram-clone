@@ -1,8 +1,14 @@
-import { userType, userSignIn } from "../../utils/zustand";
+import {
+  userType,
+  userSignIn,
+  activeChat,
+  activeNav,
+} from "../../utils/zustand";
 import {
   getDataFromServer,
   updateDataInServerArray,
   deleteDataInServerArray,
+  addNewDataInServerStorage,
 } from "../../utils/firebase";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -18,6 +24,9 @@ interface propsType {
 
 const ProfileHeader = ({ type, data }: propsType) => {
   const user = userSignIn((state) => state.user);
+  const navActive = activeNav((state) => state.active);
+  const setNavActive = activeNav((state) => state.setActive);
+  const setActiveChat = activeChat((state) => state.setActive);
   const [following, setFollowing] = useState<boolean>(false);
   const [openSettingModal, setOpenSettingsModal] = useState<boolean>(false);
   const [showFollowers, setShowFollowers] = useState<boolean>(false);
@@ -77,6 +86,38 @@ const ProfileHeader = ({ type, data }: propsType) => {
       }
     }
     setFollowing(false);
+  };
+
+  const createDirectMessaging = async () => {
+    setNavActive("chat");
+    console.log(navActive);
+    if (user && data) {
+      const findUserChat = user.chats?.find((c) => {
+        if (c.userId === data.id) {
+          return c;
+        }
+      });
+
+      if (findUserChat) {
+        setActiveChat(findUserChat);
+        //console.log("chat is already exists");
+        return;
+      }
+
+      const ID = v4();
+      const chatDataToSend = { id: v4(), chatId: ID, userId: data.id };
+      await addNewDataInServerStorage("directChat", ID, {
+        id: ID,
+        messages: [],
+      });
+      await updateDataInServerArray("users", user.id, "chats", chatDataToSend);
+      await updateDataInServerArray("users", data.id, "chats", {
+        id: v4(),
+        chatId: ID,
+        userId: user.id,
+      });
+      setActiveChat(chatDataToSend);
+    }
   };
 
   useEffect(() => {
@@ -139,7 +180,12 @@ const ProfileHeader = ({ type, data }: propsType) => {
             </span>
             <span>
               {type === "user" ? (
-                <button className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2">
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation(), createDirectMessaging();
+                  }}
+                  className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2"
+                >
                   Message
                 </button>
               ) : (
@@ -211,7 +257,12 @@ const ProfileHeader = ({ type, data }: propsType) => {
               </span>
               <span>
                 {type === "user" ? (
-                  <button className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2">
+                  <button
+                    onClick={(event) => {
+                      event.stopPropagation(), createDirectMessaging();
+                    }}
+                    className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2"
+                  >
                     Message
                   </button>
                 ) : (

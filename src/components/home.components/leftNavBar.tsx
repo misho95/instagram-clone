@@ -8,6 +8,7 @@ import NotifComponent from "./notif.component";
 import PostModal from "./post.modal";
 import Skeleton from "@mui/material/Skeleton";
 import { Avatar } from "@mui/material";
+import ChatComponent from "./chat.component";
 
 const LeftNavBar = () => {
   const user = userSignIn((state) => state.user);
@@ -49,6 +50,7 @@ const LeftNavBar = () => {
     <div className="fixed border-t-px1 sm:border-r-px1 border-gray-200 p-6 w-full h-20 bottom-0 sm:w-fit sm:h-screen flex flex-col justify-between gap-3 bg-white z-40">
       {navActive === "search" && <SearchComponent />}
       {navActive === "notif" && <NotifComponent />}
+      {navActive === "chat" && <ChatComponent />}
       <div className="flex flex-row sm:flex-col justify-evenly sm:justify-start sm:gap-3">
         <NavBarLinks
           onClickHandler={() => {
@@ -92,11 +94,11 @@ const LeftNavBar = () => {
         />
         <NavBarLinks
           onClickHandler={() => {
-            setNavActive(null);
+            setNavActive("chat");
           }}
           icons={"chat"}
           name={"Messages"}
-          link={"/"}
+          link={""}
           mobile={"show"}
           notif={0}
         />
