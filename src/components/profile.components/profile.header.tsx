@@ -1,9 +1,4 @@
-import {
-  userType,
-  userSignIn,
-  activeNav,
-  directChatType,
-} from "../../utils/zustand";
+import { userType, userSignIn, activeNav } from "../../utils/zustand";
 import {
   getDataFromServer,
   updateDataInServerArray,
