@@ -1,9 +1,4 @@
-import {
-  userType,
-  userSignIn,
-  activeChat,
-  activeNav,
-} from "../../utils/zustand";
+import { userType, userSignIn, activeNav } from "../../utils/zustand";
 import {
   getDataFromServer,
   updateDataInServerArray,
@@ -24,9 +19,7 @@ interface propsType {
 
 const ProfileHeader = ({ type, data }: propsType) => {
   const user = userSignIn((state) => state.user);
-  const navActive = activeNav((state) => state.active);
   const setNavActive = activeNav((state) => state.setActive);
-  const setActiveChat = activeChat((state) => state.setActive);
   const [following, setFollowing] = useState<boolean>(false);
   const [openSettingModal, setOpenSettingsModal] = useState<boolean>(false);
   const [showFollowers, setShowFollowers] = useState<boolean>(false);
@@ -90,7 +83,6 @@ const ProfileHeader = ({ type, data }: propsType) => {
 
   const createDirectMessaging = async () => {
     setNavActive("chat");
-    console.log(navActive);
     if (user && data) {
       const findUserChat = user.chats?.find((c) => {
         if (c.userId === data.id) {
@@ -98,25 +90,43 @@ const ProfileHeader = ({ type, data }: propsType) => {
         }
       });
 
-      if (findUserChat) {
-        setActiveChat(findUserChat);
-        //console.log("chat is already exists");
-        return;
-      }
-
       const ID = v4();
       const chatDataToSend = { id: v4(), chatId: ID, userId: data.id };
-      await addNewDataInServerStorage("directChat", ID, {
-        id: ID,
-        messages: [],
+
+      if (!findUserChat) {
+        await addNewDataInServerStorage("directChat", ID, {
+          id: ID,
+          messages: [],
+        });
+        await updateDataInServerArray(
+          "users",
+          user.id,
+          "chats",
+          chatDataToSend
+        );
+        await updateDataInServerArray("users", data.id, "chats", {
+          id: v4(),
+          chatId: ID,
+          userId: user.id,
+        });
+      }
+
+      const findUserInLoadedChatUsers = user.loadedChatUsers?.find((usr) => {
+        if (usr.userId === chatDataToSend.userId) {
+          return usr;
+        }
       });
-      await updateDataInServerArray("users", user.id, "chats", chatDataToSend);
-      await updateDataInServerArray("users", data.id, "chats", {
-        id: v4(),
-        chatId: ID,
-        userId: user.id,
-      });
-      setActiveChat(chatDataToSend);
+
+      if (findUserInLoadedChatUsers) {
+        return;
+      } else {
+        await updateDataInServerArray(
+          "users",
+          user.id,
+          "loadedChatUsers",
+          chatDataToSend
+        );
+      }
     }
   };
 

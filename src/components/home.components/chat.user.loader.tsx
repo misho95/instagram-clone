@@ -1,15 +1,15 @@
 import { getDataFromServer } from "../../utils/firebase";
 import { useState, useEffect } from "react";
-import { directChatMessageType, userType } from "../../utils/zustand";
+import { loadedChatUsersType, userType } from "../../utils/zustand";
 import { Avatar } from "@mui/material";
 
 interface PropsType {
-  data: directChatMessageType;
+  data: loadedChatUsersType;
+  activeUserChat: (arg: loadedChatUsersType) => void;
 }
 
-const ChatMessageComponent = ({ data }: PropsType) => {
+const ChatUserLoader = ({ data, activeUserChat }: PropsType) => {
   const [user, setUser] = useState<userType | null>(null);
-
   const getUserData = async () => {
     const userData = await getDataFromServer("users", data.userId);
     const castedUser: userType = userData as userType;
@@ -21,15 +21,15 @@ const ChatMessageComponent = ({ data }: PropsType) => {
   }, []);
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3" onClick={() => activeUserChat(data)}>
       <Avatar
         alt={user?.userName}
         src={user?.avatar}
-        sx={{ width: 18, height: 18 }}
+        sx={{ width: 24, height: 24 }}
       />
-      <span className="text-gray-700">{data.message}</span>
+      <span className="text-gray-700">{user?.userName}</span>
     </div>
   );
 };
 
-export default ChatMessageComponent;
+export default ChatUserLoader;
