@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ChatMessageComponent from "./chat.message.component";
 import { getRealTimeUpdateAndSetIt } from "../../utils/helper.script";
 import {
@@ -18,6 +18,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
   const currentUser = userSignIn((state) => state.user);
   const [input, setInput] = useState("");
   const [chat, setChat] = useState<directChatType | null>(null);
+  const chatContainer = useRef<HTMLDivElement | null>(null);
 
   const waitChatDataAndSetIt = async () => {
     if (userChatActive) {
@@ -39,9 +40,19 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
     }
   };
 
+  const scrollToBottom = () => {
+    if (chatContainer.current) {
+      chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
+    }
+  };
+
   useEffect(() => {
     waitChatDataAndSetIt();
   }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chat]);
 
   return (
     <>
@@ -55,7 +66,10 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
       {!chat && <div className="p-2 text-gray-500">no chat loaded</div>}
       {chat && (
         <div className="w-full h-full flex flex-col gap-3">
-          <div className="w-full h-customScreenHeigthMobile sm:h-customScreenHeigth border-b-px1 border-t-px1 border-gray-200 p-3 flex flex-col gap-3 overflow-y-auto">
+          <div
+            ref={chatContainer}
+            className="w-full h-customScreenHeigthMobile sm:h-customScreenHeigth border-b-px1 border-t-px1 border-gray-200 p-3 flex flex-col gap-3 overflow-y-auto"
+          >
             {chat &&
               chat.messages.map((mes) => {
                 return <ChatMessageComponent key={mes.id} data={mes} />;
