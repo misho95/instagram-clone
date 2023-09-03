@@ -20,7 +20,7 @@ const ChatComponent = () => {
   };
 
   return (
-    <div className="absolute left-custom top-0 h-screen w-80 rounded-r-lg border-r-px1 border-r-gray-200 hidden sm:flex flex-col gap-3 z-50 bg-white p-1">
+    <div className="fixed left-0 w-full z-0 py-20 sm:py-0 sm:absolute sm:left-custom top-0 h-screen sm:w-80 rounded-r-lg border-r-px1 border-r-gray-200 flex flex-col gap-3 sm:z-40 bg-white p-1">
       <h1 className="text-xl font-bold p-5">Chat</h1>
       {!chatOpen && (
         <div className="flex flex-col gap-3 p-2">

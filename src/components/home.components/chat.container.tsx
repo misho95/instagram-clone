@@ -55,7 +55,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
       {!chat && <div className="p-2 text-gray-500">no chat loaded</div>}
       {chat && (
         <div className="w-full h-full flex flex-col gap-3">
-          <div className=" w-full h-full border-b-px1 border-t-px1 border-gray-200 p-3 flex flex-col gap-3">
+          <div className="w-full h-customScreenHeigthMobile sm:h-customScreenHeigth border-b-px1 border-t-px1 border-gray-200 p-3 flex flex-col gap-3 overflow-y-auto">
             {chat &&
               chat.messages.map((mes) => {
                 return <ChatMessageComponent key={mes.id} data={mes} />;

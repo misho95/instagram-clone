@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getCollectionFromServer } from "../utils/firebase";
 import { Link } from "react-router-dom";
-import { userSignIn, userType } from "../utils/zustand";
+import { activeNav, userSignIn, userType } from "../utils/zustand";
 import SearchUser from "./home.components/search.user";
 
 const MobileHeader = () => {
@@ -9,6 +9,7 @@ const MobileHeader = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState<userType[] | null>(null);
   const [notifCount, setNotifCount] = useState(0);
+  const setActiveNav = activeNav((state) => state.setActive);
 
   const waitDataFromServer = async () => {
     const data = await getCollectionFromServer("users");
@@ -81,7 +82,7 @@ const MobileHeader = () => {
           )}
         </div>
         <div className="w-fit h-fit relative">
-          <button>
+          <button onClick={() => setActiveNav("notif")}>
             <span className="material-symbols-outlined">favorite</span>
           </button>
           {notifCount !== 0 && (

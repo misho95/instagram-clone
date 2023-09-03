@@ -10,6 +10,8 @@ export default {
         px1: "1px",
         mobile: "470px",
         postComment: "280px",
+        customScreenHeigth: "calc(100vh - 220px)",
+        customScreenHeigthMobile: "calc(100vh - 370px)",
       },
       spacing: {
         custom: "73px",
