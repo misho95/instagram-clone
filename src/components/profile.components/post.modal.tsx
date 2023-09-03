@@ -216,7 +216,9 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                 <div className="flex flex-col gap-3 w-full p-2">
                   {comments &&
                     comments.comments.map((com) => {
-                      return <PostComment key={com.id} data={com} />;
+                      return (
+                        <PostComment key={com.id} postId={post.id} data={com} />
+                      );
                     })}
                 </div>
               )}

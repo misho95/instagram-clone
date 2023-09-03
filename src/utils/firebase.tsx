@@ -23,7 +23,7 @@ import {
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-import { PostsType, postLikeType, userType } from "./zustand";
+import { PostsType, postCommentsType, postLikeType, userType } from "./zustand";
 import { notifType } from "./zustand";
 
 const firebaseConfig = {
@@ -329,4 +329,17 @@ export const getFeedData = async (userId: string, set: (arg: any) => void) => {
     return Date.parse(b.date) - Date.parse(a.date);
   });
   set(sortByDate);
+};
+
+export const getPostCommentsIdWIthPostId = async (id: string) => {
+  const q = query(collection(db, "postComments"), where("postId", "==", id));
+
+  const data: postCommentsType[] = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    const getData = doc.data() as postCommentsType;
+    data.push(getData);
+  });
+  return data;
 };

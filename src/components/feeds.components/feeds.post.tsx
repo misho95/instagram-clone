@@ -1,11 +1,32 @@
 import { useState, useEffect } from "react";
 import { getDataFromServer } from "../../utils/firebase";
-import { PostsType, userSignIn, userType } from "../../utils/zustand";
+import {
+  PostsType,
+  userSignIn,
+  userType,
+  postCommentsType,
+} from "../../utils/zustand";
 import PostModal from "../profile.components/post.modal";
 import { Avatar, Skeleton } from "@mui/material";
+import { getRealTimeUpdateAndSetIt } from "../../utils/helper.script";
+import {
+  updateDataInServerArray,
+  deleteDataInServerArray,
+} from "../../utils/firebase";
 
 interface PropsType {
   data: PostsType;
+}
+
+interface userLikesType {
+  postId: string;
+  userId: string;
+}
+
+interface likesDataType {
+  id: string;
+  postId: string;
+  userLikes: userLikesType[];
 }
 
 const FeedsPost = ({ data }: PropsType) => {
@@ -14,6 +35,9 @@ const FeedsPost = ({ data }: PropsType) => {
   const [openPostsModal, setOpenPostsModal] = useState(false);
   const [type, setType] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [likesData, setLikesData] = useState<likesDataType | null>();
+  const [ifUserLikes, setIfUserLikes] = useState<boolean>(false);
+  const [commentsData, setCommentsData] = useState<postCommentsType>();
 
   const waitUserData = async () => {
     const userData = await getDataFromServer("users", data.userId);
@@ -22,14 +46,65 @@ const FeedsPost = ({ data }: PropsType) => {
     setLoading(false);
   };
 
+  const waitLikesDataAndSetIt = async () => {
+    await getRealTimeUpdateAndSetIt("likes", data.likesId, setLikesData);
+  };
+
+  const waitCommentsDataAndSetIt = async () => {
+    await getRealTimeUpdateAndSetIt(
+      "postComments",
+      data.commentsRoomId,
+      setCommentsData
+    );
+  };
+
+  const checkIfUserLikes = async () => {
+    if (likesData && currentUser) {
+      const findUserInLikes = likesData.userLikes.find((l) => {
+        if (l.userId === currentUser.id) {
+          return l;
+        }
+      });
+      if (findUserInLikes) {
+        setIfUserLikes(true);
+      } else {
+        setIfUserLikes(false);
+      }
+    }
+  };
+
+  const likePost = async () => {
+    if (currentUser) {
+      await updateDataInServerArray("likes", data.likesId, "userLikes", {
+        postId: data.id,
+        userId: currentUser.id,
+      });
+    }
+  };
+
+  const unLikePost = async () => {
+    if (currentUser) {
+      await deleteDataInServerArray("likes", data.likesId, "userLikes", {
+        postId: data.id,
+        userId: currentUser.id,
+      });
+    }
+  };
+
   useEffect(() => {
     waitUserData();
+    waitLikesDataAndSetIt();
+    waitCommentsDataAndSetIt();
     if (data.userId === currentUser?.id) {
       setType("owner");
     } else {
       setType("user");
     }
   }, []);
+
+  useEffect(() => {
+    checkIfUserLikes();
+  }, [likesData, ifUserLikes]);
 
   if (loading) {
     return (
@@ -77,11 +152,29 @@ const FeedsPost = ({ data }: PropsType) => {
         </div>
         <div className="flex justify-between items-center">
           <div className="flex gap-3 items-center">
-            <button>
+            <button
+              onClick={ifUserLikes ? unLikePost : likePost}
+              className={`${
+                ifUserLikes ? "bg-red-500 text-white" : "text-black"
+              } flex w-fit h-fit p-1 rounded-full justify-center items-center relative`}
+            >
               <span className="material-symbols-outlined">favorite</span>
+              <span
+                className={`${
+                  ifUserLikes ? "bg-black text-white" : "bg-red-500 text-white"
+                } absolute  rounded-full flex text-xs  w-4 h-4 justify-center items-center top-0 right-0`}
+              >
+                {data && likesData?.userLikes.length}
+              </span>
             </button>
-            <button>
+            <button
+              onClick={() => setOpenPostsModal(!openPostsModal)}
+              className="flex w-fit h-fit p-1 rounded-full justify-center items-center relative"
+            >
               <span className="material-symbols-outlined">chat</span>
+              <div className="absolute top-0 right-0 bg-red-500 w-4 h-4 flex justify-center items-center text-sm rounded-full text-white">
+                {commentsData && commentsData.comments.length}
+              </div>
             </button>
             <button>
               <span className="material-symbols-outlined">send</span>

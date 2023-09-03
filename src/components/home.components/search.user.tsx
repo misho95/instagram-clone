@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { userType } from "../../utils/zustand";
 import { useState, useEffect } from "react";
 import Skeleton from "@mui/material/Skeleton";
+import { Avatar } from "@mui/material";
 
 interface PropsType {
   user: userType;
@@ -13,11 +14,7 @@ const SearchUser = ({ user, set }: PropsType) => {
 
   useEffect(() => {
     if (user) {
-      const img = new Image();
-      img.src = user.avatar;
-      img.onload = () => {
-        setAvatarLoading(false);
-      };
+      setAvatarLoading(false);
     }
   }, []);
 
@@ -30,10 +27,10 @@ const SearchUser = ({ user, set }: PropsType) => {
     >
       {avatarLoading && <Skeleton variant="circular" width={24} height={24} />}
       {!avatarLoading && (
-        <img
-          src={user.avatar}
-          alt={user.userName}
-          className="w-6 h-6 rounded-full object-cover"
+        <Avatar
+          alt={user?.userName}
+          src={user?.avatar}
+          sx={{ width: 24, height: 24 }}
         />
       )}
       {user.userName}

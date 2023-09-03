@@ -1,13 +1,23 @@
 import { useState, useEffect } from "react";
-import { getDataFromServer } from "../../utils/firebase";
-import { postCommentsTypeComment, userType } from "../../utils/zustand";
+import {
+  getDataFromServer,
+  deleteDataInServerArray,
+  getPostCommentsIdWIthPostId,
+} from "../../utils/firebase";
+import {
+  postCommentsTypeComment,
+  userSignIn,
+  userType,
+} from "../../utils/zustand";
 import { Avatar } from "@mui/material";
 
 interface PropsType {
   data: postCommentsTypeComment;
+  postId: string;
 }
 
-const PostComment = ({ data }: PropsType) => {
+const PostComment = ({ data, postId }: PropsType) => {
+  const currentUser = userSignIn((state) => state.user);
   const [user, setUser] = useState<userType | null>(null);
 
   const waitUserDataAndSetIt = async () => {
@@ -16,12 +26,32 @@ const PostComment = ({ data }: PropsType) => {
     setUser(castedUser);
   };
 
+  const deleteComment = async () => {
+    const postCommentData = await getPostCommentsIdWIthPostId(postId);
+    if (postCommentData) {
+      await deleteDataInServerArray(
+        "postComments",
+        postCommentData[0].id,
+        "comments",
+        data
+      );
+    }
+  };
+
   useEffect(() => {
     waitUserDataAndSetIt();
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
+      {data.user === currentUser?.id && (
+        <button
+          onClick={deleteComment}
+          className="absolute right-2 top-1/2 -translate-y-1/2"
+        >
+          <span className="material-symbols-outlined text-sm">delete</span>
+        </button>
+      )}
       <div className="flex gap-3 items-center">
         <Avatar
           alt={user?.userName}
