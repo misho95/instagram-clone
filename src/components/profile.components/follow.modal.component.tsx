@@ -18,7 +18,7 @@ const FollowModalComponent = ({ data, type, set, userType }: PropsType) => {
         onClick={(event) => {
           event.stopPropagation();
         }}
-        className="bg-white p-5 rounded-lg flex flex-col gap-4 w-60"
+        className="bg-white p-5 rounded-lg flex flex-col gap-4 w-80"
       >
         <h1 className="font-bold text-center">
           {type === "followings" ? "Followers" : "Following"}
