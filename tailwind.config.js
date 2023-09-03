@@ -11,7 +11,7 @@ export default {
         mobile: "470px",
         postComment: "280px",
         customScreenHeigth: "calc(100vh - 220px)",
-        customScreenHeigthMobile: "calc(100vh - 370px)",
+        customScreenHeigthMobile: "calc(100vh - 470px)",
       },
       spacing: {
         custom: "73px",
