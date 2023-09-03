@@ -73,8 +73,13 @@ export interface directChatMessageType {
   userId: string;
 }
 
+export interface directChatUser {
+  userId: string;
+}
+
 export interface directChatType {
   id: string;
+  users: directChatUser[];
   messages: directChatMessageType[];
 }
 

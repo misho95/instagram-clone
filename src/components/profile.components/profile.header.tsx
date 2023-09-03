@@ -1,9 +1,15 @@
-import { userType, userSignIn, activeNav } from "../../utils/zustand";
+import {
+  userType,
+  userSignIn,
+  activeNav,
+  directChatType,
+} from "../../utils/zustand";
 import {
   getDataFromServer,
   updateDataInServerArray,
   deleteDataInServerArray,
   addNewDataInServerStorage,
+  getDataFromServerByuserId,
 } from "../../utils/firebase";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -83,6 +89,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
 
   const createDirectMessaging = async () => {
     setNavActive("chat");
+
     if (user && data) {
       const findUserChat = user.chats?.find((c) => {
         if (c.userId === data.id) {
@@ -91,19 +98,19 @@ const ProfileHeader = ({ type, data }: propsType) => {
       });
 
       const ID = v4();
-      const chatDataToSend = { id: v4(), chatId: ID, userId: data.id };
+      // const chatDataToSend = { id: v4(), chatId: ID, userId: data.id };
 
       if (!findUserChat) {
         await addNewDataInServerStorage("directChat", ID, {
           id: ID,
+          users: [{ userId: user.id }, { userId: data.id }],
           messages: [],
         });
-        await updateDataInServerArray(
-          "users",
-          user.id,
-          "chats",
-          chatDataToSend
-        );
+        await updateDataInServerArray("users", user.id, "chats", {
+          id: v4(),
+          chatId: ID,
+          userId: data.id,
+        });
         await updateDataInServerArray("users", data.id, "chats", {
           id: v4(),
           chatId: ID,
@@ -112,7 +119,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
       }
 
       const findUserInLoadedChatUsers = user.loadedChatUsers?.find((usr) => {
-        if (usr.userId === chatDataToSend.userId) {
+        if (usr.userId === data.id) {
           return usr;
         }
       });
@@ -120,12 +127,29 @@ const ProfileHeader = ({ type, data }: propsType) => {
       if (findUserInLoadedChatUsers) {
         return;
       } else {
-        await updateDataInServerArray(
-          "users",
-          user.id,
-          "loadedChatUsers",
-          chatDataToSend
+        const directChatDataOne = await getDataFromServerByuserId(
+          "directChat",
+          [{ userId: user.id }, { userId: data.id }]
         );
+
+        const directChatDataTwo = await getDataFromServerByuserId(
+          "directChat",
+          [{ userId: data.id }, { userId: user.id }]
+        );
+
+        if (directChatDataOne.length > 0) {
+          await updateDataInServerArray("users", user.id, "loadedChatUsers", {
+            id: v4(),
+            chatId: directChatDataOne[0].id,
+            userId: data.id,
+          });
+        } else if (directChatDataTwo.length > 0) {
+          await updateDataInServerArray("users", user.id, "loadedChatUsers", {
+            id: v4(),
+            chatId: directChatDataTwo[0].id,
+            userId: data.id,
+          });
+        }
       }
     }
   };

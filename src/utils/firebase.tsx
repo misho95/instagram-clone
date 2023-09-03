@@ -23,7 +23,14 @@ import {
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-import { PostsType, postCommentsType, postLikeType, userType } from "./zustand";
+import {
+  PostsType,
+  directChatType,
+  directChatUser,
+  postCommentsType,
+  postLikeType,
+  userType,
+} from "./zustand";
 import { notifType } from "./zustand";
 
 const firebaseConfig = {
@@ -339,6 +346,22 @@ export const getPostCommentsIdWIthPostId = async (id: string) => {
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
     const getData = doc.data() as postCommentsType;
+    data.push(getData);
+  });
+  return data;
+};
+
+export const getDataFromServerByuserId = async (
+  server: string,
+  user: directChatUser[] | undefined
+) => {
+  const q = query(collection(db, server), where("users", "==", user));
+
+  const data: directChatType[] = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    const getData = doc.data() as directChatType;
     data.push(getData);
   });
   return data;
