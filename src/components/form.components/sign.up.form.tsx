@@ -2,6 +2,8 @@ import Input from "./input";
 import fbIcon from "../../assets/images/cropped-FB-Icon-1.png";
 import { useState, useEffect } from "react";
 import { FormEvent } from "react";
+import { userType } from "../../utils/zustand";
+import { getRealTimeCollectionAndSetIt } from "../../utils/helper.script";
 
 interface PropsType {
   submitHandler: (
@@ -14,7 +16,7 @@ interface PropsType {
 }
 
 const SignUpForm = ({ submitHandler, signUpFormError }: PropsType) => {
-  // const [usersData, setUsersData] = useState<userType[] | null>(null);
+  const [usersData, setUsersData] = useState<string[] | null>(null);
   const [userName, setUserName] = useState("");
   const [userNameError, setUserNameError] = useState<string | null>(null);
   const [fullName, setFullName] = useState<string>("");
@@ -26,17 +28,38 @@ const SignUpForm = ({ submitHandler, signUpFormError }: PropsType) => {
   const [rePass, setRePass] = useState<string>("");
   const [rePassError, setRePassError] = useState<null | string>(null);
   const [save, setSave] = useState<boolean>(false);
+  const [userTrue, setUserTrue] = useState<boolean | null>(null);
 
   const waitServerToGetUserData = async () => {
-    // await getRealTimeServerCollectionAndSetIt("users", setUsersData);
+    await getRealTimeCollectionAndSetIt("users", setUsersData);
   };
 
   useEffect(() => {
     waitServerToGetUserData();
   }, []);
 
+  useEffect(() => {
+    if (userName !== "") {
+      const checkUserName = usersData.find((usr) => {
+        if (usr === userName) return usr;
+      });
+      if (checkUserName) {
+        setUserTrue(false);
+      } else {
+        setUserTrue(true);
+      }
+    } else {
+      setUserTrue(null);
+    }
+  }, [userName]);
+
   const submitData = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!userTrue) {
+      return;
+    }
+
     if (userName === "") {
       setUserNameError("Please Fill The Field");
       return;
@@ -95,6 +118,15 @@ const SignUpForm = ({ submitHandler, signUpFormError }: PropsType) => {
           value={userName}
           set={setUserName}
         />
+        {userTrue !== null && (
+          <div>
+            {userTrue ? (
+              <div className="text-green-500">Avalable</div>
+            ) : (
+              <div className="text-red-500">Already Used</div>
+            )}
+          </div>
+        )}
         {userNameError && (
           <div className="text-xs text-red-500 p-1">{userNameError}</div>
         )}

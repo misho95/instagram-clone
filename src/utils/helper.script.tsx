@@ -79,6 +79,24 @@ export const getRealTimePostsCollectionWithUserId = async (
     }
   );
 };
+
+export const getRealTimeCollectionAndSetIt = async (
+  server: string,
+  set: (arg: string[]) => void
+) => {
+  onSnapshot(collection(db, server), (querySnapshot) => {
+    const data: string[] = [];
+
+    querySnapshot.forEach((doc) => {
+      // Access individual document data using doc.data()
+      data.push(doc.data().userName);
+    });
+
+    // Now 'data' contains an array of documents from the collection
+    set(data);
+  });
+};
+
 export const getRealTimeFeedsCollectionAndSetIt = async (
   server: string,
   currentUserId: string,
