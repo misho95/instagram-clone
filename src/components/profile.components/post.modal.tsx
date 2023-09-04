@@ -20,6 +20,7 @@ import { v4 } from "uuid";
 import PostComment from "./post.comment";
 import { Avatar, AvatarGroup } from "@mui/material";
 import PostLikeUserConatiner from "./post.like.user.container";
+import { Link } from "react-router-dom";
 
 interface PropsType {
   post: PostsType;
@@ -165,14 +166,17 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
         </div>
         <div className="w-full lg:w-1/2 h-96 sm:h-full flex flex-col sm:justify-between sm:border-l-px1 border-gray-200 ">
           <div className="flex items-center justify-between border-t-px1 lg:border-t-0 lg:border-b-px1 border-gray-200 p-5 relative">
-            <div className="flex items-center gap-3">
+            <Link
+              to={`/${user?.userName}`}
+              className="flex items-center gap-3 cursor-pointer"
+            >
               <Avatar
                 alt={user?.userName}
                 src={user?.avatar}
                 sx={{ width: 28, height: 28 }}
               />
               <span> {user?.userName}</span>
-            </div>
+            </Link>
             <button onClick={() => setShowPostSettings(!showPostSettings)}>
               <span className="material-symbols-outlined">more_horiz</span>
             </button>

@@ -7,6 +7,7 @@ import {
   updateNotifSeenStatus,
 } from "../../utils/firebase";
 import { userType } from "../../utils/zustand";
+import { Avatar } from "@mui/material";
 
 interface PropsType {
   data: notifType;
@@ -50,7 +51,11 @@ const NotifContent = ({ data }: PropsType) => {
   return (
     <div className="flex items-center gap-3">
       <span className="w-6 h-6">
-        <img src={userInfo?.avatar} className="w-6 h-6 rounded-full" />
+        <Avatar
+          alt={userInfo?.userName}
+          src={userInfo?.avatar}
+          sx={{ width: 24, height: 24 }}
+        />
       </span>
       <span className="text-sm">{data.title}</span>
       <span></span>

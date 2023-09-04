@@ -14,6 +14,7 @@ import {
   deleteDataInServerArray,
 } from "../../utils/firebase";
 import VideoPlayer from "../home.components/video.player";
+import { Link } from "react-router-dom";
 
 interface PropsType {
   data: PostsType;
@@ -130,14 +131,17 @@ const FeedsPost = ({ data }: PropsType) => {
       )}
       <div className="flex flex-col w-80 sm:w-96 gap-5">
         <div className="w-full flex justify-between">
-          <div className="flex gap-3 items-center">
+          <Link
+            to={`/${user?.userName}`}
+            className="flex gap-3 items-center cursor-pointer"
+          >
             <Avatar
               alt={user?.userName}
               src={user?.avatar}
               sx={{ width: 24, height: 24, fontSize: 15 }}
             />
             <span>{user?.userName}</span>
-          </div>
+          </Link>
           <div>
             <button>
               <span className="material-symbols-outlined">more_horiz</span>
