@@ -14,10 +14,19 @@ interface PropsType {
   data: directChatMessageType;
 }
 
+interface seenDataUsers {
+  userId: string;
+}
+
+interface seenData {
+  id: string;
+  usersSeen: seenDataUsers[];
+}
+
 const ChatMessageComponent = ({ data }: PropsType) => {
   const currentUser = userSignIn((state) => state.user);
   const [user, setUser] = useState<userType | null>(null);
-  const [seenData, setSeenData] = useState();
+  const [seenData, setSeenData] = useState<seenData | undefined>();
 
   const getUserData = async () => {
     const userData = await getDataFromServer("users", data.userId);
@@ -27,7 +36,8 @@ const ChatMessageComponent = ({ data }: PropsType) => {
 
   const getSeenData = async () => {
     const seenData = await getDataFromServer("chatSeen", data.id);
-    setSeenData(seenData);
+    const casterSeenData: seenData = seenData as seenData;
+    setSeenData(casterSeenData);
   };
 
   const updateSeenData = async () => {

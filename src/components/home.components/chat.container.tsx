@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, KeyboardEvent } from "react";
 import ChatMessageComponent from "./chat.message.component";
 import { getRealTimeUpdateAndSetIt } from "../../utils/helper.script";
 import {
@@ -104,6 +104,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
 
       await addNewDataInServerStorage("chatSeen", messageId, {
         id: messageId,
+        chatId: userChatActive.chatId,
         usersSeen: [],
       });
     }
@@ -112,6 +113,16 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
   const scrollToBottom = () => {
     if (chatContainer.current) {
       chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
+    }
+  };
+
+  const handleKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (input !== "" || input !== "") {
+        sendNewMessage();
+      }
+      setInput("");
     }
   };
 
@@ -150,6 +161,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
               placeholder="message"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyPress}
             />
             <button
               onClick={() => {
