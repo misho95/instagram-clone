@@ -85,7 +85,6 @@ export const getDataFromServer = async (server: string, id: string) => {
     return docSnap.data();
   } else {
     // docSnap.data() will be undefined in this case
-    console.log("No such document!");
   }
 };
 

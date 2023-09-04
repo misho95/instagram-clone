@@ -179,7 +179,7 @@ const FeedsPost = ({ data }: PropsType) => {
               onClick={() => setOpenPostsModal(!openPostsModal)}
               className="flex w-fit h-fit p-1 rounded-full justify-center items-center relative"
             >
-              <span className="material-symbols-outlined">chat</span>
+              <span className="material-symbols-outlined">comment</span>
               <div className="absolute top-0 right-0 bg-red-500 w-4 h-4 flex justify-center items-center text-sm rounded-full text-white">
                 {commentsData && commentsData.comments.length}
               </div>

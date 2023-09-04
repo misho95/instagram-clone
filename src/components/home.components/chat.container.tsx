@@ -7,7 +7,12 @@ import {
   userSignIn,
 } from "../../utils/zustand";
 import { v4 } from "uuid";
-import { updateDataInServerArray } from "../../utils/firebase";
+import {
+  addNewDataInServerStorage,
+  updateDataInServerArray,
+  getDataFromServer,
+  getDataFromServerByuserId,
+} from "../../utils/firebase";
 
 interface PropsType {
   userChatActive: loadedChatUsersType | null | undefined;
@@ -31,11 +36,75 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
   };
 
   const sendNewMessage = async () => {
-    if (chat && currentUser) {
+    if (chat && currentUser && userChatActive) {
+      const messageId = v4();
       await updateDataInServerArray("directChat", chat.id, "messages", {
-        id: v4(),
+        id: messageId,
         message: input,
         userId: currentUser.id,
+      });
+
+      ///update Users loadedChats
+
+      const userMessagingData = await getDataFromServer(
+        "users",
+        userChatActive.userId
+      );
+
+      if (userMessagingData) {
+        const findUserInLoadedChatUsers =
+          userMessagingData.loadedChatUsers?.find(
+            (usr: loadedChatUsersType) => {
+              if (usr.userId === currentUser.id) {
+                return usr;
+              }
+            }
+          );
+
+        if (findUserInLoadedChatUsers) {
+          return;
+        } else {
+          const directChatDataOne = await getDataFromServerByuserId(
+            "directChat",
+            [{ userId: currentUser.id }, { userId: userMessagingData.id }]
+          );
+
+          const directChatDataTwo = await getDataFromServerByuserId(
+            "directChat",
+            [{ userId: userMessagingData.id }, { userId: currentUser.id }]
+          );
+
+          if (directChatDataOne.length > 0) {
+            await updateDataInServerArray(
+              "users",
+              userMessagingData.id,
+              "loadedChatUsers",
+              {
+                id: v4(),
+                chatId: directChatDataOne[0].id,
+                userId: currentUser.id,
+              }
+            );
+          } else if (directChatDataTwo.length > 0) {
+            await updateDataInServerArray(
+              "users",
+              userMessagingData.id,
+              "loadedChatUsers",
+              {
+                id: v4(),
+                chatId: directChatDataTwo[0].id,
+                userId: currentUser.id,
+              }
+            );
+          }
+        }
+      }
+
+      //update data in chatSeen
+
+      await addNewDataInServerStorage("chatSeen", messageId, {
+        id: messageId,
+        usersSeen: [],
       });
     }
   };

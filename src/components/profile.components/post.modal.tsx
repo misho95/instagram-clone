@@ -268,7 +268,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                   </span>
                 </button>
                 <button className="flex w-fit h-fit p-1 rounded-full justify-center items-center">
-                  <span className="material-symbols-outlined">chat</span>
+                  <span className="material-symbols-outlined">comment</span>
                 </button>
                 <button className="flex w-fit h-fit p-1 rounded-full justify-center items-center">
                   <span className="material-symbols-outlined">send</span>

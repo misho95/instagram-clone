@@ -1,6 +1,13 @@
-import { getDataFromServer } from "../../utils/firebase";
+import {
+  getDataFromServer,
+  updateDataInServerArray,
+} from "../../utils/firebase";
 import { useState, useEffect } from "react";
-import { directChatMessageType, userType } from "../../utils/zustand";
+import {
+  directChatMessageType,
+  userSignIn,
+  userType,
+} from "../../utils/zustand";
 import { Avatar } from "@mui/material";
 
 interface PropsType {
@@ -8,7 +15,9 @@ interface PropsType {
 }
 
 const ChatMessageComponent = ({ data }: PropsType) => {
+  const currentUser = userSignIn((state) => state.user);
   const [user, setUser] = useState<userType | null>(null);
+  const [seenData, setSeenData] = useState();
 
   const getUserData = async () => {
     const userData = await getDataFromServer("users", data.userId);
@@ -16,9 +25,29 @@ const ChatMessageComponent = ({ data }: PropsType) => {
     setUser(castedUser);
   };
 
+  const getSeenData = async () => {
+    const seenData = await getDataFromServer("chatSeen", data.id);
+    setSeenData(seenData);
+  };
+
+  const updateSeenData = async () => {
+    if (currentUser) {
+      await updateDataInServerArray("chatSeen", data.id, "usersSeen", {
+        userId: currentUser.id,
+      });
+    }
+  };
+
   useEffect(() => {
     getUserData();
+    getSeenData();
   }, []);
+
+  useEffect(() => {
+    if (seenData) {
+      updateSeenData();
+    }
+  }, [seenData]);
 
   return (
     <div className="flex gap-3">
