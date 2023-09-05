@@ -21,6 +21,8 @@ import PostComment from "./post.comment";
 import { Avatar, AvatarGroup } from "@mui/material";
 import PostLikeUserConatiner from "./post.like.user.container";
 import { Link } from "react-router-dom";
+import EmojiPicker from "emoji-picker-react";
+import { Emoji } from "emoji-picker-react";
 
 interface PropsType {
   post: PostsType;
@@ -48,6 +50,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   const chatContainer = useRef<HTMLDivElement | null>(null);
   const [ifUserLikes, setIfUserLikes] = useState(false);
   const [likesData, setLikesData] = useState<likesDataType | null>(null);
+  const [showEmoji, setShowEmoji] = useState(false);
 
   const waitFetch = async () => {
     const userData = await getDataFromServer("users", post.userId);
@@ -82,6 +85,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
         { id: v4(), user: currentUser.id, comment: commentText }
       );
       setCommentText("");
+      setShowEmoji(false);
     }
   };
 
@@ -126,6 +130,10 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
     if (chatContainer.current) {
       chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
     }
+  };
+
+  const handleEmoji = (emojiObj: any) => {
+    setCommentText(commentText + emojiObj.emoji);
   };
 
   useEffect(() => {
@@ -227,7 +235,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                 </div>
               )}
             </div>
-            <div className="flex flex-col gap-1 ">
+            <div className="flex flex-col gap-1 relative">
               <div className="w-full p-2">
                 <AvatarGroup
                   sx={{
@@ -284,18 +292,29 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Add a comment..."
-                  className="w-full h-10 focus:outline-none resize-none pr-16"
+                  className="w-full h-10 focus:outline-none resize-none pr-24"
                 />
-                <button
-                  onClick={submitNewComment}
-                  disabled={commentText === "" ? true : false}
-                  className={`${
-                    commentText === "" ? "text-sky-100" : "text-sky-500"
-                  } absolute right-10 top-1/2 -translate-y-1/2 sm:top-3 sm:-translate-y-0 z-40`}
-                >
-                  Post
-                </button>
+
+                <div className="absolute right-10 top-1/2 -translate-y-1/2 sm:top-3 sm:-translate-y-0 z-40 flex gap-3">
+                  <button onClick={() => setShowEmoji(!showEmoji)}>
+                    <Emoji unified="1f603" size={25} />
+                  </button>
+                  <button
+                    onClick={submitNewComment}
+                    disabled={commentText === "" ? true : false}
+                    className={`${
+                      commentText === "" ? "text-sky-100" : "text-sky-500"
+                    }`}
+                  >
+                    Post
+                  </button>
+                </div>
               </div>
+              {showEmoji && (
+                <div className="absolute bottom-20 right-5">
+                  <EmojiPicker onEmojiClick={(e) => handleEmoji(e)} />
+                </div>
+              )}
             </div>
           </div>
         </div>

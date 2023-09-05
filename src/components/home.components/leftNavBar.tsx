@@ -57,7 +57,6 @@ const LeftNavBar = () => {
         },
         0
       );
-      console.log("reduce", reduce);
       if (reduce) {
         setMessageNotifCount(reduce);
       } else {

@@ -13,6 +13,8 @@ import {
   getDataFromServerByuserId,
   changeDataInServerWidthId,
 } from "../../utils/firebase";
+import EmojiPicker from "emoji-picker-react";
+import { Emoji } from "emoji-picker-react";
 
 interface PropsType {
   userChatActive: loadedChatUsersType | null | undefined;
@@ -24,6 +26,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
   const [input, setInput] = useState("");
   const [chat, setChat] = useState<directChatType | null>(null);
   const chatContainer = useRef<HTMLDivElement | null>(null);
+  const [showEmoji, setShowEmoji] = useState(false);
 
   const waitChatDataAndSetIt = async () => {
     if (userChatActive) {
@@ -142,6 +145,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
         sendNewMessage();
       }
       setInput("");
+      setShowEmoji(false);
     }
   };
 
@@ -163,6 +167,10 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
         updated
       );
     }
+  };
+
+  const handleEmoji = (emojiObj: any) => {
+    setInput(input + emojiObj.emoji);
   };
 
   useEffect(() => {
@@ -201,23 +209,31 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
           </div>
           <div className="relative">
             <textarea
-              className="w-full bg-gray-200/80 rounded-md resize-none p-2 focus:outline-none"
+              className="w-full bg-gray-200/80 rounded-md resize-none p-2 focus:outline-none pr-20"
               placeholder="message"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
             />
-            <button
-              onClick={() => {
-                sendNewMessage(), setInput("");
-              }}
-              disabled={input === "" ? true : false}
-              className={`absolute right-2 top-1/2 -translate-y-1/2 ${
-                input === "" ? "text-sky-200" : "text-sky-500"
-              }`}
-            >
-              Send
-            </button>
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+              <button onClick={() => setShowEmoji(!showEmoji)}>
+                <Emoji unified="1f603" size={25} />
+              </button>
+              <button
+                onClick={() => {
+                  sendNewMessage(), setInput(""), setShowEmoji(false);
+                }}
+                disabled={input === "" ? true : false}
+                className={` ${input === "" ? "text-sky-200" : "text-sky-500"}`}
+              >
+                Send
+              </button>
+            </div>
+            {showEmoji && (
+              <div className="absolute bottom-24 right-1">
+                <EmojiPicker onEmojiClick={(e) => handleEmoji(e)} />
+              </div>
+            )}
           </div>
         </div>
       )}
