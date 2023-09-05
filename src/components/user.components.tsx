@@ -6,7 +6,7 @@ const UserComponent = () => {
   const user = userSignIn((state) => state.user);
 
   return (
-    <div className="fixed right-10 top-10 w-60 flex justify-between items-center">
+    <div className="hidden sm:flex fixed right-10 top-10 w-60 justify-between items-center">
       <Link to={`/${user?.userName}`} className="flex gap-3">
         <div>
           <Avatar
