@@ -50,6 +50,7 @@ export interface loadedChatUsersType {
   id: string;
   chatId: string;
   userId: string;
+  notif: boolean;
 }
 
 export interface userType {

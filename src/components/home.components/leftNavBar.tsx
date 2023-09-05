@@ -1,4 +1,8 @@
-import { userSignIn, activeNav } from "../../utils/zustand";
+import {
+  userSignIn,
+  activeNav,
+  loadedChatUsersType,
+} from "../../utils/zustand";
 import NavBarLinks from "./nav.bar.links";
 import { useState, useEffect } from "react";
 import { singOutCurrentUser } from "../../utils/firebase";
@@ -19,6 +23,7 @@ const LeftNavBar = () => {
   const [openPostModal, setOpenPostModal] = useState(false);
   const [notifCount, setNotifCount] = useState(0);
   const [avatarLoading, setAvatarLoading] = useState(true);
+  const [messageNotifCount, setMessageNotifCount] = useState<number>(0);
 
   useEffect(() => {
     if (user?.notif) {
@@ -38,6 +43,26 @@ const LeftNavBar = () => {
 
     if (user) {
       setAvatarLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user && user.loadedChatUsers) {
+      const reduce: number = user.loadedChatUsers.reduce(
+        (val: number, el: loadedChatUsersType) => {
+          if (el.notif) {
+            return (val += 1);
+          }
+          return val;
+        },
+        0
+      );
+      console.log("reduce", reduce);
+      if (reduce) {
+        setMessageNotifCount(reduce);
+      } else {
+        setMessageNotifCount(0);
+      }
     }
   }, [user]);
 
@@ -100,7 +125,7 @@ const LeftNavBar = () => {
           name={"Messages"}
           link={""}
           mobile={"show"}
-          notif={0}
+          notif={messageNotifCount}
         />
         <NavBarLinks
           onClickHandler={() => {

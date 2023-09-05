@@ -8,10 +8,10 @@ import {
 } from "../../utils/zustand";
 import { v4 } from "uuid";
 import {
-  addNewDataInServerStorage,
   updateDataInServerArray,
   getDataFromServer,
   getDataFromServerByuserId,
+  changeDataInServerWidthId,
 } from "../../utils/firebase";
 
 interface PropsType {
@@ -62,6 +62,31 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
           );
 
         if (findUserInLoadedChatUsers) {
+          findUserInLoadedChatUsers.notif = true;
+          const notifUser = await getDataFromServer(
+            "users",
+            userChatActive.userId
+          );
+
+          if (notifUser) {
+            const updated = notifUser.loadedChatUsers.map(
+              (data: loadedChatUsersType) => {
+                if (data.id === findUserInLoadedChatUsers.id) {
+                  return findUserInLoadedChatUsers;
+                } else {
+                  return data;
+                }
+              }
+            );
+
+            await changeDataInServerWidthId(
+              "users",
+              notifUser.id,
+              "loadedChatUsers",
+              updated
+            );
+          }
+
           return;
         } else {
           const directChatDataOne = await getDataFromServerByuserId(
@@ -83,6 +108,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
                 id: v4(),
                 chatId: directChatDataOne[0].id,
                 userId: currentUser.id,
+                notif: true,
               }
             );
           } else if (directChatDataTwo.length > 0) {
@@ -94,19 +120,12 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
                 id: v4(),
                 chatId: directChatDataTwo[0].id,
                 userId: currentUser.id,
+                notif: true,
               }
             );
           }
         }
       }
-
-      //update data in chatSeen
-
-      await addNewDataInServerStorage("chatSeen", messageId, {
-        id: messageId,
-        chatId: userChatActive.chatId,
-        usersSeen: [],
-      });
     }
   };
 
@@ -126,9 +145,34 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
     }
   };
 
+  const updateNotif = async () => {
+    if (userChatActive && currentUser) {
+      const updatedNotif = userChatActive;
+      updatedNotif.notif = false;
+      const updated = currentUser?.loadedChatUsers.map((data) => {
+        if (data.id === userChatActive?.id) {
+          return updatedNotif;
+        } else {
+          return data;
+        }
+      });
+      await changeDataInServerWidthId(
+        "users",
+        currentUser.id,
+        "loadedChatUsers",
+        updated
+      );
+    }
+  };
+
   useEffect(() => {
     waitChatDataAndSetIt();
   }, []);
+
+  useEffect(() => {
+    updateNotif();
+    console.log(chat);
+  }, [chat, userChatActive]);
 
   useEffect(() => {
     scrollToBottom();

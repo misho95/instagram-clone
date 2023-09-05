@@ -49,7 +49,12 @@ const ChatUserLoader = ({ data, activeUserChat }: PropsType) => {
 
   return (
     <div className="flex justify-between items-center">
-      <div onClick={() => activeUserChat(data)} className="flex gap-3">
+      <div onClick={() => activeUserChat(data)} className="flex gap-3 relative">
+        {data.notif && (
+          <div className="bg-red-500 w-4 h-4 rounded-full text-white flex justify-center items-center text-xs absolute z-10 -top-1 left-3">
+            1
+          </div>
+        )}
         <Avatar
           alt={user?.userName}
           src={user?.avatar}

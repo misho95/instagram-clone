@@ -1,4 +1,11 @@
-import { doc, onSnapshot, collection, query, where } from "firebase/firestore";
+import {
+  doc,
+  onSnapshot,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./firebase";
 import { ref, deleteObject } from "firebase/storage";
@@ -144,3 +151,29 @@ export const deleteImgInStorage = async (imgUrl: string) => {
     console.log(error);
   });
 };
+
+// export const getDataFromServerWhereValueEqualsSomeValue = async (
+//   server: string,
+//   value: string,
+//   equal: string,
+//   set: () => void
+// ) => {
+//   const collectionRef = collection(db, server);
+//   const q = query(collectionRef, where(value, "==", equal));
+
+//   try {
+//     const querySnapshot = await getDocs(q);
+
+//     const dataToReturn = [];
+//     querySnapshot.forEach((doc) => {
+//       // Access the document data
+//       const data = doc.data();
+//       dataToReturn.push(data);
+//     });
+
+//     set(dataToReturn);
+//   } catch (error) {
+//     console.error("Error getting documents:", error);
+//     throw error; // Propagate the error up the call stack
+//   }
+// };

@@ -137,12 +137,14 @@ const ProfileHeader = ({ type, data }: propsType) => {
             id: v4(),
             chatId: directChatDataOne[0].id,
             userId: data.id,
+            notif: false,
           });
         } else if (directChatDataTwo.length > 0) {
           await updateDataInServerArray("users", user.id, "loadedChatUsers", {
             id: v4(),
             chatId: directChatDataTwo[0].id,
             userId: data.id,
+            notif: false,
           });
         }
       }

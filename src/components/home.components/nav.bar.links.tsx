@@ -26,7 +26,7 @@ const NavBarLinks = ({
       } w-fit h-fit relative sm:flex`}
     >
       {notif !== 0 && (
-        <div className="bg-red-500 absolute -left-1 -top-1 rounded-full hidden sm:flex items-center justify-center w-4 h-4 text-xs text-white ">
+        <div className="bg-red-500 absolute -left-1 -top-1 rounded-full flex items-center justify-center w-4 h-4 text-xs text-white ">
           {notif}
         </div>
       )}
