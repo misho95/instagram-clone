@@ -75,7 +75,13 @@ const LeftNavBar = () => {
       {navActive === "search" && <SearchComponent />}
       {navActive === "notif" && <NotifComponent />}
       {navActive === "chat" && <ChatComponent />}
-      <div className="flex flex-row sm:flex-col justify-evenly sm:justify-start sm:gap-3">
+      <div className="flex flex-row sm:flex-col justify-evenly sm:justify-start sm:gap-8">
+        <Link
+          to={"/"}
+          className="hidden sm:block text-2xl font-customCursive font-bold mb-4"
+        >
+          Instagram
+        </Link>
         <NavBarLinks
           onClickHandler={() => {
             setNavActive(null);

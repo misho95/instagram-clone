@@ -29,6 +29,9 @@ export default {
         h30: "30rem",
         h20: "20rem",
       },
+      fontFamily: {
+        customCursive: "Satisfy",
+      },
     },
   },
   plugins: [],
