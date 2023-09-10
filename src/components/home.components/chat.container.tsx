@@ -5,6 +5,7 @@ import {
   directChatType,
   loadedChatUsersType,
   userSignIn,
+  userType,
 } from "../../utils/zustand";
 import { v4 } from "uuid";
 import {
@@ -27,6 +28,15 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
   const [chat, setChat] = useState<directChatType | null>(null);
   const chatContainer = useRef<HTMLDivElement | null>(null);
   const [showEmoji, setShowEmoji] = useState(false);
+  const [user, setUser] = useState<userType | null>(null);
+
+  const waitUserData = async () => {
+    if (userChatActive) {
+      const userData = await getDataFromServer("users", userChatActive.userId);
+      const casterUserData: userType = userData as userType;
+      setUser(casterUserData);
+    }
+  };
 
   const waitChatDataAndSetIt = async () => {
     if (userChatActive) {
@@ -175,6 +185,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
 
   useEffect(() => {
     waitChatDataAndSetIt();
+    waitUserData();
   }, []);
 
   useEffect(() => {
@@ -195,6 +206,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
         Close Chat
       </button>
       {!chat && <div className="p-2 text-gray-500">no chat loaded</div>}
+      <div className="text-lg font-bold p-2">{user?.userName}</div>
       {chat && (
         <div className="w-full h-full flex flex-col gap-3">
           <div
