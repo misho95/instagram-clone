@@ -9,6 +9,7 @@ const MobileHeader = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState<userType[] | null>(null);
   const [notifCount, setNotifCount] = useState(0);
+  const navActive = activeNav((state) => state.active);
   const setActiveNav = activeNav((state) => state.setActive);
 
   const waitDataFromServer = async () => {
@@ -82,7 +83,11 @@ const MobileHeader = () => {
           )}
         </div>
         <div className="w-fit h-fit relative">
-          <button onClick={() => setActiveNav("notif")}>
+          <button
+            onClick={() =>
+              navActive === "notif" ? setActiveNav(null) : setActiveNav("notif")
+            }
+          >
             <span className="material-symbols-outlined">favorite</span>
           </button>
           {notifCount !== 0 && (

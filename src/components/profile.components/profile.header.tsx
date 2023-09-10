@@ -221,7 +221,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
                 </button>
               ) : (
                 <Link
-                  to={"/archive/stories"}
+                  to={""}
                   className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2"
                 >
                   View Archive
@@ -298,7 +298,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
                   </button>
                 ) : (
                   <Link
-                    to={"/archive/stories"}
+                    to={""}
                     className="bg-gray-100 hover:bg-gray-200 rounded-lg p-2"
                   >
                     View Archive

@@ -15,7 +15,7 @@ import {
   deleteImgInStorage,
 } from "../../utils/helper.script";
 import VideoPlayer from "../home.components/video.player";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, KeyboardEvent } from "react";
 import { v4 } from "uuid";
 import PostComment from "./post.comment";
 import { Avatar, AvatarGroup } from "@mui/material";
@@ -136,6 +136,15 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
     setCommentText(commentText + emojiObj.emoji);
   };
 
+  const handleKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (commentText !== "") {
+        submitNewComment();
+      }
+    }
+  };
+
   useEffect(() => {
     waitFetch();
     getCommentsByPostId();
@@ -153,7 +162,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
   return (
     <div
       onClick={() => setOpenPostsModal(false)}
-      className="w-full min-h-screen fixed top-0 left-0 bg-black/50 z-50 flex justify-center items-center py-3 overflow-y-auto"
+      className="w-full min-h-screen fixed top-0 left-0 bg-black/50 z-50 flex justify-center items-start sm:items-center py-3 overflow-y-auto"
     >
       <div
         onClick={(event) => {
@@ -289,6 +298,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
 
               <div className="relative w-full h-fit border-t-px1 border-gray-200 p-2 z-30">
                 <textarea
+                  onKeyDown={handleKeyPress}
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Add a comment..."
@@ -296,7 +306,10 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                 />
 
                 <div className="absolute right-10 top-1/2 -translate-y-1/2 sm:top-3 sm:-translate-y-0 z-40 flex gap-3">
-                  <button onClick={() => setShowEmoji(!showEmoji)}>
+                  <button
+                    onClick={() => setShowEmoji(!showEmoji)}
+                    className="hidden sm:flex"
+                  >
                     <Emoji unified="1f603" size={25} />
                   </button>
                   <button
@@ -311,7 +324,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                 </div>
               </div>
               {showEmoji && (
-                <div className="absolute bottom-20 right-5">
+                <div className="absolute bottom-20 right-5 hidden sm:flex">
                   <EmojiPicker onEmojiClick={(e) => handleEmoji(e)} />
                 </div>
               )}

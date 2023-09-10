@@ -10,6 +10,7 @@ import {
   userType,
 } from "../../utils/zustand";
 import { Avatar } from "@mui/material";
+import { Link } from "react-router-dom";
 
 interface PropsType {
   data: postCommentsTypeComment;
@@ -52,14 +53,14 @@ const PostComment = ({ data, postId }: PropsType) => {
           <span className="material-symbols-outlined text-sm">delete</span>
         </button>
       )}
-      <div className="flex gap-3 items-center">
+      <Link to={`/${user?.userName}`} className="flex gap-3 items-center w-fit">
         <Avatar
           alt={user?.userName}
           src={user?.avatar}
           sx={{ width: 24, height: 24 }}
         />
         <span className="text-sm">{user?.userName}</span>
-      </div>
+      </Link>
       <div className="p-3">{data.comment}</div>
     </div>
   );

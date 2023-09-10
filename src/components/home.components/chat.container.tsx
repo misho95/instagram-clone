@@ -141,7 +141,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
   const handleKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      if (input !== "" || input !== "") {
+      if (input !== "") {
         sendNewMessage();
       }
       setInput("");
@@ -179,7 +179,6 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
 
   useEffect(() => {
     updateNotif();
-    console.log(chat);
   }, [chat, userChatActive]);
 
   useEffect(() => {
@@ -215,8 +214,11 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
             />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-              <button onClick={() => setShowEmoji(!showEmoji)}>
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 items-center gap-2 flex">
+              <button
+                onClick={() => setShowEmoji(!showEmoji)}
+                className="hidden sm:flex"
+              >
                 <Emoji unified="1f603" size={25} />
               </button>
               <button
@@ -230,7 +232,7 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
               </button>
             </div>
             {showEmoji && (
-              <div className="absolute bottom-24 right-1">
+              <div className="absolute bottom-24 right-1 hidden sm:flex">
                 <EmojiPicker onEmojiClick={(e) => handleEmoji(e)} />
               </div>
             )}
