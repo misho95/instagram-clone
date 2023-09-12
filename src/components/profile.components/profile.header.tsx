@@ -5,6 +5,7 @@ import {
   deleteDataInServerArray,
   addNewDataInServerStorage,
   getDataFromServerByuserId,
+  getPostsWhereIProvideUserId,
 } from "../../utils/firebase";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -25,6 +26,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
   const [openSettingModal, setOpenSettingsModal] = useState<boolean>(false);
   const [showFollowers, setShowFollowers] = useState<boolean>(false);
   const [showFollowings, setShowFollowins] = useState<boolean>(false);
+  const [postCount, setPostCount] = useState(0);
 
   const followUser = async (id: string) => {
     const data = await getDataFromServer("users", id);
@@ -151,6 +153,13 @@ const ProfileHeader = ({ type, data }: propsType) => {
     }
   };
 
+  const postsCount = async () => {
+    if (data) {
+      const posts = await getPostsWhereIProvideUserId("posts", data.id);
+      setPostCount(Number(posts.length));
+    }
+  };
+
   useEffect(() => {
     if (user?.following) {
       const find = user.following.find((usr) => {
@@ -164,6 +173,10 @@ const ProfileHeader = ({ type, data }: propsType) => {
       }
     }
   }, [data, user]);
+
+  useEffect(() => {
+    postsCount();
+  }, [data, type]);
 
   return (
     <>
@@ -308,7 +321,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
             </div>
           </div>
           <div className="hidden sm:flex justify-around">
-            <span>{data?.posts ? data?.posts?.length : 0} posts</span>
+            <span>{postCount} posts</span>
             <span
               className="cursor-pointer"
               onClick={() => setShowFollowers(true)}
@@ -342,7 +355,7 @@ const ProfileHeader = ({ type, data }: propsType) => {
         />
       )}
       <div className="flex sm:hidden justify-around">
-        <span>{data?.posts ? data?.posts?.length : 0} posts</span>
+        <span>{postCount} posts</span>
         <span className="cursor-pointer" onClick={() => setShowFollowers(true)}>
           {data?.followers ? data?.followers?.length : 0} followers
         </span>

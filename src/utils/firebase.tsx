@@ -365,3 +365,19 @@ export const getDataFromServerByuserId = async (
   });
   return data;
 };
+
+export const getPostsWhereIProvideUserId = async (
+  server: string,
+  userId: string
+) => {
+  const q = query(collection(db, server), where("userId", "==", userId));
+
+  const data: directChatType[] = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    const getData = doc.data() as directChatType;
+    data.push(getData);
+  });
+  return data;
+};
