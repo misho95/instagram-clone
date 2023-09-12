@@ -8,10 +8,14 @@ import {
 } from "../../utils/zustand";
 import PostModal from "../profile.components/post.modal";
 import { Avatar, Skeleton } from "@mui/material";
-import { getRealTimeUpdateAndSetIt } from "../../utils/helper.script";
+import {
+  getRealTimeUpdateAndSetIt,
+  deleteImgInStorage,
+} from "../../utils/helper.script";
 import {
   updateDataInServerArray,
   deleteDataInServerArray,
+  deleteDataInServer,
 } from "../../utils/firebase";
 import VideoPlayer from "../home.components/video.player";
 import { Link } from "react-router-dom";
@@ -40,6 +44,7 @@ const FeedsPost = ({ data }: PropsType) => {
   const [likesData, setLikesData] = useState<likesDataType | null>();
   const [ifUserLikes, setIfUserLikes] = useState<boolean>(false);
   const [commentsData, setCommentsData] = useState<postCommentsType>();
+  const [showPostSettings, setShowPostSettings] = useState<boolean>(false);
 
   const waitUserData = async () => {
     const userData = await getDataFromServer("users", data.userId);
@@ -93,6 +98,16 @@ const FeedsPost = ({ data }: PropsType) => {
     }
   };
 
+  const deletePost = async () => {
+    if (user && data) {
+      await deleteDataInServer("posts", data.id);
+      await deleteDataInServer("likes", data.likesId);
+      await deleteDataInServer("postComments", data.commentsRoomId);
+      await deleteImgInStorage(data.link);
+      setOpenPostsModal(false);
+    }
+  };
+
   useEffect(() => {
     waitUserData();
     waitLikesDataAndSetIt();
@@ -143,12 +158,37 @@ const FeedsPost = ({ data }: PropsType) => {
             <span>{user?.userName}</span>
           </Link>
           <div>
-            <button>
+            <button onClick={() => setShowPostSettings(!showPostSettings)}>
               <span className="material-symbols-outlined">more_horiz</span>
             </button>
+            {showPostSettings && (
+              <div
+                onClick={() => setShowPostSettings(false)}
+                className="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center z-50"
+              >
+                <div
+                  onClick={(event) => {
+                    event.stopPropagation();
+                  }}
+                  className="bg-white p-5 flex flex-col gap-3 rounded-md"
+                >
+                  {type === "owner" && (
+                    <button onClick={deletePost} className="text-red-500">
+                      Delete Post
+                    </button>
+                  )}
+                  <button onClick={() => setShowPostSettings(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        <div>
+        <div className="flex flex-col gap-3">
+          {data.titleText && (
+            <span className="text-sm px-3">{data.titleText}</span>
+          )}
           {data.type === "image" && (
             <img
               onClick={() => setOpenPostsModal(!openPostsModal)}

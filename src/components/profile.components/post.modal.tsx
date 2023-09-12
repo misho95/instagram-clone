@@ -171,15 +171,20 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
         className="w-4/5 md:w-3/5 lg:w-1/2 bg-white flex flex-col md:flex-row rounded-b-md lg:rounded-r-md h-fit sm:h-4/5 "
       >
         <div className="w-full lg:w-2/3 flex justify-center items-center p-3 h-full">
-          {post.type === "image" && (
-            <img
-              src={post.link}
-              className="w-full sm:w-11/12 h-60 sm:h-full sm:max-h-full object-cover"
-            />
-          )}
-          {post.type === "video" && (
-            <VideoPlayer w={"w-full"} h={"h-full"} src={post.link} />
-          )}
+          <div className="flex flex-col gap-2 w-full items-center justify-center">
+            {post.type === "image" && (
+              <img
+                src={post.link}
+                className="w-full sm:w-11/12 h-60 sm:h-full sm:max-h-full object-cover"
+              />
+            )}
+            {post.type === "video" && (
+              <VideoPlayer w={"w-full"} h={"h-full"} src={post.link} />
+            )}
+            {post.titleText && (
+              <span className="text-left w-full px-3">{post.titleText}</span>
+            )}
+          </div>
         </div>
         <div className="w-full lg:w-1/2 h-96 sm:h-full flex flex-col sm:justify-between sm:border-l-px1 border-gray-200 ">
           <div className="flex items-center justify-between border-t-px1 lg:border-t-0 lg:border-b-px1 border-gray-200 p-5 relative">
@@ -200,7 +205,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
             {showPostSettings && (
               <div
                 onClick={() => setShowPostSettings(false)}
-                className="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center"
+                className="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center z-50"
               >
                 <div
                   onClick={(event) => {

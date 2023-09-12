@@ -24,6 +24,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
   const [error, setError] = useState("");
   const [type, setType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [titleText, setTitleText] = useState("");
 
   const activeUploadButton = () => {
     if (fileButton.current) {
@@ -77,6 +78,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
         userId: user.id,
         link: imgUrl,
         type,
+        titleText,
         date: date.toString(),
         commentsRoomId: sharedId,
         likesId: sharedId,
@@ -182,13 +184,21 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
             }}
             className="bg-white p-5 rounded-lg w-2/3 sm:1/2 h-1/2 flex flex-col gap-5 justify-between"
           >
-            <div className="w-full flex justify-center items-center">
+            <div className="w-full flex flex-col gap-3 justify-center items-center">
               {type === "image" && (
                 <img src={imgUrl} className="w-60 h-60 object-cover" />
               )}
               {type === "video" && (
                 <VideoPlayer w={"w-40"} h={"h-40"} src={imgUrl} />
               )}
+              <div className="w-full flex justify-center">
+                <textarea
+                  className="w-80 resize-none border-px1 p-2 focus:outline-none"
+                  placeholder="title text..."
+                  value={titleText}
+                  onChange={(e) => setTitleText(e.target.value)}
+                />
+              </div>
             </div>
             <div className="flex justify-between">
               <button
