@@ -1,9 +1,23 @@
 import FeedsPage from "../components/feeds.components/feeds.page";
 import LeftNavBar from "../components/home.components/leftNavBar";
-import { activeNav } from "../utils/zustand";
+import { activeNav, userSignIn } from "../utils/zustand";
+import { updateDataInServer } from "../utils/firebase";
+import { useEffect } from "react";
 
 const HomePage = () => {
   const setNavActive = activeNav((state) => state.setActive);
+  const user = userSignIn((state) => state.user);
+
+  const waitUserUpdate = async () => {
+    if (user) {
+      await updateDataInServer("users", user.id, "userActive", true);
+      console.log("testing");
+    }
+  };
+
+  useEffect(() => {
+    waitUserUpdate();
+  }, []);
 
   return (
     <div className="flex">

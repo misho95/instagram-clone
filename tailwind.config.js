@@ -5,9 +5,11 @@ export default {
     extend: {
       width: {
         postContainer: "332px",
+        activeW: "9px",
       },
       height: {
         px1: "1px",
+        activeH: "9px",
         mobile: "470px",
         postComment: "280px",
         customScreenHeigth: "calc(100vh - 220px)",

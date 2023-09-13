@@ -67,6 +67,7 @@ export interface userType {
   notif: notifType[];
   chats: chatsType[];
   loadedChatUsers: loadedChatUsersType[];
+  userActive: boolean;
 }
 
 export interface directChatMessageType {

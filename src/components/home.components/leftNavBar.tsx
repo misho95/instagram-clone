@@ -13,6 +13,7 @@ import PostModal from "./post.modal";
 import Skeleton from "@mui/material/Skeleton";
 import { Avatar } from "@mui/material";
 import ChatComponent from "./chat.component";
+import { updateDataInServer } from "../../utils/firebase";
 
 const LeftNavBar = () => {
   const user = userSignIn((state) => state.user);
@@ -24,6 +25,12 @@ const LeftNavBar = () => {
   const [notifCount, setNotifCount] = useState(0);
   const [avatarLoading, setAvatarLoading] = useState(true);
   const [messageNotifCount, setMessageNotifCount] = useState<number>(0);
+
+  const updateUserActiveStatus = async () => {
+    if (user) {
+      await updateDataInServer("users", user.id, "userActive", false);
+    }
+  };
 
   useEffect(() => {
     if (user?.notif) {
@@ -68,6 +75,7 @@ const LeftNavBar = () => {
   const logOutUser = () => {
     singOutCurrentUser();
     setUser(null);
+    updateUserActiveStatus();
   };
 
   return (
@@ -94,7 +102,9 @@ const LeftNavBar = () => {
         />
         <NavBarLinks
           onClickHandler={() => {
-            setNavActive("search");
+            navActive === "search"
+              ? setNavActive(null)
+              : setNavActive("search");
           }}
           icons={"search"}
           name={"Search"}
@@ -124,7 +134,7 @@ const LeftNavBar = () => {
         />
         <NavBarLinks
           onClickHandler={() => {
-            setNavActive("chat");
+            navActive === "chat" ? setNavActive(null) : setNavActive("chat");
           }}
           icons={"chat"}
           name={"Messages"}
@@ -134,7 +144,7 @@ const LeftNavBar = () => {
         />
         <NavBarLinks
           onClickHandler={() => {
-            setNavActive("notif");
+            navActive === "notif" ? setNavActive(null) : setNavActive("notif");
           }}
           icons={"favorite"}
           name={"Notifications"}
@@ -177,9 +187,9 @@ const LeftNavBar = () => {
           </span>
         </Link>
       </div>
-      <div className="hidden sm:block h-fit">
+      <div className="hidden sm:block h-fit z-50">
         {openMore && (
-          <div className="flex flex-col w-40 bg-white shadow-sm shadow-gray-300 mb-5 gap-3 p-2 ">
+          <div className="flex flex-col w-40 bg-white shadow-sm shadow-gray-300 mb-5 gap-3 p-2 z-50">
             <button className="hover:bg-gray-100 w-full p-3 rounded-md">
               Settings
             </button>

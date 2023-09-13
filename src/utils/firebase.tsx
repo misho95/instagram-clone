@@ -20,6 +20,7 @@ import {
   arrayUnion,
   arrayRemove,
   deleteDoc,
+  writeBatch,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -380,4 +381,24 @@ export const getPostsWhereIProvideUserId = async (
     data.push(getData);
   });
   return data;
+};
+
+export const updateDataInServer = async (
+  server: string,
+  id: string,
+  name: string,
+  update: any
+) => {
+  try {
+    // Get a new write batch
+    const batch = writeBatch(db);
+
+    // Set the value of 'NYC'
+    const serRef = doc(db, server, id);
+    batch.update(serRef, { [name]: update });
+    // Commit the batch
+    await batch.commit();
+  } catch (error) {
+    console.log(error);
+  }
 };

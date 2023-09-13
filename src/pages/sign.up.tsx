@@ -33,6 +33,7 @@ const SignUp = () => {
           avatar: "",
           following: [],
           followers: [],
+          userActive: false,
         });
       }
     } catch (error) {

@@ -186,8 +186,11 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
 
   useEffect(() => {
     waitChatDataAndSetIt();
-    waitUserData();
   }, []);
+
+  useEffect(() => {
+    waitUserData();
+  }, [user]);
 
   useEffect(() => {
     updateNotif();
@@ -208,11 +211,18 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
       </button>
       {!chat && <div className="p-2 text-gray-500">no chat loaded</div>}
       <div className="p-2 flex gap-2 items-center">
-        <Avatar
-          alt={user?.userName}
-          src={user?.avatar}
-          sx={{ width: 18, height: 18 }}
-        />
+        <div className="w-fit h-fit relative">
+          <Avatar
+            alt={user?.userName}
+            src={user?.avatar}
+            sx={{ width: 24, height: 24 }}
+          />
+          <div
+            className={`absolute h-activeH w-activeW rounded-full bottom-0 -right-0 border-px1 border-white ${
+              user?.userActive ? "bg-green-500" : "bg-red-500"
+            }`}
+          ></div>
+        </div>
 
         <span className="text-lg font-bold">{user?.userName}</span>
       </div>
@@ -227,36 +237,40 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
                 return <ChatMessageComponent key={mes.id} data={mes} />;
               })}
           </div>
-          <div className="relative">
-            <textarea
-              className="w-full bg-gray-200/80 rounded-md resize-none p-2 focus:outline-none pr-20"
-              placeholder="message"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyPress}
-            />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 items-center gap-2 flex">
-              <button
-                onClick={() => setShowEmoji(!showEmoji)}
-                className="hidden sm:flex"
-              >
-                <Emoji unified="1f603" size={25} />
-              </button>
-              <button
-                onClick={() => {
-                  sendNewMessage(), setInput(""), setShowEmoji(false);
-                }}
-                disabled={input === "" ? true : false}
-                className={` ${input === "" ? "text-sky-200" : "text-sky-500"}`}
-              >
-                Send
-              </button>
-            </div>
-            {showEmoji && (
-              <div className="absolute bottom-24 right-1 hidden sm:flex">
-                <EmojiPicker onEmojiClick={(e) => handleEmoji(e)} />
+          <div className=" h-72 w-full">
+            <div className="relative w-full h-fit">
+              <textarea
+                className="w-full bg-gray-200/80 rounded-md resize-none p-2 focus:outline-none pr-20"
+                placeholder="message"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyPress}
+              />
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 items-center gap-2 flex">
+                <button
+                  onClick={() => setShowEmoji(!showEmoji)}
+                  className="hidden sm:flex"
+                >
+                  <Emoji unified="1f603" size={25} />
+                </button>
+                <button
+                  onClick={() => {
+                    sendNewMessage(), setInput(""), setShowEmoji(false);
+                  }}
+                  disabled={input === "" ? true : false}
+                  className={` ${
+                    input === "" ? "text-sky-200" : "text-sky-500"
+                  }`}
+                >
+                  Send
+                </button>
               </div>
-            )}
+              {showEmoji && (
+                <div className="absolute bottom-24 right-1 hidden sm:flex">
+                  <EmojiPicker onEmojiClick={(e) => handleEmoji(e)} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
