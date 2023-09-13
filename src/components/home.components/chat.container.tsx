@@ -16,6 +16,7 @@ import {
 } from "../../utils/firebase";
 import EmojiPicker from "emoji-picker-react";
 import { Emoji } from "emoji-picker-react";
+import { Avatar } from "@mui/material";
 
 interface PropsType {
   userChatActive: loadedChatUsersType | null | undefined;
@@ -206,7 +207,15 @@ const ChatContainer = ({ userChatActive, closeChat }: PropsType) => {
         Close Chat
       </button>
       {!chat && <div className="p-2 text-gray-500">no chat loaded</div>}
-      <div className="text-lg font-bold p-2">{user?.userName}</div>
+      <div className="p-2 flex gap-2 items-center">
+        <Avatar
+          alt={user?.userName}
+          src={user?.avatar}
+          sx={{ width: 18, height: 18 }}
+        />
+
+        <span className="text-lg font-bold">{user?.userName}</span>
+      </div>
       {chat && (
         <div className="w-full h-full flex flex-col gap-3">
           <div
