@@ -16,8 +16,7 @@ const ProtectedRouter = ({ children }: MyComponentProps) => {
   const navigate = useNavigate();
 
   const updateUserActiveStatus = async () => {
-    window.addEventListener("beforeunload", async (event) => {
-      event.preventDefault();
+    window.addEventListener("beforeunload", async () => {
       if (user) {
         await updateDataInServer("users", user.id, "userActive", false);
       }

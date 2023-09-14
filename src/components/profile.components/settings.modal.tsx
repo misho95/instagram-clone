@@ -9,16 +9,12 @@ const SettingsModal = ({ setOpenSettingsModal }: PropsType) => {
   const setUser = userSignIn((state) => state.setUser);
   const user = userSignIn((state) => state.user);
 
-  const updateUserActiveStatus = async () => {
+  const logOutUser = async () => {
     if (user) {
       await updateDataInServer("users", user.id, "userActive", false);
     }
-  };
-
-  const logOutUser = () => {
     singOutCurrentUser();
     setUser(null);
-    updateUserActiveStatus();
   };
 
   return (

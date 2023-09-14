@@ -26,12 +26,6 @@ const LeftNavBar = () => {
   const [avatarLoading, setAvatarLoading] = useState(true);
   const [messageNotifCount, setMessageNotifCount] = useState<number>(0);
 
-  const updateUserActiveStatus = async () => {
-    if (user) {
-      await updateDataInServer("users", user.id, "userActive", false);
-    }
-  };
-
   useEffect(() => {
     if (user?.notif) {
       const filterUnseenNotif = user?.notif.filter((n) => {
@@ -72,10 +66,12 @@ const LeftNavBar = () => {
     }
   }, [user]);
 
-  const logOutUser = () => {
+  const logOutUser = async () => {
+    if (user) {
+      await updateDataInServer("users", user.id, "userActive", false);
+    }
     singOutCurrentUser();
     setUser(null);
-    updateUserActiveStatus();
   };
 
   return (
