@@ -12,6 +12,7 @@ import EditProfile from "./pages/edit.profile";
 import ArchiveStories from "./pages/archive.stories";
 import MobileHeader from "./components/mobile.header";
 import UserComponent from "./components/user.components";
+import ErrorPage from "./pages/error.page";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
         <SignUp />
       </ProtectForms>
     ),
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);
 

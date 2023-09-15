@@ -6,6 +6,7 @@ import { getDataFromServerByUserName } from "../utils/firebase";
 import Profile from "../components/profile.components/profile";
 import { userType } from "../utils/zustand";
 import { getRealTimeUpdateAndSetIt } from "../utils/helper.script";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -14,11 +15,16 @@ const UserProfile = () => {
   const [type, setType] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [dataToSend, setDataToSend] = useState<userType | undefined | null>();
+  const navigate = useNavigate();
 
   const getDataFromServerANdSetIt = async () => {
-    const data = await getDataFromServerByUserName("users", userId);
-    if (data) {
-      await getRealTimeUpdateAndSetIt("users", data[0].id, setDataToSend);
+    try {
+      const data = await getDataFromServerByUserName("users", userId);
+      if (data) {
+        await getRealTimeUpdateAndSetIt("users", data[0].id, setDataToSend);
+      }
+    } catch (error) {
+      navigate("/");
     }
   };
 
