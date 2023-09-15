@@ -10,6 +10,7 @@ import {
 import { v4 } from "uuid";
 import VideoPlayer from "./video.player";
 import LoadingComponent from "../loading.component";
+import { IconCloudUpload } from "@tabler/icons-react";
 
 interface PropsType {
   setOpenPostModal: (arg: boolean) => void;
@@ -61,10 +62,11 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
               console.log(error);
             });
         });
+      } else {
+        setLoading(false);
+        setError("Wrong Fail");
+        return;
       }
-    } else {
-      setError("Wrong Fail");
-      return;
     }
   };
 
@@ -144,11 +146,25 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
             onClick={(event) => {
               event.stopPropagation();
             }}
-            className="bg-white p-5 rounded-lg w-2/3 sm:w-1/2 h-1/2 flex flex-col gap-5 justify-between"
+            className="bg-white p-5 rounded-lg w-2/3 sm:w-1/2 h-fit flex flex-col gap-5 justify-between"
           >
             <h1 className="text-center font-bold text-xl">Create new post</h1>
             <div className="flex flex-col gap-2">
-              {error && <div className="text-sm text-red-500">{error}</div>}
+              <div
+                onClick={activeUploadButton}
+                className="flex flex-col gap-2 justify-center items-center bg-black/5 rounded-lg p-2"
+              >
+                <IconCloudUpload size={50} color={"black"} stroke={1.5} />
+                <h1 className="text-lg font-semibold">Upload File</h1>
+                <p className="text-sm text-black/70 text-center">
+                  We can accept only image or video files
+                </p>
+              </div>
+              {error && (
+                <div className="text-sm text-red-500 w-full text-center">
+                  {error}
+                </div>
+              )}
               <button
                 onClick={activeUploadButton}
                 className="bg-blue-500 text-white p-1 rounded-lg"
@@ -182,7 +198,7 @@ const PostModal = ({ setOpenPostModal }: PropsType) => {
             onClick={(event) => {
               event.stopPropagation();
             }}
-            className="bg-white p-5 rounded-lg w-2/3 sm:1/2 h-1/2 flex flex-col gap-5 justify-between"
+            className="bg-white p-5 rounded-lg w-2/3 sm:1/2 h-fit flex flex-col gap-5 justify-between"
           >
             <div className="w-full flex flex-col gap-3 justify-center items-center">
               {type === "image" && (
