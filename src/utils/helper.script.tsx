@@ -1,4 +1,11 @@
-import { doc, onSnapshot, collection, query, where } from "firebase/firestore";
+import {
+  doc,
+  onSnapshot,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./firebase";
 import { ref, deleteObject } from "firebase/storage";
