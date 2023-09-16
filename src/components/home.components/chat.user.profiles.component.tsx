@@ -1,11 +1,12 @@
-import { followersType } from "../../utils/zustand";
+import { followersType, loadedChatUsersType } from "../../utils/zustand";
 import ChatUserProfile from "./chat.user.profile";
 
 interface PropsType {
   data: followersType[] | undefined;
+  activeUserChat: (arg: loadedChatUsersType) => void;
 }
 
-const ChatUsersProfilesComponent = ({ data }: PropsType) => {
+const ChatUsersProfilesComponent = ({ data, activeUserChat }: PropsType) => {
   const slideUsers = () => {};
 
   return (
@@ -14,7 +15,13 @@ const ChatUsersProfilesComponent = ({ data }: PropsType) => {
       onMouseDown={slideUsers}
     >
       {data?.map((d) => {
-        return <ChatUserProfile userName={d.userName} />;
+        return (
+          <ChatUserProfile
+            key={d.id}
+            userName={d.userName}
+            activeUserChat={activeUserChat}
+          />
+        );
       })}
     </div>
   );
