@@ -17,7 +17,6 @@ const ChatUserProfile = ({ userName }: PropsType) => {
     //await getRealTimeUserDataWithUserName(userName, setUser);
     const userData = await getDataFromServerByUserName("users", userName);
     if (userData) {
-      console.log(userData);
       await getRealTimeUpdateAndSetIt("users", userData[0].id, setUser);
     }
   };
@@ -36,8 +35,6 @@ const ChatUserProfile = ({ userName }: PropsType) => {
     } else {
       setShow(false);
     }
-
-    console.log(user);
   }, [user]);
 
   if (loading) {
