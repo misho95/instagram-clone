@@ -170,8 +170,8 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
         }}
         className="w-4/5 md:w-3/5 lg:w-1/2 bg-white flex flex-col md:flex-row rounded-b-md lg:rounded-r-md h-fit sm:h-4/5 "
       >
-        <div className="w-full lg:w-2/3 flex justify-center items-center p-3 h-full">
-          <div className="flex flex-col gap-2 w-full items-center justify-center">
+        <div className="w-full lg:w-2/3 flex flex-col gap-1 justify-center items-center p-3 h-full">
+          <div className="flex flex-col gap-1 w-full items-center justify-center">
             {post.type === "image" && (
               <img
                 src={post.link}
@@ -181,10 +181,12 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
             {post.type === "video" && (
               <VideoPlayer w={"w-full"} h={"h-full"} src={post.link} />
             )}
-            {post.titleText && (
-              <span className="text-left w-full px-3">{post.titleText}</span>
-            )}
           </div>
+          {post.titleText && (
+            <span className="text-left w-full px-3 text-sm">
+              {post.titleText}
+            </span>
+          )}
         </div>
         <div className="w-full lg:w-1/2 h-96 sm:h-full flex flex-col sm:justify-between sm:border-l-px1 border-gray-200 ">
           <div className="flex items-center justify-between border-t-px1 lg:border-t-0 lg:border-b-px1 border-gray-200 p-5 relative">
