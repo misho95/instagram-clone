@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { getCollectionFromServer } from "../../utils/firebase";
-import { activeNav, userType } from "../../utils/zustand";
+import { activeNav, userSignIn, userType } from "../../utils/zustand";
 import SearchUser from "./search.user";
 
 const SearchComponent = () => {
+  const currentUser = userSignIn((state) => state.user);
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState<userType[]>();
   const setActiveNav = activeNav((state) => state.setActive);
@@ -12,6 +13,11 @@ const SearchComponent = () => {
     const data = await getCollectionFromServer("users");
     const filterData = data.filter((d: userType) => {
       if (
+        currentUser &&
+        d.userName.toLowerCase().includes(currentUser?.userName.toLowerCase())
+      ) {
+        return;
+      } else if (
         search !== "" &&
         d.userName.toLowerCase().includes(search.toLowerCase())
       ) {

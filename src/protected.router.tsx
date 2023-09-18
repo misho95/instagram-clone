@@ -11,7 +11,7 @@ interface MyComponentProps {
 }
 
 const ProtectedRouter = ({ children }: MyComponentProps) => {
-  const idle = useIdle(10000);
+  const idle = useIdle(60000);
   const user = userSignIn((state) => state.user);
   const setUser = userSignIn((state) => state.setUser);
   const [loading, setLoading] = useState(true);
