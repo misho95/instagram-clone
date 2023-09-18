@@ -225,7 +225,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
               </div>
             )}
           </div>
-          <div className="w-full h-80 sm:h-full flex flex-col justify-between overflow-y-auto">
+          <div className="w-full h-64 sm:h-full flex flex-col justify-between overflow-y-auto">
             <div
               className="h-full md:h-postComment lg:h-mobile overflow-y-auto"
               ref={chatContainer}
@@ -275,7 +275,7 @@ const PostModal = ({ post, setOpenPostsModal, type }: PropsType) => {
                     })}
                 </AvatarGroup>
               </div>
-              <div className="flex gap-3 items-center p-2 h-fit w-full">
+              <div className="flex gap-3 items-center px-2 sm:p-2 h-fit w-full">
                 <button
                   onClick={ifUserLikes ? unLikePost : likePost}
                   className={`${
